@@ -1,0 +1,18 @@
+{
+    "name" : "Lauracia AulaVirtual",
+    "version": "0.0.1",
+    "manifest_version": 2,
+    "description" : "Gestion de informacion resumida",
+    "content_scripts" : [
+        {
+            "js" : ["inject/material.min.js", "inject/vue.min.js", "inject/jquery.js", "inject/init.js"],
+            "css": ["inject/material.indigo-pink.min.css", "inject/styles.css"],
+            "matches" : ["*://aulavirtual.unamad.edu.pe/*"]
+        }
+    ],
+    "icons": {
+		"16": "16.png",
+		"64": "64.png",
+		"128": "128.png"
+	}
+}
