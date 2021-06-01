@@ -1,6 +1,6 @@
 {
     "name" : "Lauracia AulaVirtual",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "manifest_version": 2,
     "description" : "Gestion de informacion resumida",
     "content_scripts" : [

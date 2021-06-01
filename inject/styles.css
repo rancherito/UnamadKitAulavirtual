@@ -23,26 +23,16 @@
     color: black;
 }
 #btn-modal{
-    height: 48px;
-    width: 48px;
-    background-color: dodgerblue;
-    color: white;
-    line-height: 48px;
-    text-align: center;
-    font-size: 2rem;
     position: fixed;
     bottom: 1rem;
     right: 1rem;
-    border-radius: 50%;
-    box-shadow: 1px 2px 2px #00000040;
     z-index: 8;
 }
 .cd-list{
-    padding: 1rem;
-    border-radius: .5rem;
-    background-color: rgb(240, 240, 240);
     margin-bottom: 2px;
     position: relative;
+    display: flex;
+    background-color: #fbfbfb;
 }
 .cd-list-title{
     font-weight: bold;
@@ -91,4 +81,92 @@
 .cd-nav-btn.active {
     color: rgb(63, 81, 181);
     background: white;
+}
+.cd-list-content{
+    padding: 1rem ;
+    flex: 1;
+}
+.cd-list:last-child .cd-list-content {
+    border-bottom: 1px solid transparent;
+}
+.cd-list-icon{
+    font-size: 1.4rem;
+    color: rgb(63, 81, 181);
+    padding: 1rem 0 0 1rem;
+}
+.mdl-chip-sm{
+    padding: 0 .5rem;
+    height: 20px;
+    line-height: 20px;
+}
+.mdl-chip-sm .mdl-chip__text{
+    font-size: .8rem;
+}
+
+.mdl-button:focus:not(:active){
+    background: white;
+}
+.mdl-navigation > a{
+    margin-right: 1px;
+}
+
+
+
+
+
+
+/*WEB MODIFICACIONES*/
+nav.top-menu{
+    background: #f3f3f3 !important;
+}
+.box-courses .row.row-labels{
+    display: none;
+}
+.box-courses .img-course {
+    padding: 1rem 0;
+    margin: 0;
+}
+.box-courses .img-course img {
+    width: 100%;
+}
+.row-course > a{
+    display: flex;
+}
+.row-course>a  > div:nth-child(1){
+    padding: 0;
+    padding-left: 1rem;
+    width: 3rem;
+}
+.row-course>a>div:nth-child(2) {
+    padding: 1rem;
+    flex: 1;
+}
+.row-course>a>div:nth-child(2) .row{
+    margin: 0;
+}
+
+.box-courses .row-course:not(:last-child){
+    margin-bottom: 2px;
+}
+
+.cd-icon-rotate::before{
+    animation-name: rotateanimation;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes rotateanimation {
+    0% {
+        transform: rotateZ(0deg);
+    }
+    100%{
+        transform: rotateZ(360deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .row-course>a>div:nth-child(1) {
+        display: none;
+    }
 }
