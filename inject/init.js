@@ -255,27 +255,6 @@
 					course.conferencesUpdating = !1
 				}
 				this.conferences.list = listconferences
-				/*this.conferences.list = []
-				this.courses.list.forEach(d1 => {
-					d1.conferences = 0
-					d1.conferencesUpdating = !0
-					$.get(this.protocol + '://aulavirtual.unamad.edu.pe/web/conference/list?s=' + d1.sectionId, data3 => {
-						//console.log(data3);
-						d1.conferencesUpdating = !1
-						data3.forEach(d3 => {
-							let a = new RegExp("^(http|https)://", "i")
-							
-							if (!a.test(d3.url)) d3.url = 'https://' + d3.url
-
-							const [day, mount, year] = d3.date.split('/')
-							d3.dateEndString = `${day} ${this.mounts[mount - 1]} ${year}, ${d3.start}`;
-
-							d3.sectionId = d1.sectionId
-							d3.nameCourse = d1.name
-							if(d3.state != "Finalizado") {this.conferences.list.push(d3); d1.conferences++}
-						});
-					})
-				});*/
 
 			},
 			async loadHomeworks(){
