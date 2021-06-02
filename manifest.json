@@ -1,8 +1,8 @@
 {
     "name" : "Lauracia AulaVirtual",
-    "version": "0.0.2",
+    "version": "0.0.4",
     "manifest_version": 2,
-    "description" : "Gestion de informacion resumida",
+    "description" : "Gestion de actividades del aulavirtual",
     "content_scripts" : [
         {
             "js" : ["inject/material.min.js", "inject/vue.min.js", "inject/jquery.js", "inject/init.js"],

@@ -1,6 +1,97 @@
-(() => { if(window.location.pathname != '/login'){
-	$('head').append('<link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">')
-	$(
+(() => {
+	let protocol = location.protocol == "https:" ? 'https' : 'http'
+	if(window.location.pathname != '/login'){
+
+	function htmlToElement(html) {
+		var template = document.createElement('template');
+		html = html.trim(); // Never return a text node of whitespace as the result
+		template.innerHTML = html;
+		return template.content.firstChild;
+	}
+
+	Vue.component('vcd-homework', {
+		template: /* HTML */
+		`
+		<div  class="cd-list">
+			<i class="cd-list-icon mdi" :class="data.isGroup? 'mdi-account-group' : 'mdi-bag-personal'"></i>
+			<div class="cd-list-content">
+				<a class="cd-list-more mdl-button mdl-button--raised mdl-button--colored" :href="parent.protocol + '://aulavirtual.unamad.edu.pe/web/homework?s=' + data.sectionId">Más</a>
+				<div class="cd-list-title">{{data.title}}</div>
+				<!--<div class="cd-list-description" v-html="homework.description"></div>-->
+				<div class="cd-list-subtitle">CURSO: {{data.nameCourse}}</div>
+				<div class="cd-list-subtitle2">
+					Fin: {{data.dateEndString}} | {{data.isGroup ? 'GRUPAL':'INDIVIDUAL'}} | Intentos: {{data.intents - data.homeworkstds}}/{{data.intents}}
+				</div>
+			</div>
+		</div>
+		`,
+		props: ['data']
+	})
+	
+	Vue.component('vcd-forums', {
+		template: /*HTML*/
+		`
+		<div class="cd-list">
+			<i class="cd-list-icon mdi mdi-forum"></i>
+			<div class="cd-list-content">
+				<a v-if="forum.differenceTime < 0" class="cd-list-more mdl-button mdl-button--colored" :href="parent.protocol + '://aulavirtual.unamad.edu.pe/web/forum/details?f=' + forum.forumId + '&s=' + forum.sectionId">Ir</a>
+				<div class="cd-list-title">{{data.name}}</div>
+				<div class="cd-list-subtitle">CURSO: {{data.nameCourse}}</div>
+				<div class="cd-list-subtitle2">Inicia: {{data.dateStartString}}</div>
+				
+				<div class="cd-list-subtitle2">Termina: {{data.dateEndString}}</div>
+			</div>
+		</div>
+		`,
+		props: ['data']
+	})
+	Vue.component('vcd-conference', {
+		template: /*HTML*/
+		`
+		<div  class="cd-list">
+			<i class="cd-list-icon mdi mdi-message-video"></i>
+			<div class="cd-list-content">
+				<a class="cd-list-more mdl-button mdl-button--raised mdl-button--colored" :href="data.url" target="_blank">Abrir</a>
+				<div class="cd-list-title">{{data.title}}</div>
+				<div class="cd-list-subtitle">CURSO: {{data.nameCourse}}</div>
+				<div class="cd-list-subtitle2">Inicia: {{data.dateEndString}}</div>
+			</div>
+		</div>
+		`,
+		props: ['data']
+	})
+
+	Vue.component('vcd-info',{
+		template: /* HTML */
+		`
+		<div>
+			<div class="mdl-typography--headline">Info</div><br>
+			<div class="cd-list">
+				<div class="cd-list-content">
+					Version: 0.0.3 beta<br><br>
+					Notas de la versión<br>
+					- Correccion de peticiones https que inpedian acceder a la api de la web.
+					- Deteccion de tareas grupales
+				</div>
+			</div>
+			<div class="cd-list">
+				<div class="cd-list-content">
+					Version: 0.0.2 beta<br><br>
+					Modulos: Cursos, Tareas, Conferencias, Foros.<br>
+					<br>
+					Notas de la versión:<br>
+					- Esta aplicación recopila informacion proveida por API de esta web.<br>
+					- La información se actualiza cada 1 minuto aproximadamente.<br>
+					- El historial de tareas, foros y conferencias son descartados por la aplicación si su fecha de fin a llegado<br>
+				</div>
+			</div>
+		</div>
+		
+		`
+	})
+
+	document.head.appendChild(htmlToElement('<link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">'))
+	document.body.appendChild(htmlToElement(
 		/*html*/
 	`<div id="vueapp">
 		<button id="btn-modal" @click="modal.enable = !modal.enable" href="#"  class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
@@ -9,32 +100,25 @@
 		<div id="modelinject" style="display: none;" v-show="modal.enable">
 			<div ref="modal" class="mdl-dialog">
 				<div class="mdl-layout__header">
-					<div class="mdl-layout__header-row" style="padding: 0 1rem">
-						<ul class="mdl-navigation">
-							
-							<a href="#" class="cd-nav-btn mdl-button " :class="tabposition == 0 ? 'active' : ''" @click="tabposition = 0">({{courses_list.length}}) Cursos</a>
+					<div class="mdl-layout__header-row" style="padding: 0 1rem; justify-content: space-between">
+						<div>
+							<a href="#" class="cd-nav-btn mdl-button" :class="tabposition == 0 ? 'active' : ''" @click="tabposition = 0">({{courses_list.length}}) Cursos</a>
 							
 							<a v-show="homeworks_list.length" href="#" class="cd-nav-btn mdl-button " :class="tabposition == 1 ? 'active' : ''" @click="tabposition = 1">({{homeworks_list.length}}) Tareas</a>
 							
-							<a v-show="conferences_list.length" href="#" class="cd-nav-btn mdl-button " :class="tabposition == 2 ? 'active' : ''" @click="tabposition = 2">({{conferences_list.length}}) V. Conferencias</a>
+							<a v-show="conferences_list.length" href="#" class="cd-nav-btn mdl-button " :class="tabposition == 2 ? 'active' : ''" @click="tabposition = 2">({{conferences_list.length}}) Conferencias</a>
 							
 							<a v-show="forums.list.length" href="#" class="cd-nav-btn mdl-button " :class="tabposition == 3? 'active' : ''" @click="tabposition = 3">({{forums.list.length}}) Foros</a>
-							
-						</ul>
+						</div>	
+						<a href="#" class="cd-nav-btn mdl-button" :class="tabposition == -1 ? 'active' : ''" @click="tabposition = -1" style="margin-left: 1rem;padding: 0; min-width: 36px">
+							<i class="mdi mdi-information"></i>
+						</a>
 					</div>
 				</div>
-				<div class="mdl-dialog__content" v-show="tabposition == 3">
-					<div class="mdl-typography--headline">Lista de Foros</div><br>
-					<div v-for="forum in forums.list" class="cd-list">
-						<div class="cd-list-content">
-							<a v-if="forum.differenceTime < 0" class="cd-list-more mdl-button mdl-button--colored" :href="'https://aulavirtual.unamad.edu.pe/web/forum/details?f=' + forum.forumId + '&s=' + forum.sectionId">Ir</a>
-							<div class="cd-list-title">{{forum.name}}</div>
-							<div class="cd-list-subtitle">CURSO: {{forum.nameCourse}}</div>
-							<div class="cd-list-subtitle2">Inicia: {{forum.dateStartString}}</div>
-							
-							<div class="cd-list-subtitle2">Termina: {{forum.dateEndString}}</div>
-						</div>
-					</div>
+
+				
+				<div class="mdl-dialog__content" v-show="tabposition == -1">
+					<vcd-info/>
 				</div>
 				
 				<div class="mdl-dialog__content" v-show="tabposition == 0">
@@ -64,30 +148,19 @@
 					</div>
 					
 				</div>
+				
+				<div class="mdl-dialog__content" v-show="tabposition == 3">
+					<div class="mdl-typography--headline">Lista de Foros</div><br>
+					<vcd-forums v-for="forum in forums.list" :data="forum"></vcd-forums>
+				</div>
 				<div class="mdl-dialog__content" v-show="tabposition == 1">
 					<div class="mdl-typography--headline">Tareas pendientes</div><br>
-					<div v-for="homework in homeworks_list" class="cd-list">
-						<i class="cd-list-icon mdi" :class="homework.isGroup? 'mdi-account-group' : 'mdi-bag-personal'"></i>
-						<div class="cd-list-content">
-							<a class="cd-list-more mdl-button mdl-button--raised mdl-button--colored" :href="'https://aulavirtual.unamad.edu.pe/web/homework?s=' + homework.sectionId">Ver Más</a>
-							<div class="cd-list-title">{{homework.title}}</div>
-							<!--<div class="cd-list-description" v-html="homework.description"></div>-->
-                    		<div class="cd-list-subtitle">CURSO: {{homework.nameCourse}}</div>
-							<div class="cd-list-subtitle2">Fin: {{homework.dateEndString}} | {{homework.isGroup ? 'GRUPAL':'INDIVIDUAL'}} | Intentos: {{homework.intents - homework.homeworkstds}}/{{homework.intents}}</div>
-						</div>
-					</div>
+					<vcd-homework v-for="homework in homeworks_list" :data="homework"></vcd-homework>
 				</div>
 
 				<div class="mdl-dialog__content" v-show="tabposition == 2">
 					<div class="mdl-typography--headline">Conferencias</div><br>
-					<div v-for="conference in conferences_list" class="cd-list">
-						<div class="cd-list-content">
-							<a class="cd-list-more mdl-button mdl-button--raised mdl-button--colored" :href="conference.url" target="_blank" :disabled="false">Abrir</a>
-							<div class="cd-list-title">{{conference.title}}</div>
-							<div class="cd-list-subtitle">CURSO: {{conference.nameCourse}}</div>
-							<div class="cd-list-subtitle2">Inicia: {{conference.dateEndString}}</div>
-						</div>
-					</div>
+					<vcd-conference v-for="(conference, i) in conferences_list" :data="conference"></vcd-conference>
 				</div>
 
 				<div class="mdl-dialog__actions">
@@ -98,7 +171,7 @@
 			</div>
 		</div>
 	</div>
-		`).prependTo($('body'))
+		`))
 	
 	
 
@@ -125,17 +198,18 @@
 			},
 			tabposition: 0,
 			mounts: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-			updating: false
+			updating: false, 
+			protocol: protocol
 		},
 		computed: {
 			homeworks_list(){
-				return this.homeworks.list.sort((a,b) => a.dateEnd > b.dateEnd ? -1 : 1)
+				return [...this.homeworks.list].sort((a,b) => a.dateEnd > b.dateEnd ? -1 : 1)
 			},
 			conferences_list(){
-				return this.conferences.list.sort((a,b) => a.endTime > b.endTime ? -1 : 1)
+				return [...this.conferences.list].sort((a,b) => a.endTime > b.endTime ? -1 : 1)
 			},
 			courses_list(){
-				return this.courses.list.sort((a,b) => (b.homeworks + b.forums + b.conferences) - (a.homeworks + a.forums + a.conferences))
+				return [...this.courses.list].sort((a,b) => (b.homeworks + b.forums + b.conferences) - (a.homeworks + a.forums + a.conferences))
 			},
 			actividities(){
 				return this.courses.list.reduce((acum, c) => acum + c.homeworks + c.forums + c.conferences, 0)
@@ -158,12 +232,34 @@
 				return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 			},
 
-			loadConferences(){
-				this.conferences.list = []
+			async loadConferences(){
+				let listconferences = []
+				for (let course of this.courses.list) {
+					course.conferences = 0
+					course.conferencesUpdating = !0
+
+					let response = await fetch(this.protocol + '://aulavirtual.unamad.edu.pe/web/conference/list?s=' + course.sectionId);
+					if (response.ok) {
+						(await response.json()).forEach(conference => {
+							let a = new RegExp("^(http|https)://", "i")
+							if (!a.test(conference.url)) conference.url = 'https://' + conference.url
+							const [day, mount, year] = conference.date.split('/')
+
+							conference.dateEndString = `${day} ${this.mounts[mount - 1]} ${year}, ${conference.start}`;
+
+							conference.sectionId = course.sectionId
+							conference.nameCourse = course.name
+							if(conference.state != "Finalizado") {listconferences.push(conference); course.conferences++}
+						});
+					}
+					course.conferencesUpdating = !1
+				}
+				this.conferences.list = listconferences
+				/*this.conferences.list = []
 				this.courses.list.forEach(d1 => {
 					d1.conferences = 0
 					d1.conferencesUpdating = !0
-					$.get('https://aulavirtual.unamad.edu.pe/web/conference/list?s=' + d1.sectionId, data3 => {
+					$.get(this.protocol + '://aulavirtual.unamad.edu.pe/web/conference/list?s=' + d1.sectionId, data3 => {
 						//console.log(data3);
 						d1.conferencesUpdating = !1
 						data3.forEach(d3 => {
@@ -179,38 +275,42 @@
 							if(d3.state != "Finalizado") {this.conferences.list.push(d3); d1.conferences++}
 						});
 					})
-				});
+				});*/
 
 			},
-			loadHomeworks(){
-				this.homeworks.list = []
+			async loadHomeworks(){
+				var listhomework = []
 				
+				for (let course of this.courses.list) {
+					course.homeworksUpdating = !0
+					course.homeworks = 0
+					let res = await fetch(this.protocol + '://aulavirtual.unamad.edu.pe/web/homework/list?s=' + course.sectionId);
+					if(res.ok){
+						(await res.json()).forEach(task => {
+							let [date, hour] = task.dateEnd.split(' ');
+							let [day, mount, year] = date.split('/')
+							task.sectionId = course.sectionId
+							task.nameCourse = course.name
+							task.dateEndString = `${day} ${this.mounts[mount - 1]} ${year}, ${hour}`;
 
-				this.courses.list.forEach(d1 => {
-					//OBTENIENDO LISTA DE TAREAS PENDIENTES
-					d1.homeworks = 0
-					d1.homeworksUpdating = !0
-					$.get('https://aulavirtual.unamad.edu.pe/web/homework/list?s=' + d1.sectionId, data2 => {
-						//console.log(data2);
-						d1.homeworksUpdating = !1
-						data2.forEach(d2 => {
-							const [date, hour] = d2.dateEnd.split(' ');
-							const [day, mount, year] = date.split('/')
-							d2.sectionId = d1.sectionId
-							d2.dateEndString = `${day} ${this.mounts[mount - 1]} ${year}, ${hour}`;
-							d2.nameCourse = d1.name
-							if(d2.state == "ACT" && d2.intents > d2.homeworkstds) {this.homeworks.list.push(d2); d1.homeworks++;}
+							if (task.state == 'ACT') {
+								listhomework.push(task); 
+								course.homeworks += 1
+							}
 						});
-						console.log(this.homeworks);
-					})
-				});
+					}
+					course.homeworksUpdating = !1
+				}
+				this.homeworks.list = listhomework
+
+
 			},
 			loadForums(){
 				this.forums.list = []
 				this.courses.list.forEach(course => {
 					course.forums = 0
 					course.forumsUpdating = !0
-					$.get('https://aulavirtual.unamad.edu.pe/web/forum/list?s=' + course.sectionId, forums => {
+					$.get(this.protocol + '://aulavirtual.unamad.edu.pe/web/forum/list?s=' + course.sectionId, forums => {
 						course.forumsUpdating = !1
 						//console.log(forums);
 						forums.forEach(forum => {
@@ -240,7 +340,7 @@
 				this.modal.enable = JSON.parse(localStorage.getItem('openmodal').toLowerCase())
 
 				this.updating = true
-				$.get('https://aulavirtual.unamad.edu.pe/web/user/info/system/courseinrole', data => {
+				$.get(this.protocol + '://aulavirtual.unamad.edu.pe/web/user/info/system/courseinrole', data => {
 					this.updating = false
 					this.courses.list = data.map(d => {return {homeworksUpdating: !1, homeworks: 0, forumsUpdating: !1, forums: 0, conferencesUpdating: !1, conferences: 0, ...d}})
 					this.loadData2()
@@ -252,8 +352,9 @@
 		created(){
 			this.loadCourses()
 			setInterval(()=>{
-				this.loadData2()
 				console.log('Update Data');
+				this.loadData2()
+				
 			}, 1000 * 60)
 		},
 		mounted(){
