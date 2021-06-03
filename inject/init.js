@@ -2,93 +2,134 @@
 	let protocol = location.protocol == "https:" ? 'https' : 'http'
 	if(window.location.pathname != '/login'){
 
-	function htmlToElement(html) {var template = document.createElement('template');html = html.trim();template.innerHTML = html;return template.content.firstChild;}
-
+	
 	document.head.appendChild(htmlToElement('<link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">'))
 	document.body.appendChild(htmlToElement(
 		/*html*/
 	`<div id="vueapp">
-		<a id="btn-modal" @click="modal.enable = !modal.enable" href="#">
+		<a id="cd-btn-modal" @click="modal.enable = !modal.enable" href="#">
 			<span v-if="actividities">{{actividities}}</span>
-			{{actividities ? 'Actividades' :'Sin Actividades'}}
+			<i class="mdi mdi-school"></i>
 		</a>
 		<div id="modelinject" style="display: none;" v-show="modal.enable">
-			<div ref="modal" class="mdl-dialog">
-				<div class="mdl-layout__header">
-					<div class="mdl-layout__header-row" style="padding: 0 1rem; justify-content: space-between">
-						<div>
-							<a href="#" class="cd-nav-btn mdl-button" :class="tabposition == 0 ? 'active' : ''" @click="tabposition = 0">({{courses_list.length}}) Cursos</a>
-							
-							<a v-show="homeworks_list.length" href="#" class="cd-nav-btn mdl-button " :class="tabposition == 1 ? 'active' : ''" @click="tabposition = 1">({{homeworks_list.length}}) Tareas</a>
-							
-							<a v-show="conferences_list.length" href="#" class="cd-nav-btn mdl-button " :class="tabposition == 2 ? 'active' : ''" @click="tabposition = 2">({{conferences_list.length}}) Conferencias</a>
-							
-							<a v-show="forums.list.length" href="#" class="cd-nav-btn mdl-button " :class="tabposition == 3? 'active' : ''" @click="tabposition = 3">({{forums.list.length}}) Foros</a>
-						</div>	
-						<a href="#" class="cd-nav-btn mdl-button" :class="tabposition == -1 ? 'active' : ''" @click="tabposition = -1" style="margin-left: 1rem;padding: 0; min-width: 36px">
-							<i class="mdi mdi-information"></i>
+			<div ref="modal" class="cd-dialog">
+				
+				
+				<div class="cd-dialog-actions-top">
+					<div class="mdl-typography--headline" style="color: white">{{modulesTitles[tabposition]}}</div>
+					<div style="display: flex">
+						<a href="#" class="f-c mdl-button mdl-button--icon" :class="tabposition == -1 ? 'active' : ''" @click="tabposition = -1">
+							<i class="mdi mdi-information mdi-24px"></i>
 						</a>
-					</div>
-				</div>
-
-				
-				<div class="mdl-dialog__content" v-show="tabposition == -1">
-					<vcd-info/>
-				</div>
-				
-				<div class="mdl-dialog__content" v-show="tabposition == 0">
-					<div class="mdl-typography--headline">Lista de cursos</div><br>
-					<div v-for="course in courses_list" class="cd-list">
-						<i class="cd-list-icon mdi" :class="course.homeworksUpdating || course.forumsUpdating || course.conferencesUpdating ? 'mdi-loading mdi-spin' : 'mdi-book'"></i>
-						<div class="cd-list-content">
-							<div class="cd-list-title">{{course.name}}</div>
-							<div 
-								class="cd-list-subtitle2" 
-								v-if="course.homeworks + course.forums + course.conferences">
-
-								<span v-if="course.homeworks" class="mdl-chip mdl-chip-sm">
-									<span class="mdl-chip__text">{{'Tareas: ' + course.homeworks}}</span>
-								</span>
-								<span v-if="course.forums" class="mdl-chip mdl-chip-sm">
-									<span class="mdl-chip__text">{{'Foros: ' + course.forums}}</span>
-								</span>
-								<span v-if="course.conferences" class="mdl-chip mdl-chip-sm">
-									<span class="mdl-chip__text">{{'Confer.: ' + course.conferences}}</span>
-								</span>
-							</div>
-							<div class="cd-list-subtitle2" v-else>
-								<span style="height: 20px; display: block">Sin actividades pendientes</span>
-							</div>
-						</div>
+						<a href="#" @click="loadCourses" class="f-c mdl-button mdl-button--icon" :disabled="updating">
+							<i class="mdi mdi-reload mdi-24px" :class="updating ? 'mdi-spin' : ''"></i>
+						</a>
+						
+						<a href="#" @click="modal.enable = !modal.enable" class="f-c mdl-button mdl-button--icon">
+							<i class="mdi mdi-close mdi-24px"></i>
+						</a>
 					</div>
 					
 				</div>
+
 				
-				<div class="mdl-dialog__content" v-show="tabposition == 3">
-					<div class="mdl-typography--headline">Lista de Foros</div><br>
-					<vcd-forums v-for="forum in forums.list" :data="forum"></vcd-forums>
-				</div>
-				<div class="mdl-dialog__content" v-show="tabposition == 1">
-					<div class="mdl-typography--headline">Tareas pendientes</div><br>
-					<vcd-homework v-for="homework in homeworks_list" :data="homework"></vcd-homework>
-				</div>
+				
+				<div style="flex: 1;">
+					<div class="mdl-dialog__content" v-show="tabposition == -1">
+						<vcd-info/>
+					</div>
+					
+					<div class="mdl-dialog__content" v-show="tabposition == 0">
+						<div v-for="course in courses_list" class="cd-list">
+							<i class="cd-list-icon mdi" :class="course.homeworksUpdating || course.forumsUpdating || course.conferencesUpdating ? 'mdi-loading mdi-spin' : 'mdi-book'"></i>
+							<div class="cd-list-content">
+								<div class="cd-list-title">{{course.name}}</div>
+								<div 
+									class="cd-list-subtitle2" 
+									v-if="course.homeworks + course.forums + course.conferences">
 
-				<div class="mdl-dialog__content" v-show="tabposition == 2">
-					<div class="mdl-typography--headline">Conferencias</div><br>
-					<vcd-conference v-for="(conference, i) in conferences_list" :data="conference"></vcd-conference>
-				</div>
+									<span v-if="course.homeworks" class="mdl-chip mdl-chip-sm">
+										<span class="mdl-chip__text">{{'Tareas: ' + course.homeworks}}</span>
+									</span>
+									<span v-if="course.forums" class="mdl-chip mdl-chip-sm">
+										<span class="mdl-chip__text">{{'Foros: ' + course.forums}}</span>
+									</span>
+									<span v-if="course.conferences" class="mdl-chip mdl-chip-sm">
+										<span class="mdl-chip__text">{{'Confer.: ' + course.conferences}}</span>
+									</span>
+								</div>
+								<div class="cd-list-subtitle2" v-else>
+									<span style="height: 24px; display: block">Sin actividades pendientes</span>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					<div class="mdl-dialog__content" v-show="tabposition == 1">
+						<vcd-homework v-for="homework in homeworks_list" :data="homework"></vcd-homework>
+					</div>
 
-				<div class="mdl-dialog__actions">
-					<a href="#" @click="modal.enable = !modal.enable" class="mdl-button">Cerrar</a>
-					<a href="#" @click="loadCourses" class="mdl-button mdl-button--raised mdl-button--colored" :disabled="updating">{{updating ? 'Espere...' : 'Actualizar'}}</a>
+					<div class="mdl-dialog__content" v-show="tabposition == 2">
+						<vcd-conference v-for="(conference, i) in conferences_list" :data="conference"></vcd-conference>
+					</div>
+					<div class="mdl-dialog__content" v-show="tabposition == 3">
+						<vcd-forums v-for="forum in forums.list" :data="forum"></vcd-forums>
+					</div>
+				</div>
+				<div class="cd-tabsbox">
+					<div>
+						<a href="#" class="cd-nav-btn mdl-button" :class="tabposition == 0 ? 'active' : ''" @click="tabposition = 0">
+							<i v-if="tabposition == 0" class="mdi mdi-book mdi-24px"></i>
+							<span v-else>({{courses_list.length}}) Cursos</span>
+						</a>
+						
+						<a v-show="homeworks_list.length" href="#" class="cd-nav-btn mdl-button " :class="tabposition == 1 ? 'active' : ''" @click="tabposition = 1">
+							<i v-if="tabposition == 1" class="mdi mdi-bag-personal mdi-24px"></i>
+							<span v-else>({{homeworks_list.length}}) Tareas</span>
+						</a>
+						
+						<a v-show="conferences_list.length" href="#" class="cd-nav-btn mdl-button " :class="tabposition == 2 ? 'active' : ''" @click="tabposition = 2">
+						
+							<i v-if="tabposition == 2" class="mdi mdi-message-video mdi-24px"></i>
+							<span v-else>({{conferences_list.length}}) Conferencias</span>
+						</a>
+						
+						<a v-show="forums.list.length" href="#" class="cd-nav-btn mdl-button " :class="tabposition == 3? 'active' : ''" @click="tabposition = 3">
+						
+							<i v-if="tabposition == 3" class="mdi mdi-forum mdi-24px"></i>
+							<span v-else>({{forums.list.length}}) Foros</span>
+						</a>
+					</div>	
 					
 				</div>
 			</div>
 		</div>
 	</div>
 		`))
+
 	
 	
+	
+	let defdata = createStorage({
+		modal: {
+			enable: true
+		}, 
+		courses: {
+			list: []
+		},
+		homeworks: {
+			list: []
+		},
+		conferences:{
+			list: []
+		},
+		forums: {
+			list: []
+		},
+		tabposition: 0,
+	})
+
+
 
 	if (localStorage.getItem('openmodal') == undefined) localStorage.setItem('openmodal', true)
 	
@@ -96,25 +137,11 @@
 	new Vue({
 		el: '#vueapp',
 		data: {
-			modal: {
-				enable: true
-			},
-			courses: {
-				list: []
-			},
-			homeworks: {
-				list: []
-			},
-			conferences:{
-				list: []
-			},
-			forums: {
-				list: []
-			},
-			tabposition: 0,
+			...defdata.variables,
 			mounts: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
 			updating: false, 
-			protocol: protocol
+			protocol: protocol,
+			modulesTitles: {'-1': 'Info', 0: 'Lista de cursos', 1: 'Tareas pendientes', 2 : 'Conferencias', 3: 'Lista de Foros' }
 		},
 		computed: {
 			homeworks_list(){
@@ -131,12 +158,9 @@
 			}
 		},
 		watch: {
-			'modal.enable': function(val){
-				localStorage.setItem('openmodal', val)
-			}
+			...defdata.mutations
 		},
 		methods: {
-			
 			dateDiffInDays(a, b) {
 				const _MS_PER_DAY = 1000 * 60
 				if (typeof a == 'string') a = new Date(a)
@@ -199,15 +223,14 @@
 
 
 			},
-			loadForums(){
-				this.forums.list = []
-				this.courses.list.forEach(course => {
+			async loadForums(){
+				let listforums = []
+				for (const course of this.courses.list) {
 					course.forums = 0
 					course.forumsUpdating = !0
-					$.get(this.protocol + '://aulavirtual.unamad.edu.pe/web/forum/list?s=' + course.sectionId, forums => {
-						course.forumsUpdating = !1
-						//console.log(forums);
-						forums.forEach(forum => {
+					let response = await fetch(this.protocol + '://aulavirtual.unamad.edu.pe/web/forum/list?s=' + course.sectionId)
+					if (response.ok) {
+						(await response.json()).forEach(forum => {
 							forum.sectionId = course.sectionId
 							forum.nameCourse = course.name
 
@@ -220,27 +243,30 @@
 							forum.dateStartString = `${day} ${this.mounts[mount - 1]} ${year}, ${hour}`;
 
 							forum.differenceTime = this.dateDiffInDays(new Date(), forum.dateBegin);
-							if(forum.state) {this.forums.list.push(forum); course.forums++}
+							if(forum.state){listforums.push(forum); course.forums++}
 						});
-					})
-				});
+					}
+					course.forumsUpdating = !1
+				}
+				this.forums.list = listforums;
+				
 			},
 			loadData2(){
 				this.loadConferences()
 				this.loadHomeworks()
 				this.loadForums()
 			},
-			loadCourses(){
-				this.modal.enable = JSON.parse(localStorage.getItem('openmodal').toLowerCase())
+			async loadCourses(){
 
 				this.updating = true
-				$.get(this.protocol + '://aulavirtual.unamad.edu.pe/web/user/info/system/courseinrole', data => {
-					this.updating = false
-					this.courses.list = data.map(d => {return {homeworksUpdating: !1, homeworks: 0, forumsUpdating: !1, forums: 0, conferencesUpdating: !1, conferences: 0, ...d}})
-					this.loadData2()
-					
-
-				})
+				let response = await fetch(this.protocol + '://aulavirtual.unamad.edu.pe/web/user/info/system/courseinrole')
+				if (response.ok) {
+					response.json().then(data => {
+						this.updating = false
+						this.courses.list = data.map(d => {return {homeworksUpdating: !1, homeworks: 0, forumsUpdating: !1, forums: 0, conferencesUpdating: !1, conferences: 0, ...d}})
+						this.loadData2()
+					})
+				}
 			}
 		},
 		created(){
