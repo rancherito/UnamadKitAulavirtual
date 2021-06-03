@@ -5,7 +5,7 @@
     "description" : "Gestion de actividades del aulavirtual",
     "content_scripts" : [
         {
-            "js" : ["inject/material.min.js", "inject/vue.min.js", "inject/components.js", "inject/jquery.js", "inject/init.js"],
+            "js" : ["inject/material.min.js", "inject/vue.min.js", "inject/components.js", "inject/init.js"],
             "css": ["inject/material.indigo-pink.min.css", "inject/styles.css"],
             "matches" : ["*://aulavirtual.unamad.edu.pe/*"]
         }
