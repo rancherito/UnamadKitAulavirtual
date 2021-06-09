@@ -48,11 +48,13 @@
     align-items: center;
     z-index: 10203;
     background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    line-height: 20px;
 }
 .cd-dialog {
     background-color: #1a1c27;
     height: 100%;
-    width: 540px;
+    width: 600px;
     display: flex;
     flex-direction: column;
     color: var(--text-default);
@@ -105,11 +107,23 @@
 #cd-btn-modal:hover {
     color: white;
 }
+.cd-cooldown{
+    display: flex;
+    width: 70px;
+    border-radius: .5rem;
+    color: white;
+    background: rgba(255, 255, 255, 0.25);
+    height: 36px;
+    display: flex;
+    align-items: center;
+    margin-right: 2px;
+}
 .cd-list{
-    margin-bottom: 2px;
+    border-radius: .5rem;
+    margin-bottom: 4px;
     position: relative;
     display: flex;
-    background-color: rgba(0, 0, 0, 0.15);
+    background-color: var(--panel);
 }
 .cd-list-title{
     font-weight: bold;
@@ -146,27 +160,81 @@
 .cd-tabsbox{
     background-color: var(--panel);
     display: flex;
-    padding: 1rem;
     justify-content: space-between;
 }
-.cd-tabsbox i{
+.cd-nav-btn{
+    flex: 1;
+    padding: 0 1rem;
+    height: 60px;
+    color: white;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    justify-content: center;
+    font-weight: bold;
+    transition: background .2s linear;
+}
+.cd-nav-btn > div{
+    position: relative;
+}
+.cd-nav-btn b{
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    font-weight: normal;
+    font-size: .8rem;
+    height: 20px;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cd-nav-btn i{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    transition: all .2s linear;
+}
+.cd-nav-btn span{
+    width: 0%;
+    overflow: hidden;
+    transition: all .2s linear;
+}
+.cd-nav-btn:hover i,
+.cd-nav-btn.active i {
+    font-size: 24px;
+}
+.cd-nav-btn:hover {
+    background: var(--bg);
+    color: #fff;
+}
+.cd-nav-btn.active{
+    background: white;
     color: var(--primary);
+}
+.cd-nav-btn:hover b,
+.cd-nav-btn.active b {
+    background: var(--primary);
+    color: white;
+}
+.cd-nav-btn:hover span,
+.cd-nav-btn.active span {
+    display: flex;
+    white-space: nowrap;
+    margin-left: .5rem;
+    color: inherit;
+    width: auto;
 }
 .modal-header a:hover{
     color: white;
+    
 }
 .mdl-dialog__actions{
     padding: 1rem;
-}
-.cd-nav-btn{
-    color: white;
-    background: rgba(158, 158, 158, 0.2);
-    
-}
-.cd-nav-btn.mdl-button:hover,
-.cd-nav-btn.active {
-    color: var(--secondary);
-    background: white;
 }
 .cd-list-content{
     padding: 1rem ;
@@ -178,7 +246,56 @@
 .cd-list-icon{
     font-size: 1.4rem;
     color: var(--primary);
-    padding: 1rem 0 0 1rem;
+    padding-top: 1rem;
+    padding-left: 1rem;
+}
+.cd-list-access{
+    color: var(--primary);
+    padding: 1rem 1rem 1rem 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.cd-list-access a{
+    border-radius: .5rem;
+    min-width: 36px;
+    padding: 0;
+}
+.cd-list-time{
+    padding: 1rem 0 1rem 1rem;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+.cd-list-time-item {
+    position: relative;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.cd-list-time > div i{
+    font-size: 2.4rem;
+    height: 36px;
+}
+.cd-list-time > div span {
+    position: absolute;
+    font-size: .8rem;
+    text-align: center;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 10px;
+}
+.cd-list-time-item b {
+    font-weight: normal;
+    font-size: .8rem;
+}
+.cd-list-time-item *:nth-child(4) {
+    margin-top: -2px;
+    background: var(--primary);
+    border-radius: 4px;
+    padding: 0 2px;
 }
 .mdl-chip-sm{
     padding: 0 .5rem;

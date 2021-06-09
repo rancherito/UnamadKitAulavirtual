@@ -17,20 +17,88 @@ function createStorage(data) {
 	else defdata.variables = JSON.parse(localStorage.getItem(version))
 	return defdata
 }
+Vue.component('vcd-date', {
+	template: /*HTML */
+	`<div class="cd-list-time-item">
+		<i class="mdi mdi-calendar-blank f-c"></i>
+		<span>{{day}}</span>
+		<b>{{month}}</b>
+		<b>{{hour}}</b>
+	</div>
+	`,
+	props: ['date'],
+	computed: {
+		hour(){
+			const date = new Date(this.date)
+			return date.getHours() + ':' + date.getMinutes()
+		},
+		day(){
+			return (new Date(this.date)).getDate()
+		},
+		month(){
+			return this.$root.months[(new Date(this.date)).getMonth()]
+		}
+	}
+})
+Vue.component('vcd-cooldown',{
+	template: /*HTML */
+	`<div class="cd-cooldown f-c">{{dateView}}</div>
+	`,
+	data(){
+		return {
+			dateView: '0m',
+			interval: null
+		}
+	},
+	props: ['date'],
+	methods: {
+		generate(){
+			let countDownDate = new Date(this.date).getTime();
+			const now = new Date().getTime();
+			const distance = countDownDate - now;
+			const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+			const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+			const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+			const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+			this.dateView = (days ? days + "d ": '') + (hours ? hours + "h " : '') + (days ? '' : minutes + "m ") + (days + hours ? '' :seconds + 's');
+			if (distance < 0 && this.interval != null) clearInterval(this.interval);
+			
+		}
+	},
+	created(){
+		
+		this.generate()
+		this.interval = setInterval(() => {
+			this.generate()
+		}, 1000);
+	}
+})
 Vue.component('vcd-homework', {
 		template: /* HTML */
 		`
-		<div  class="cd-list">
-			<i class="cd-list-icon mdi" :class="data.isGroup? 'mdi-account-group' : 'mdi-bag-personal'"></i>
+		<div class="cd-list">
+			<div class="cd-list-time">
+				<vcd-date :date="data.dateBeginCuston"></vcd-date>
+			</div>
+			
 			<div class="cd-list-content">
-				<a class="cd-list-more mdl-button mdl-button--raised mdl-button--colored" :href="$parent.protocol + '://aulavirtual.unamad.edu.pe/web/homework?s=' + data.sectionId">Más</a>
+				
 				<div class="cd-list-title">{{data.title}}</div>
 				<!--<div class="cd-list-description" v-html="homework.description"></div>-->
 				<div class="cd-list-subtitle">CURSO: {{data.nameCourse}}</div>
 				<div class="cd-list-subtitle2">
-					Fin: {{data.dateEndString}} | {{data.isGroup ? 'GRUPAL':'INDIVIDUAL'}} | Intentos: {{data.intents - data.homeworkstds}}/{{data.intents}}
+					{{data.isGroup ? 'GRUPAL':'INDIVIDUAL'}} | Intentos: {{data.intents - data.homeworkstds}}/{{data.intents}}
 				</div>
+				
 			</div>
+			<div class="cd-list-access">
+				<vcd-cooldown :date="data.dateEndCuston"></vcd-cooldown>
+				<a class="mdl-button mdl-button--raised mdl-button--colored" :href="$parent.protocol + '://aulavirtual.unamad.edu.pe/web/homework?s=' + data.sectionId">
+					<i class="mdi mdi-link"></i>
+				</a>
+			</div>
+			
 		</div>
 		`,
 		props: ['data']

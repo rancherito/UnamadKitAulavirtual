@@ -19,14 +19,14 @@
 					<div class="mdl-typography--headline" style="color: white">{{modulesTitles[tabposition]}}</div>
 					<div style="display: flex">
 						<a href="#" class="f-c mdl-button mdl-button--icon" :class="tabposition == -1 ? 'active' : ''" @click="tabposition = -1">
-							<i class="mdi mdi-information mdi-24px"></i>
+							<i class="mdi mdi-information mdi-24px f-c"></i>
 						</a>
 						<a href="#" @click="loadCourses" class="f-c mdl-button mdl-button--icon" :disabled="updating">
-							<i class="mdi mdi-reload mdi-24px" :class="updating ? 'mdi-spin' : ''"></i>
+							<i class="mdi mdi-reload mdi-24px f-c" :class="updating ? 'mdi-spin' : ''"></i>
 						</a>
 						
 						<a href="#" @click="modal.enable = !modal.enable" class="f-c mdl-button mdl-button--icon">
-							<i class="mdi mdi-close mdi-24px"></i>
+							<i class="mdi mdi-close mdi-24px f-c"></i>
 						</a>
 					</div>
 					
@@ -39,6 +39,14 @@
 						<vcd-info/>
 					</div>
 					
+					<div class="mdl-dialog__content f-c" style="height: 100%" v-show="tabposition == 'qr'">
+						<div style="background: white; border-radius: 1rem; padding: 1rem">
+							<div ref="qrplaceholder"></div>
+						</div>
+						<br>
+						<span>NO compartas este codigo QR<span>
+						
+					</div>
 					<div class="mdl-dialog__content" v-show="tabposition == 0">
 						<div v-for="course in courses_list" class="cd-list">
 							<i class="cd-list-icon mdi" :class="course.homeworksUpdating || course.forumsUpdating || course.conferencesUpdating ? 'mdi-loading mdi-spin' : 'mdi-book'"></i>
@@ -66,6 +74,10 @@
 						
 					</div>
 					<div class="mdl-dialog__content" v-show="tabposition == 1">
+						<div style="display: flex; justify-content: space-between; padding-bottom: .5rem">
+							<span style="padding: .5rem 1rem; background-color: var(--panel); border-radius: .5rem">Inicia</span>
+							<span style="padding: .5rem 1rem; background-color: var(--panel); border-radius: .5rem">Termina en | Link</span>
+						</div>
 						<vcd-homework v-for="homework in homeworks_list" :data="homework"></vcd-homework>
 					</div>
 
@@ -77,30 +89,38 @@
 					</div>
 				</div>
 				<div class="cd-tabsbox">
-					<div>
-						<a href="#" class="cd-nav-btn mdl-button" :class="tabposition == 0 ? 'active' : ''" @click="tabposition = 0">
-							<i v-if="tabposition == 0" class="mdi mdi-book mdi-24px"></i>
-							<span v-else>({{courses_list.length}}) Cursos</span>
-						</a>
-						
-						<a v-show="homeworks_list.length" href="#" class="cd-nav-btn mdl-button " :class="tabposition == 1 ? 'active' : ''" @click="tabposition = 1">
-							<i v-if="tabposition == 1" class="mdi mdi-bag-personal mdi-24px"></i>
-							<span v-else>({{homeworks_list.length}}) Tareas</span>
-						</a>
-						
-						<a v-show="conferences_list.length" href="#" class="cd-nav-btn mdl-button " :class="tabposition == 2 ? 'active' : ''" @click="tabposition = 2">
-						
-							<i v-if="tabposition == 2" class="mdi mdi-message-video mdi-24px"></i>
-							<span v-else>({{conferences_list.length}}) Conferencias</span>
-						</a>
-						
-						<a v-show="forums.list.length" href="#" class="cd-nav-btn mdl-button " :class="tabposition == 3? 'active' : ''" @click="tabposition = 3">
-						
-							<i v-if="tabposition == 3" class="mdi mdi-forum mdi-24px"></i>
-							<span v-else>({{forums.list.length}}) Foros</span>
-						</a>
-					</div>	
+					<a href="#" class="cd-nav-btn" :class="tabposition == 0 ? 'active' : ''" @click="tabposition = 0">
+						<div>
+							<b>{{courses_list.length}}</b>
+							<i class="mdi mdi-book"></i>
+						</div>
+						<span>Cursos</span>
+					</a>
 					
+					<a href="#" class="cd-nav-btn" :class="tabposition == 1 ? 'active' : ''" @click="tabposition = 1">
+						<div>
+							<b v-show="homeworks_list.length">{{homeworks_list.length}}</b>
+							<i class="mdi mdi-bag-personal"></i>
+						</div>
+						<span>Tareas</span>
+					</a>
+					
+					<a href="#" class="cd-nav-btn" :class="tabposition == 2 ? 'active' : ''" @click="tabposition = 2">
+						<div>
+							<b v-show="conferences_list.length">{{conferences_list.length}}</b>
+							<i class="mdi mdi-message-video"></i>
+						</div>
+						<span >Conferencias</span>
+					</a>
+					
+					<a href="#" class="cd-nav-btn" :class="tabposition == 3? 'active' : ''" @click="tabposition = 3">
+						<div>
+							<b v-show="forums_list.length">{{forums_list.length}}</b>
+							<i class="mdi mdi-forum"></i>
+						</div>
+						<span>Foros</span>
+					</a>
+				
 				</div>
 			</div>
 		</div>
@@ -128,20 +148,23 @@
 		},
 		tabposition: 0,
 	})
-
-
-
-	if (localStorage.getItem('openmodal') == undefined) localStorage.setItem('openmodal', true)
 	
 
 	new Vue({
 		el: '#vueapp',
 		data: {
 			...defdata.variables,
-			mounts: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+			months: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
 			updating: false, 
 			protocol: protocol,
-			modulesTitles: {'-1': 'Info', 0: 'Lista de cursos', 1: 'Tareas pendientes', 2 : 'Conferencias', 3: 'Lista de Foros' }
+			modulesTitles: {
+				'-1': 'Info', 
+				0: 'Lista de cursos', 
+				1: 'Tareas pendientes', 
+				2: 'Conferencias', 
+				3: 'Lista de Foros', 
+				'qr': 'Generar Llave'
+			}
 		},
 		computed: {
 			homeworks_list(){
@@ -152,6 +175,9 @@
 			},
 			courses_list(){
 				return [...this.courses.list].sort((a,b) => (b.homeworks + b.forums + b.conferences) - (a.homeworks + a.forums + a.conferences))
+			},
+			forums_list(){
+				return [...this.forums.list].sort((a,b) => a.dateStartView > b.dateStartView ? 1 : -1)
 			},
 			actividities(){
 				return this.courses.list.reduce((acum, c) => acum + c.homeworks + c.forums + c.conferences, 0)
@@ -170,7 +196,11 @@
 				const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate(), b.getHours(), b.getMinutes());
 				return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 			},
-
+			getCookie(name) {
+				const value = `; ${document.cookie}`;
+				const parts = value.split(`; ${name}=`);
+				if (parts.length === 2) return parts.pop().split(';').shift();
+			},
 			async loadConferences(){
 				let listconferences = []
 				for (let course of this.courses.list) {
@@ -184,7 +214,7 @@
 							if (!a.test(conference.url)) conference.url = 'https://' + conference.url
 							const [day, mount, year] = conference.date.split('/')
 
-							conference.dateEndString = `${day} ${this.mounts[mount - 1]} ${year}, ${conference.start}`;
+							conference.dateEndString = `${day} ${this.months[mount - 1]} ${year}, ${conference.start}`;
 
 							conference.sectionId = course.sectionId
 							conference.nameCourse = course.name
@@ -207,17 +237,29 @@
 						(await res.json()).forEach(task => {
 							let [date, hour] = task.dateEnd.split(' ');
 							let [day, mount, year] = date.split('/')
+
+							task.dateEndCuston = `${year}-${mount}-${day} ${hour}`
+							
 							task.sectionId = course.sectionId
 							task.nameCourse = course.name
-							task.dateEndString = `${day} ${this.mounts[mount - 1]} ${year}, ${hour}`;
+							task.dateEndString = `${day} ${this.months[mount - 1]} ${year}, ${hour}`;
+
+							[date, hour] = task.dateBegin.split(' ');
+							[day, mount, year] = date.split('/')
+
+							task.dateBeginCuston = `${year}-${mount}-${day} ${hour}`
 
 							if (task.state == 'ACT') {
+								
 								listhomework.push(task); 
 								course.homeworks += 1
 							}
 						});
 					}
 					course.homeworksUpdating = !1
+				}
+				if (listhomework.length) {
+					console.log(listhomework[0]);
 				}
 				this.homeworks.list = listhomework
 
@@ -236,11 +278,11 @@
 
 							let [date, hour] = forum.dateEndView.split(' ');
 							let [day, mount, year] = date.split('/')
-							forum.dateEndString = `${day} ${this.mounts[mount - 1]} ${year}, ${hour}`;
+							forum.dateEndString = `${day} ${this.months[mount - 1]} ${year}, ${hour}`;
 
 							[date, hour] = forum.dateStartView.split(' ');
 							[day, mount, year] = date.split('/')
-							forum.dateStartString = `${day} ${this.mounts[mount - 1]} ${year}, ${hour}`;
+							forum.dateStartString = `${day} ${this.months[mount - 1]} ${year}, ${hour}`;
 
 							forum.differenceTime = this.dateDiffInDays(new Date(), forum.dateBegin);
 							if(forum.state){listforums.push(forum); course.forums++}
@@ -251,10 +293,10 @@
 				this.forums.list = listforums;
 				
 			},
-			loadData2(){
-				this.loadConferences()
-				this.loadHomeworks()
-				this.loadForums()
+			async loadData2(){
+				await this.loadConferences()
+				await this.loadHomeworks()
+				await this.loadForums()
 			},
 			async loadCourses(){
 
@@ -270,15 +312,15 @@
 			}
 		},
 		created(){
+			
 			this.loadCourses()
 			setInterval(()=>{
 				console.log('Update Data');
 				this.loadData2()
 				
-			}, 1000 * 60)
+			}, 1000 * 90)
 		},
 		mounted(){
-			
 		}
 	})
 }
