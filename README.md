@@ -15,18 +15,18 @@
 ## 📁Version: 0.0.4 beta
 ### Notas de la versión<br>
 
-- Correccion de errores a la hora de visualizar foros.<br>
-- Integracion la la api de localStorage para preservar informacion de manera local<br>
-- Integracion la la api de Fetch para mejor gestion de contenido solicitado al servidor<br>
+- Corrección de errores a la hora de visualizar foros.<br>
+- Integración de API de localStorage para preservar información de manera local.<br>
+- Integración de API de Fetch que mejora las solicitides al servidor.<br>
 				
 ## 📁Version: 0.0.3 beta
 ### Notas de la versión<br>
-- Correccion de peticiones https que inpedian acceder a la api de la web.<br>
-- Deteccion de tareas grupales<br>
+- Corrección de peticiones HTTPS que impedian acceder a la api de la web desde HTTP.<br>
+- Detección de tareas grupales.<br>
 
 ## 📁Version: 0.0.2 beta
 ### Notas de la versión:
-- Implementación de los modulos de Cursos, Tareas, Conferencias y Foros.<br>
-- Esta aplicación recopila informacion proveida por API de esta web.<br>
-- La información se actualiza cada 1 minuto aproximadamente.<br>
-- Las actividades expiradas no se tomaran en cuenta<br>
+- Módulos implementados de Cursos, Tareas, Conferencias y Foros.<br>
+- Datos recopilados desde la API de esta web.<br>
+- Actualización de datos cada 60 segundos.<br>
+- Actividades expiradas no se toman en cuenta<br>
