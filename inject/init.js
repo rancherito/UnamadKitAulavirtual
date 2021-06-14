@@ -2,8 +2,15 @@
 	let protocol = location.protocol == "https:" ? 'https' : 'http'
 	if(window.location.pathname != '/login'){
 
-	
+	/*{
+		let wrapper = htmlToElement(`<div class="cd-anunces"></div>`);
+		let anunces = document.querySelectorAll('.page-content>.ng-scope > *:nth-child(2) > .row')[0]
+		anunces.parentNode.appendChild(wrapper);
+		wrapper.appendChild(anunces)
+	}*/
 	document.head.appendChild(htmlToElement('<link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">'))
+	document.head.appendChild(htmlToElement('<link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet"></link>'))
+
 	document.body.appendChild(htmlToElement(
 		/*html*/
 	`<div id="vueapp">
@@ -11,7 +18,8 @@
 			<span v-if="actividities">{{actividities}}</span>
 			<i class="mdi mdi-school"></i>
 		</a>
-		<div id="modelinject" style="display: none;" v-show="modal.enable">
+		<div id="modelinject" class="acd-fadeOut" style="display: none;" v-show="modal.enable">
+			<div @click="modal.enable = false" style="flex: 1; height: 100%"></div>
 			<div ref="modal" class="cd-dialog">
 				
 				
@@ -47,25 +55,26 @@
 						<span>NO compartas este codigo QR<span>
 						
 					</div>
-					<div class="mdl-dialog__content" v-show="tabposition == 0">
+					<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 0">
 						<div v-for="course in courses_list" class="cd-list">
-							<i class="cd-list-icon mdi" :class="course.homeworksUpdating || course.forumsUpdating || course.conferencesUpdating ? 'mdi-loading mdi-spin' : 'mdi-book'"></i>
+							<i class="cd-list-icon mdi" :class="course.homeworks.isUpdating || course.forums.isUpdating|| course.conferencesUpdating ? 'mdi-loading mdi-spin' : 'mdi-book'"></i>
 							<div class="cd-list-content">
 								<div class="cd-list-title">{{course.name}}</div>
 								<div 
 									class="cd-list-subtitle2" 
-									v-if="course.homeworks + course.forums + course.conferences">
+									v-if="course.homeworks.count + course.forums.count + course.conferences">
 
-									<span v-if="course.homeworks" class="mdl-chip mdl-chip-sm">
-										<span class="mdl-chip__text">{{'Tareas: ' + course.homeworks}}</span>
+									<span v-if="course.homeworks.count" class="mdl-chip mdl-chip-sm">
+										<span class="mdl-chip__text">{{'Tareas: ' + course.homeworks.count}}</span>
 									</span>
-									<span v-if="course.forums" class="mdl-chip mdl-chip-sm">
-										<span class="mdl-chip__text">{{'Foros: ' + course.forums}}</span>
+									<span v-if="course.forums.count" class="mdl-chip mdl-chip-sm">
+										<span class="mdl-chip__text">{{'Foros: ' + course.forums.count}}</span>
 									</span>
 									<span v-if="course.conferences" class="mdl-chip mdl-chip-sm">
 										<span class="mdl-chip__text">{{'Confer.: ' + course.conferences}}</span>
 									</span>
 								</div>
+								
 								<div class="cd-list-subtitle2" v-else>
 									<span style="height: 24px; display: block">Sin actividades pendientes</span>
 								</div>
@@ -73,19 +82,37 @@
 						</div>
 						
 					</div>
-					<div class="mdl-dialog__content" v-show="tabposition == 1">
-						<div style="display: flex; justify-content: space-between; padding-bottom: .5rem">
-							<span style="padding: .5rem 1rem; background-color: var(--panel); border-radius: .5rem">Inicia</span>
-							<span style="padding: .5rem 1rem; background-color: var(--panel); border-radius: .5rem">Termina en | Link</span>
+					<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 1">
+						<div v-if="homeworks_list.get.length + homeworks_list.archived.length">
+							<vcd-helper-list></vcd-helper-list>
+							<vcd-homework v-for="homework in homeworks_list.get" :data="homework"></vcd-homework>
+							<vcd-homework class="acd-fadeOut" v-for="homework in homeworks_list.archived" :data="homework"></vcd-homework>
+							<!--
+							//BOTON PAR OCULPTAR TAREAS REALIZADAS
+							<div class="cd-btn-archived" :class="{'cd-bg-secondary': homeworks.viewArchived}" @click="homeworks.viewArchived = !homeworks.viewArchived">
+								<span v-show="!homeworks.viewArchived">{{homeworks_list.archived.length}}</span>
+								{{homeworks.viewArchived ? 'Ocultar Realizados' : 'Ver Realizados'}}
+							</div>-->
+							
 						</div>
-						<vcd-homework v-for="homework in homeworks_list" :data="homework"></vcd-homework>
+						<vcd-void-box v-else text="tareas"></vcd-void-box>
 					</div>
 
-					<div class="mdl-dialog__content" v-show="tabposition == 2">
-						<vcd-conference v-for="(conference, i) in conferences_list" :data="conference"></vcd-conference>
+					<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 2">
+						<div v-if="conferences_list.length">
+							<vcd-helper-list></vcd-helper-list>
+							<vcd-conference v-for="(conference, i) in conferences_list" :data="conference"></vcd-conference>
+						</div>
+						<vcd-void-box v-else text="coferencias"></vcd-void-box>
+						
 					</div>
-					<div class="mdl-dialog__content" v-show="tabposition == 3">
-						<vcd-forums v-for="forum in forums.list" :data="forum"></vcd-forums>
+					<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 3">
+						<div v-if="forums_list.get.length">
+							<vcd-helper-list></vcd-helper-list>
+							<vcd-forums v-for="forum in forums_list.get" :data="forum"></vcd-forums>
+							<vcd-forums v-for="forum in forums_list.archived" :data="forum"></vcd-forums>
+						</div>
+						<vcd-void-box v-else text="foros"></vcd-void-box>
 					</div>
 				</div>
 				<div class="cd-tabsbox">
@@ -99,7 +126,7 @@
 					
 					<a href="#" class="cd-nav-btn" :class="tabposition == 1 ? 'active' : ''" @click="tabposition = 1">
 						<div>
-							<b v-show="homeworks_list.length">{{homeworks_list.length}}</b>
+							<b v-show="homeworks_list.get.length">{{homeworks_list.get.length}}</b>
 							<i class="mdi mdi-bag-personal"></i>
 						</div>
 						<span>Tareas</span>
@@ -115,7 +142,7 @@
 					
 					<a href="#" class="cd-nav-btn" :class="tabposition == 3? 'active' : ''" @click="tabposition = 3">
 						<div>
-							<b v-show="forums_list.length">{{forums_list.length}}</b>
+							<b v-show="forums_list.get.length">{{forums_list.get.length}}</b>
 							<i class="mdi mdi-forum"></i>
 						</div>
 						<span>Foros</span>
@@ -125,7 +152,8 @@
 			</div>
 		</div>
 	</div>
-		`))
+		`
+	))
 
 	
 	
@@ -147,6 +175,9 @@
 			list: []
 		},
 		tabposition: 0,
+		internetDate: null,
+		localDate: null,
+		user: null
 	})
 	
 
@@ -164,29 +195,53 @@
 				2: 'Conferencias', 
 				3: 'Lista de Foros', 
 				'qr': 'Generar Llave'
-			}
+			},
+			icon_link: 'mdi-cursor-pointer',
+			now: (new Date()).getTime()
 		},
 		computed: {
 			homeworks_list(){
-				return [...this.homeworks.list].sort((a,b) => a.dateEnd > b.dateEnd ? -1 : 1)
+				const l = [...this.homeworks.list].sort((a,b) => a.dateEnd > b.dateEnd ? 1 : -1)
+
+				let l_info = {get: [], archived: []}
+				l.forEach(e => {
+					if (e.homeworkstds) l_info.archived.push(e)
+					else l_info.get.push(e)
+				});
+
+				return l_info
 			},
 			conferences_list(){
 				return [...this.conferences.list].sort((a,b) => a.endTime > b.endTime ? 1 : -1)
 			},
 			courses_list(){
-				return [...this.courses.list].sort((a,b) => (b.homeworks + b.forums + b.conferences) - (a.homeworks + a.forums + a.conferences))
+				return [...this.courses.list].sort((a,b) => (b.homeworks.count + b.forums.count + b.conferences) - (a.homeworks.count + a.forums.count + a.conferences))
 			},
 			forums_list(){
-				return [...this.forums.list].sort((a,b) => a.dateStartView > b.dateStartView ? 1 : -1)
+				const l = [...this.forums.list].sort((a,b) => a.dateEnd > b.dateEnd ? 1 : -1)
+				let l_info = {get: [], archived: []}
+				l.forEach(e => {
+					if (e.participations) l_info.archived.push(e)
+					else l_info.get.push(e)
+				});
+				return l_info
 			},
 			actividities(){
-				return this.courses.list.reduce((acum, c) => acum + c.homeworks + c.forums + c.conferences, 0)
+				return this.homeworks_list.get.length + this.conferences_list.length +  this.forums_list.get.length
 			}
 		},
 		watch: {
-			...defdata.mutations
+			...defdata.mutations,
 		},
 		methods: {
+			addZeroTime(num){
+				return (num > 9 ? '' : '0')+num
+			},
+			calculeNow(){
+				//console.log('calcule time');
+				//console.log(this.$root.internetDate);
+				if (this.internetDate != null && this.localDate != null) this.now = this.$root.internetDate + (new Date().getTime() - this.$root.localDate);
+			},
 			dateDiffInDays(a, b) {
 				const _MS_PER_DAY = 1000 * 60
 				if (typeof a == 'string') a = new Date(a)
@@ -212,10 +267,6 @@
 						(await response.json()).forEach(conference => {
 							let a = new RegExp("^(http|https)://", "i")
 							if (!a.test(conference.url)) conference.url = 'https://' + conference.url
-							const [day, mount, year] = conference.date.split('/')
-
-							conference.dateEndString = `${day} ${this.months[mount - 1]} ${year}, ${conference.start}`;
-
 							conference.sectionId = course.sectionId
 							conference.nameCourse = course.name
 							if(conference.state != "Finalizado") {listconferences.push(conference); course.conferences++}
@@ -230,36 +281,30 @@
 				var listhomework = []
 				
 				for (let course of this.courses.list) {
-					course.homeworksUpdating = !0
-					course.homeworks = 0
+					course.homeworks.isUpdating = !0
+					course.homeworks.count = 0
 					let res = await fetch(this.protocol + '://aulavirtual.unamad.edu.pe/web/homework/list?s=' + course.sectionId);
 					if(res.ok){
 						(await res.json()).forEach(task => {
 							let [date, hour] = task.dateEnd.split(' ');
 							let [day, mount, year] = date.split('/')
 
-							task.dateEndCuston = `${year}-${mount}-${day} ${hour}`
+							task.dateEndCustom = `${year}-${mount}-${day}T${hour}`;
 							
-							task.sectionId = course.sectionId
-							task.nameCourse = course.name
-							task.dateEndString = `${day} ${this.months[mount - 1]} ${year}, ${hour}`;
-
 							[date, hour] = task.dateBegin.split(' ');
 							[day, mount, year] = date.split('/')
 
-							task.dateBeginCuston = `${year}-${mount}-${day} ${hour}`
+							task.dateBeginCustom = `${year}-${mount}-${day}T${hour}`;
+							task.sectionId = course.sectionId
+							task.nameCourse = course.name
 
 							if (task.state == 'ACT') {
-								
 								listhomework.push(task); 
-								course.homeworks += 1
+								if(task.homeworkstds == 0) course.homeworks.count++
 							}
 						});
 					}
-					course.homeworksUpdating = !1
-				}
-				if (listhomework.length) {
-					console.log(listhomework[0]);
+					course.homeworks.isUpdating = !1
 				}
 				this.homeworks.list = listhomework
 
@@ -268,35 +313,53 @@
 			async loadForums(){
 				let listforums = []
 				for (const course of this.courses.list) {
-					course.forums = 0
-					course.forumsUpdating = !0
+					course.forums.count = 0
+					course.forums.isUpdating = !0
 					let response = await fetch(this.protocol + '://aulavirtual.unamad.edu.pe/web/forum/list?s=' + course.sectionId)
 					if (response.ok) {
-						(await response.json()).forEach(forum => {
+						for (const forum of (await response.json())) {
 							forum.sectionId = course.sectionId
 							forum.nameCourse = course.name
+							forum.participations = 0
+							if(forum.state){
 
-							let [date, hour] = forum.dateEndView.split(' ');
-							let [day, mount, year] = date.split('/')
-							forum.dateEndString = `${day} ${this.months[mount - 1]} ${year}, ${hour}`;
+								listforums.push(forum);
 
-							[date, hour] = forum.dateStartView.split(' ');
-							[day, mount, year] = date.split('/')
-							forum.dateStartString = `${day} ${this.months[mount - 1]} ${year}, ${hour}`;
+								//VERIFICAMOS SI HAY PARTICIPACIONES NUESTRAS EN LOS FOROS DE ANTERIORES PETICIONES, SI LAS HAY, NO LAS VERIFICAMOS, Y SI NO, LAS VERIFICAMOS
+								let countParticipations = this.forums.list.find(e => e.forumId == forum.forumId)?.participations ?? 0
+								if (countParticipations) forum.participations = countParticipations
+								else {
+									let resFourms = await fetch(this.protocol + '://aulavirtual.unamad.edu.pe/web/forum/detail?f=' + forum.forumId);
+									if (resFourms.ok) {
+										const d = await resFourms.json()
+										for (const val of d.pages) {
 
-							forum.differenceTime = this.dateDiffInDays(new Date(), forum.dateBegin);
-							if(forum.state){listforums.push(forum); course.forums++}
-						});
+											let resForumPage = await fetch(this.protocol + '://aulavirtual.unamad.edu.pe/web/forum/answers/list?f='+ d.forumId +'&page=' + val)
+											if(resForumPage.ok){
+												(await resForumPage.json()).forEach(page => {
+													if (page.userName.toLowerCase().replace(/\s/g, '') == this.user.name.toLowerCase().replace(/\s/g, '')) forum.participations++
+												})
+											}
+											
+											
+										}
+									}
+								}
+
+								if (forum.participations == 0) course.forums.count++
+
+							}
+						}
 					}
-					course.forumsUpdating = !1
+					course.forums.isUpdating = !1
 				}
 				this.forums.list = listforums;
 				
 			},
-			async loadData2(){
-				await this.loadConferences()
-				await this.loadHomeworks()
-				await this.loadForums()
+			loadData2(){
+				this.loadConferences()
+				this.loadHomeworks()
+				this.loadForums()
 			},
 			async loadCourses(){
 
@@ -305,16 +368,50 @@
 				if (response.ok) {
 					response.json().then(data => {
 						this.updating = false
-						this.courses.list = data.map(d => {return {homeworksUpdating: !1, homeworks: 0, forumsUpdating: !1, forums: 0, conferencesUpdating: !1, conferences: 0, ...d}})
+						this.courses.list = data.map(d => {return {
+							homeworks: {
+								isUpdating: !1,
+								count: 0,
+								viewArchived: !1
+							},
+							forums: {
+								isUpdating: !1,
+								count: 0,
+								viewArchived: !1
+							},
+							conferencesUpdating: !1, conferences: 0, 
+							...d
+						}})
 						this.loadData2()
 					})
 				}
 			}
 		},
-		created(){
+
+		async created(){
+			this.calculeNow()
+			setInterval(this.calculeNow, 1000)
+
+			if(this.user == null){
+				let responseGetUser = await fetch(this.protocol + '://aulavirtual.unamad.edu.pe/web/user/info/data')
+				if (responseGetUser.ok) this.user = await responseGetUser.json()
+				
+			}
 			
+
+			fetch(this.protocol + '://campus.unamad.edu.pe/timeutc').then(res => res.json()).then(data=>{
+				///console.log(typeof data, data);
+				const pre_utc = new Date((data.currentFileTime/10000 - 11644473600000) - (1000 * 60 * 60 * 5))
+				this.internetDate = (new Date(`${pre_utc.getUTCFullYear()}-${this.addZeroTime(pre_utc.getUTCMonth() + 1)}-${this.addZeroTime(pre_utc.getUTCDate())}T${this.addZeroTime(pre_utc.getUTCHours())}:${this.addZeroTime(pre_utc.getUTCMinutes())}:${this.addZeroTime(pre_utc.getUTCSeconds())}`)).getTime();
+				this.localDate = (new Date()).getTime();
+			}).catch( e => {
+				console.log('ERROR');
+				this.internetDate = (new Date()).getTime();
+				this.localDate = (new Date()).getTime();
+			})
 			this.loadCourses()
 			setInterval(()=>{
+				
 				console.log('Update Data');
 				this.loadData2()
 				
