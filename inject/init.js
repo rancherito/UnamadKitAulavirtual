@@ -14,6 +14,10 @@
 	document.body.appendChild(htmlToElement(
 		/*html*/
 	`<div id="vueapp">
+		<div v-if="applyNewStyle" v-html="styleAula"></div>
+		<a id="cd-btn-modal" @click="applyNewStyle = !applyNewStyle" href="#" style="bottom: 6rem; background: var(--panel)">
+			<i class="mdi" :class="applyNewStyle ? 'mdi-invert-colors-off' : 'mdi-format-color-fill'"></i>
+		</a>
 		<a id="cd-btn-modal" @click="modal.enable = !modal.enable" href="#">
 			<span v-if="actividities">{{actividities}}</span>
 			<i class="mdi mdi-school"></i>
@@ -177,7 +181,8 @@
 		tabposition: 0,
 		internetDate: null,
 		localDate: null,
-		user: null
+		user: null,
+		applyNewStyle: false
 	})
 	
 
@@ -197,7 +202,8 @@
 				'qr': 'Generar Llave'
 			},
 			icon_link: 'mdi-cursor-pointer',
-			now: (new Date()).getTime()
+			now: (new Date()).getTime(),
+			styleAula: styleAula
 		},
 		computed: {
 			homeworks_list(){
