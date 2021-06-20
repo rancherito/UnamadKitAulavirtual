@@ -48,6 +48,12 @@
 .cd-bg-secondary {
     background: var(--secondary) !important;
 }
+.cd-bg-primary {
+    background: var(--primary) !important; 
+}
+.cd-bg-panel {
+    background: var(--panel) !important;
+}
 .ff-secodary{
     font-family: var(--ff-secondary);
 }
@@ -70,6 +76,72 @@
     border-radius: 18px;
     border: 1px solid var(--bg);
 }
+
+.cd-schedule-container{
+    flex: 1;
+    height: 100%;
+}
+.cd-schedule{
+    background: var(--bg);
+    max-width: 1200px;
+    width: 100%;
+    border-radius: .5rem;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+.cd-schedule-head{
+    display: flex;
+}
+.cd-schedule-head * {
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+}
+.cd-schedule-body{
+    display: flex;
+    max-height: 600px;
+    width: 100%;
+}
+.cd-schedule-courses{
+    flex: 1;
+    height: 100%;
+    display: flex;
+}
+.cd-schedule-hours{
+    display: flex;
+    flex-direction: column;
+    background: var(--panel);
+}
+.cd-schedule-hours span{
+    width: 60px;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.cd-schedule-day{
+    width: 20%;
+}
+.cd-schedule-day p{
+    display: flex;
+    padding: 0;
+    margin: 0;
+    font-size: .9rem;
+}
+.cd-schedule-day p span{
+    padding: .25rem;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: #ffffff0f;
+    display: flex;
+}
+.cd-schedule-course{
+    font-size: 0.7rem;
+}
 .mdi.mdi-f{
     display: flex;
     align-items: center;
@@ -81,10 +153,11 @@
     justify-content: center;
     flex-direction: column;
 }
-#modelinject{
+#modelinject,
+#modalschedule {
     position: fixed;
     top: 0;
-    right: 0;
+    right: 60px;
     bottom: 0;
     left: 0;
     display: flex;
@@ -115,22 +188,33 @@
 .cd-dialog-actions-top a:hover{
     color: white;
 }
-#cd-btn-modal{
-    position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-    z-index: 8;
+.cd-btn-navmenu{
     height: 60px;
     width: 60px;
-    background-color: var(--primary);
+    background-color: var(--panel);
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     border-radius: 50%;
     font-size: 2rem;
+    position: relative;
+    margin-top: .25rem;
+    transition: none;
+    transition: linear backgroud-color .2s;
 }
-#cd-btn-modal span {
+.cd-btn-navmenu:hover,
+.cd-btn-navmenu.active {
+    background-color: var(--primary);
+}
+.cd-btn-navmenu:focus{
+    color: white;
+}
+.cd-navmenu-open .cd-btn-navmenu{
+    border-radius: 0;
+    margin: 0;
+}
+.cd-btn-navmenu span {
     position: absolute;
     top: 0;
     right: 0;
@@ -148,8 +232,29 @@
     animation-duration: 1s;
     animation-iteration-count: infinite;
 }
-#cd-btn-modal:hover {
+.cd-btn-navmenu:hover {
     color: white;
+}
+
+#cd-navmenu{
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 10204;
+}
+#cd-navmenu > *:nth-child(2){
+    display: flex;
+    flex-direction: column;
+}
+#cd-navmenu.cd-navmenu-open {
+    background: var(--panel);
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transition: background all .2s;
 }
 .cd-cooldown{
     display: flex;

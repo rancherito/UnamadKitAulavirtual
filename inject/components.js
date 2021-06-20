@@ -81,6 +81,10 @@ body.theme-dark .title-course {
 body.theme-dark .box-courses {
     max-height: none !important;
 }
+body.menu-top.menu-static nav.left-menu + nav.top-menu{
+	padding: 0 !important;
+	height: 56px !important;
+}
 body.theme-dark .content-dates,
 body.theme-dark .content-dates + div,
 body.theme-dark .content-Announcement,
@@ -183,7 +187,7 @@ Vue.component('vcd-btn', {
 	},
 	methods: {
 		launchEvents(){
-			if (this.minimizeApp) this.$root.modal.enable = !1
+			if (this.minimizeApp) this.$root.menuTabposition = 0
 		}
 	}
 })
@@ -345,6 +349,17 @@ Vue.component('vcd-info',{
 	`
 	<div>
 		<div class="cd-list">
+			<div class="cd-list-content">
+				Notas Version: 0.1.1 beta<br><br>
+				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Los botones de acceso rápido ahora siempre estarán visibles en la parte derecha de la página.<br>
+				<i class="mdi mdi-minus cd-text-primary mdi-24px"></i> El diseño personalizado automatico se elimino.<br>
+				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Para activar el diseño personalizado se añadio un nuevo botón al lado inferior derecho.<br>
+				<i class="mdi mdi-information cd-text-primary mdi-24px"></i> Actualización de datos cada 130 segundos.<br>
+				<i class="mdi mdi-auto-fix cd-text-primary mdi-24px"></i> Corrección de errores al contabilizar participaciones en foros.<br>
+			</div>
+		</div>
+		<div class="cd-list">
+			
 			<div class="cd-list-content">
 				Notas Version: 0.0.5 beta<br><br>
 				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Añadido de experiencias de usuario(UX), para un mejor manejo de la aplicación.<br>

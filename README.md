@@ -1,6 +1,12 @@
 # UnamadKitAulavirtual
 
-
+## 📁Version: 0.1.1 beta<br><br>
+### Notas de la versión<br>
+- Los botones de acceso rápido ahora siempre estarán visibles en la parte derecha de la página.<br>
+- El diseño personalizado automatico se elimino.<br>
+- Para activar el diseño personalizado se añadio un nuevo botón al lado inferior derecho.<br>
+- Actualización de datos cada 130 segundos.<br>
+- Corrección de errores al contabilizar participaciones en foros.<br>
 ## 📁Version: 0.0.5 beta
 ### Notas de la versión<br>
 
@@ -18,7 +24,7 @@
 - Corrección de errores a la hora de visualizar foros.<br>
 - Integración de API de localStorage para preservar información de manera local.<br>
 - Integración de API de Fetch que mejora las solicitides al servidor.<br>
-				
+
 ## 📁Version: 0.0.3 beta
 ### Notas de la versión<br>
 - Corrección de peticiones HTTPS que impedian acceder a la api de la web desde HTTP.<br>

@@ -15,31 +15,72 @@
 		/*html*/
 	`<div id="vueapp">
 		<div v-if="applyNewStyle" v-html="styleAula"></div>
-		<a id="cd-btn-modal" @click="applyNewStyle = !applyNewStyle" href="#" style="bottom: 6rem; background: var(--panel)">
-			<i class="mdi" :class="applyNewStyle ? 'mdi-invert-colors-off' : 'mdi-format-color-fill'"></i>
-		</a>
-		<a id="cd-btn-modal" @click="modal.enable = !modal.enable" href="#">
-			<span v-if="actividities">{{actividities}}</span>
-			<i class="mdi mdi-school"></i>
-		</a>
-		<div id="modelinject" class="acd-fadeOut" style="display: none;" v-show="modal.enable">
-			<div @click="modal.enable = false" style="flex: 1; height: 100%"></div>
+		<div id="cd-navmenu" :class="menuTabposition == 0 ? '' : 'cd-navmenu-open'">
+			<div style="padding-top: 60px">
+				<a v-show="menuTabposition" href="#" class="cd-btn-navmenu" @click="tabposition = -1; menuTabposition = 1">
+					<i class="mdi mdi-information"></i>
+				</a>
+				<a v-show="menuTabposition" href="#" @click="loadCourses" class="cd-btn-navmenu" :disabled="updating">
+					<i class="mdi mdi-reload" :class="updating ? 'mdi-spin' : ''"></i>
+				</a>
+				<a class="cd-btn-navmenu" @click="applyNewStyle = !applyNewStyle" href="#">
+					<i class="mdi" :class="applyNewStyle ? 'mdi-invert-colors-off' : 'mdi-format-color-fill'"></i>
+				</a>
+			</div>
+			<div>
+				
+				<a v-if="false" class="cd-btn-navmenu" @click="menuTabposition = 2" href="#" :class="menuTabposition == 2 ? 'active' : ''">
+					<i class="mdi mdi-calendar"></i>
+				</a>
+				<a class="cd-btn-navmenu" @click="menuTabposition = 1" href="#" :class="menuTabposition == 1 || menuTabposition == 0 ? 'active' : ''">
+					<span v-if="actividities">{{actividities}}</span>
+					<i class="mdi mdi-school"></i>
+				</a>
+				<a v-if="menuTabposition != 0" class="cd-btn-navmenu" @click="menuTabposition = 0" href="#">
+					<i class="mdi mdi-close"></i>
+				</a>
+			</div>
+			
+		</div>
+		
+		<div id="modalschedule" style="display: none;" v-show="menuTabposition == 2">
+			<div class="cd-schedule-container f-c">
+				<div class="cd-schedule">
+					<div class="cd-schedule-head">
+						<span style="width: 60px; background: var(--panel)">HORA</span>
+						<span v-for="(day, i) of days" style="width: calc(20% - (60px / 5))" :style="{background: (new Date()).getDay() == i + 1? 'var(--panel)' : 'transparent'}">
+							{{day}}
+						</span>
+					</div>
+					<div class="cd-schedule-body">
+						<div class="cd-schedule-hours">
+							<span v-for="(hour, h) in scheduleTimes.hours" class="f-c" :class="{'cd-bg-primary': (new Date(now)).getHours() >= hour && (new Date(now)).getHours() < (hour + 1)}" :style="{height: (600/scheduleTimes.hours.length) + 'px', 'max-height': (600/scheduleTimes.hours.length) + 'px'}">
+								<b>{{hour}}</b>
+								<b>{{hour + 1}}</b>
+							</span>
+						</div>
+						<div class="cd-schedule-courses">
+							<div class="cd-schedule-day" v-for="(day, i) in scheduleTimes.schedule">
+								<p v-for="courses of day" style="overflow: hidden" v-if="courses.size" :style="{background: (new Date()).getDay() == i? 'var(--panel)' : 'transparent', height: (courses.size * (600/Object.keys(day).length)) + 'px', 'max-height': (courses.size * (600/Object.keys(day).length)) + 'px'}">
+									<span v-for="course in courses.courses" :class="{ 'cd-schedule-course' :courses.courses.length > 1}" :style="{'max-width': (100/courses.courses.length) + '%', 'width': (100/courses.courses.length) + '%'}">
+									{{removeGroupsText(course.title)}}
+									</span>
+								</p>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		<div id="modelinject" class="acd-fadeOut" style="display: none;" v-show="menuTabposition == 1">
+			
 			<div ref="modal" class="cd-dialog">
 				
 				
 				<div class="cd-dialog-actions-top">
 					<div class="mdl-typography--headline" style="color: white">{{modulesTitles[tabposition]}}</div>
-					<div style="display: flex">
-						<a href="#" class="f-c mdl-button mdl-button--icon" :class="tabposition == -1 ? 'active' : ''" @click="tabposition = -1">
-							<i class="mdi mdi-information mdi-24px f-c"></i>
-						</a>
-						<a href="#" @click="loadCourses" class="f-c mdl-button mdl-button--icon" :disabled="updating">
-							<i class="mdi mdi-reload mdi-24px f-c" :class="updating ? 'mdi-spin' : ''"></i>
-						</a>
-						
-						<a href="#" @click="modal.enable = !modal.enable" class="f-c mdl-button mdl-button--icon">
-							<i class="mdi mdi-close mdi-24px f-c"></i>
-						</a>
+					<div style="display: flex">						
 					</div>
 					
 				</div>
@@ -163,6 +204,9 @@
 	
 	
 	let defdata = createStorage({
+		schedule: {
+			data: []
+		},
 		modal: {
 			enable: true
 		}, 
@@ -179,6 +223,7 @@
 			list: []
 		},
 		tabposition: 0,
+		menuTabposition: 0,
 		internetDate: null,
 		localDate: null,
 		user: null,
@@ -191,6 +236,7 @@
 		data: {
 			...defdata.variables,
 			months: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+			days: ['LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES'],
 			updating: false, 
 			protocol: protocol,
 			modulesTitles: {
@@ -204,8 +250,43 @@
 			icon_link: 'mdi-cursor-pointer',
 			now: (new Date()).getTime(),
 			styleAula: styleAula
+			
 		},
 		computed: {
+			scheduleTimes(){
+				let times2 = [], h = {}
+				this.schedule.data.forEach(course => {
+					let [s, e] = [(new Date(course.start)).getHours(), (new Date(course.end)).getHours()]
+					for (let i = 0; i < e - s; i++) if (!times2.find(e => e == s + i)) times2.push(s + i)
+				})
+				times2.sort((a, b) => a - b)
+
+
+				for (let i = 1; i <= 5; i++) {
+					h[i] = {}
+					times2.forEach(e => {
+						let tem = this.schedule.data.filter(course => {
+							const [dateS, dateE] = [new Date(course.start), new Date(course.end)]
+							return dateS.getDay() == i && (e >= dateS.getHours() && e < dateE.getHours())
+						})
+						h[i][e] = {size: 1, courses: tem}
+					})
+
+					for (let ii = 0; ii < times2.length - 1; ii++) {
+						const [currentTime, afterTime] = [h[i][times2[ii]], h[i][times2[ii + 1]]];
+						if (
+							times2[ii] + 1 == times2[ii + 1] && 
+							currentTime.courses.length == 1 && afterTime.courses.length == 1 &&
+							currentTime.courses[0].title == afterTime.courses[0].title
+						) {
+							afterTime.size += currentTime.size
+							currentTime.size = 0
+						}
+					}
+				}
+
+				return {schedule: h, hours: times2};
+			},
 			homeworks_list(){
 				const l = [...this.homeworks.list].sort((a,b) => a.dateEnd > b.dateEnd ? 1 : -1)
 
@@ -240,12 +321,13 @@
 			...defdata.mutations,
 		},
 		methods: {
+			removeGroupsText(course){
+				return course.replace(' (A)', '').slice(6)
+			},
 			addZeroTime(num){
 				return (num > 9 ? '' : '0')+num
 			},
 			calculeNow(){
-				//console.log('calcule time');
-				//console.log(this.$root.internetDate);
 				if (this.internetDate != null && this.localDate != null) this.now = this.$root.internetDate + (new Date().getTime() - this.$root.localDate);
 			},
 			dateDiffInDays(a, b) {
@@ -339,8 +421,7 @@
 									if (resFourms.ok) {
 										const d = await resFourms.json()
 										for (const val of d.pages) {
-
-											let resForumPage = await fetch(this.protocol + '://aulavirtual.unamad.edu.pe/web/forum/answers/list?f='+ d.forumId +'&page=' + val)
+											let resForumPage = await fetch(this.protocol + '://aulavirtual.unamad.edu.pe/web/forum/answers/list?f='+ d.forumId +'&page=' + (val - 1))
 											if(resForumPage.ok){
 												(await resForumPage.json()).forEach(page => {
 													if (page.userName.toLowerCase().replace(/\s/g, '') == this.user.name.toLowerCase().replace(/\s/g, '')) forum.participations++
@@ -395,6 +476,7 @@
 		},
 
 		async created(){
+			//this.calculeTimes()
 			this.calculeNow()
 			setInterval(this.calculeNow, 1000)
 
@@ -422,8 +504,18 @@
 				this.loadData2()
 				
 			}, 1000 * 90)
+
+
+
+
+			chrome.runtime.onMessage.addListener((message, sender, sendResponse)=>{
+				if (message.schedule != undefined) this.schedule.data = message.schedule
+				//if (message.qrstring != undefined) console.log(message.qrstring)
+			});
+			chrome.runtime.sendMessage('getinfo');
 		},
 		mounted(){
+			
 		}
 	})
 }
