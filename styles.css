@@ -8,6 +8,7 @@
     --web-primary: #ec2449;
     --ff-secondary: 'Caveat', cursive;
     --success: #8bc34a; /*#05cc47*/
+    --rounded: 1rem;
 }
 .acd-waves {
     animation-name: waves;
@@ -85,10 +86,11 @@
     background: var(--bg);
     max-width: 1200px;
     width: 100%;
-    border-radius: .5rem;
+    border-radius: var(--rounded);
     color: white;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 .cd-schedule-head{
     display: flex;
@@ -100,7 +102,6 @@
 }
 .cd-schedule-body{
     display: flex;
-    max-height: 600px;
     width: 100%;
 }
 .cd-schedule-courses{
@@ -121,26 +122,34 @@
     flex-direction: column;
     justify-content: space-between;
 }
+.cd-schedule-hours b{
+    border-radius: var(--rounded);
+    background: var(--bg);
+    padding: 0 1rem;
+}
 .cd-schedule-day{
     width: 20%;
 }
-.cd-schedule-day p{
+.cd-schedule-day > div{
     display: flex;
     padding: 0;
     margin: 0;
     font-size: .9rem;
 }
-.cd-schedule-day p span{
+.cd-schedule-course {
+    height: 100%;
+    padding: 2px;
+}
+.cd-schedule-course span{
     padding: .25rem;
     height: 100%;
-    align-items: center;
-    justify-content: center;
     text-align: center;
     background: #ffffff0f;
-    display: flex;
+    border-radius: var(--rounded);
 }
-.cd-schedule-course{
-    font-size: 0.7rem;
+.cd-schedule-dcourse{
+    font-size: 0.6rem;
+    line-height: 0.6rem;
 }
 .mdi.mdi-f{
     display: flex;
@@ -258,17 +267,24 @@
 }
 .cd-cooldown{
     display: flex;
-    width: 70px;
-    border-radius: .5rem;
+    flex-direction: column;
+    width: 80px;
+    border-radius: var(--rounded);
     color: white;
     background: rgba(255, 255, 255, 0.25);
     height: 36px;
     display: flex;
     align-items: center;
     margin-right: 2px;
+    font-size: .7rem;
+}
+.cd-cooldown span{
+    display: block;
+    font-size: 1rem;
+    margin-top: -5px;
 }
 .cd-list{
-    border-radius: .5rem;
+    border-radius: var(--rounded);
     margin-bottom: 4px;
     position: relative;
     display: flex;
@@ -307,14 +323,19 @@
     font-weight: normal;
 }
 .cd-tabsbox{
-    background-color: var(--panel);
+    background-color: var(--bg);
     display: flex;
     justify-content: space-between;
 }
-.cd-nav-btn{
-    flex: 1;
-    padding: 0 1rem;
+.cd-nav-btn-content{
     height: 60px;
+    padding: .5rem;
+    flex: 1;
+}
+.cd-nav-btn{
+    padding: 0 1rem;
+    height: 100%;
+    width: 100%;
     color: white;
     display: flex;
     align-items: center;
@@ -322,6 +343,8 @@
     justify-content: center;
     font-weight: bold;
     transition: background .2s linear;
+    outline: none;
+    border-radius: 3rem;
 }
 .cd-nav-btn > div{
     position: relative;
@@ -352,31 +375,35 @@
     width: 0%;
     overflow: hidden;
     transition: all .2s linear;
+    position: absolute;
 }
-.cd-nav-btn:hover i,
 .cd-nav-btn.active i {
     font-size: 24px;
 }
-.cd-nav-btn:hover {
-    background: var(--bg);
+.cd-nav-btn:hover,
+.cd-nav-btn:focus {
+    background: var(--panel);
     color: #fff;
+    outline: none;
 }
-.cd-nav-btn.active{
+.cd-nav-btn.active,
+.cd-nav-btn.active:focus{
     background: white;
     color: var(--primary);
+    outline: none;
 }
 .cd-nav-btn:hover b,
 .cd-nav-btn.active b {
     background: var(--primary);
     color: white;
 }
-.cd-nav-btn:hover span,
 .cd-nav-btn.active span {
     display: flex;
     white-space: nowrap;
     margin-left: .5rem;
     color: inherit;
     width: auto;
+    position: relative;
 }
 .modal-header a:hover{
     color: white;
@@ -388,6 +415,9 @@
 .cd-list-content{
     padding: 1rem ;
     flex: 1;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 .cd-list:last-child .cd-list-content {
     border-bottom: 1px solid transparent;
@@ -407,7 +437,7 @@
     justify-content: center;
 }
 .cd-list-access a{
-    border-radius: .5rem;
+    border-radius: var(--rounded);
     min-width: 36px;
     padding: 0;
 }
@@ -440,7 +470,7 @@
     margin-top: 4px;
 }
 .cd-btn-icon{
-    border-radius: .5rem;
+    border-radius: var(--rounded);
     min-width: 36px;
     padding: 0;
     background: var(--primary);
@@ -462,7 +492,7 @@
 .cd-btn-archived{
     height: 36px;
     padding: 0 .5rem;
-    border-radius: .5rem;
+    border-radius: var(--rounded);
     background: var(--success);
     color: white;
     display: flex;
@@ -532,7 +562,7 @@
 
 /*Modificacion de la libreria de estilos de material*/
 .mdl-tooltip{
-    border-radius: .5rem;
+    border-radius: var(--rounded);
 }
 .mdl-dialog__content{
     color: white;

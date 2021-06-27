@@ -29,7 +29,7 @@
 			</div>
 			<div>
 				
-				<a v-if="false" class="cd-btn-navmenu" @click="menuTabposition = 2" href="#" :class="menuTabposition == 2 ? 'active' : ''">
+				<a v-if="schedule.data.length" class="cd-btn-navmenu" @click="menuTabposition = 2" href="#" :class="menuTabposition == 2 ? 'active' : ''">
 					<i class="mdi mdi-calendar"></i>
 				</a>
 				<a class="cd-btn-navmenu" @click="menuTabposition = 1" href="#" :class="menuTabposition == 1 || menuTabposition == 0 ? 'active' : ''">
@@ -47,25 +47,24 @@
 			<div class="cd-schedule-container f-c">
 				<div class="cd-schedule">
 					<div class="cd-schedule-head">
-						<span style="width: 60px; background: var(--panel)">HORA</span>
+						<span style="width: 60px; background: var(--panel)"></span>
 						<span v-for="(day, i) of days" style="width: calc(20% - (60px / 5))" :style="{background: (new Date()).getDay() == i + 1? 'var(--panel)' : 'transparent'}">
 							{{day}}
 						</span>
 					</div>
-					<div class="cd-schedule-body">
+					<div class="cd-schedule-body" :style="{'max-height': (scheduleTimes.hours.length * 40) + 'px'}">
 						<div class="cd-schedule-hours">
-							<span v-for="(hour, h) in scheduleTimes.hours" class="f-c" :class="{'cd-bg-primary': (new Date(now)).getHours() >= hour && (new Date(now)).getHours() < (hour + 1)}" :style="{height: (600/scheduleTimes.hours.length) + 'px', 'max-height': (600/scheduleTimes.hours.length) + 'px'}">
-								<b>{{hour}}</b>
-								<b>{{hour + 1}}</b>
+							<span v-for="(hour, h) in scheduleTimes.hours" class="f-c" style="height: 40px; max-height: 40px}">
+								<b style="transform: translateY(-50%)">{{hour}}</b>
 							</span>
 						</div>
 						<div class="cd-schedule-courses">
 							<div class="cd-schedule-day" v-for="(day, i) in scheduleTimes.schedule">
-								<p v-for="courses of day" style="overflow: hidden" v-if="courses.size" :style="{background: (new Date()).getDay() == i? 'var(--panel)' : 'transparent', height: (courses.size * (600/Object.keys(day).length)) + 'px', 'max-height': (courses.size * (600/Object.keys(day).length)) + 'px'}">
-									<span v-for="course in courses.courses" :class="{ 'cd-schedule-course' :courses.courses.length > 1}" :style="{'max-width': (100/courses.courses.length) + '%', 'width': (100/courses.courses.length) + '%'}">
-									{{removeGroupsText(course.title)}}
-									</span>
-								</p>
+								<div v-for="courses of day" style="overflow: hidden" v-if="courses.size" :style="{background: (new Date()).getDay() == i? 'var(--panel)' : 'transparent', height: (courses.size * 40) + 'px', 'max-height': (courses.size * 40) + 'px'}">
+									<div v-for="course in courses.courses" class="cd-schedule-course" :class="{'cd-schedule-dcourse' :courses.courses.length > 1}" :style="{'max-width': (100/courses.courses.length) + '%', 'width': (100/courses.courses.length) + '%'}">
+										<span class="f-c" :style="{background: colorCourse(course.title)}">{{removeGroupsText(course.title)}}</span> 
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -75,7 +74,7 @@
 		</div>
 		<div id="modelinject" class="acd-fadeOut" style="display: none;" v-show="menuTabposition == 1">
 			
-			<div ref="modal" class="cd-dialog">
+			<div class="cd-dialog">
 				
 				
 				<div class="cd-dialog-actions-top">
@@ -102,12 +101,12 @@
 					</div>
 					<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 0">
 						<div v-for="course in courses_list" class="cd-list">
-							<i class="cd-list-icon mdi" :class="course.homeworks.isUpdating || course.forums.isUpdating|| course.conferencesUpdating ? 'mdi-loading mdi-spin' : 'mdi-book'"></i>
+							<i class="cd-list-icon mdi" :class="course.exams.isUpdating || course.homeworks.isUpdating || course.forums.isUpdating|| course.conferencesUpdating ? 'mdi-loading mdi-spin' : 'mdi-book'"></i>
 							<div class="cd-list-content">
 								<div class="cd-list-title">{{course.name}}</div>
 								<div 
 									class="cd-list-subtitle2" 
-									v-if="course.homeworks.count + course.forums.count + course.conferences">
+									v-if="course.homeworks.count + course.forums.count + course.conferences + course.exams.count">
 
 									<span v-if="course.homeworks.count" class="mdl-chip mdl-chip-sm">
 										<span class="mdl-chip__text">{{'Tareas: ' + course.homeworks.count}}</span>
@@ -117,6 +116,9 @@
 									</span>
 									<span v-if="course.conferences" class="mdl-chip mdl-chip-sm">
 										<span class="mdl-chip__text">{{'Confer.: ' + course.conferences}}</span>
+									</span>
+									<span v-if="course.exams.count" class="mdl-chip mdl-chip-sm">
+										<span class="mdl-chip__text">{{'Exam.: ' + course.exams.count}}</span>
 									</span>
 								</div>
 								
@@ -159,40 +161,20 @@
 						</div>
 						<vcd-void-box v-else text="foros"></vcd-void-box>
 					</div>
+					<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 4">
+						<div v-if="exams.list.length">
+							<vcd-helper-list></vcd-helper-list>
+							<vcd-exam :data="exam" v-for="exam of exams.list"></vcd-exam>
+						</div>
+						<vcd-void-box v-else text="Exámenes"></vcd-void-box>
+					</div>
 				</div>
 				<div class="cd-tabsbox">
-					<a href="#" class="cd-nav-btn" :class="tabposition == 0 ? 'active' : ''" @click="tabposition = 0">
-						<div>
-							<b>{{courses_list.length}}</b>
-							<i class="mdi mdi-book"></i>
-						</div>
-						<span>Cursos</span>
-					</a>
-					
-					<a href="#" class="cd-nav-btn" :class="tabposition == 1 ? 'active' : ''" @click="tabposition = 1">
-						<div>
-							<b v-show="homeworks_list.get.length">{{homeworks_list.get.length}}</b>
-							<i class="mdi mdi-bag-personal"></i>
-						</div>
-						<span>Tareas</span>
-					</a>
-					
-					<a href="#" class="cd-nav-btn" :class="tabposition == 2 ? 'active' : ''" @click="tabposition = 2">
-						<div>
-							<b v-show="conferences_list.length">{{conferences_list.length}}</b>
-							<i class="mdi mdi-message-video"></i>
-						</div>
-						<span >Conferencias</span>
-					</a>
-					
-					<a href="#" class="cd-nav-btn" :class="tabposition == 3? 'active' : ''" @click="tabposition = 3">
-						<div>
-							<b v-show="forums_list.get.length">{{forums_list.get.length}}</b>
-							<i class="mdi mdi-forum"></i>
-						</div>
-						<span>Foros</span>
-					</a>
-				
+					<vcd-tabbox text="Menu" icon="mdi-folder-home" :counter="actividities" tabid="0"></vcd-tabbox>
+					<vcd-tabbox text="Tareas" icon="mdi-bag-personal" :counter="homeworks_list.get.length" tabid="1"></vcd-tabbox>
+					<vcd-tabbox text="Conferencias" icon="mdi-message-video" :counter="conferences_list.length" tabid="2"></vcd-tabbox>
+					<vcd-tabbox text="Foros" icon="mdi-forum" :counter="forums_list.get.length" tabid="3"></vcd-tabbox>
+					<vcd-tabbox text="Exámenes" icon="mdi-text-box" :counter="exams.list.length" tabid="4"></vcd-tabbox>
 				</div>
 			</div>
 		</div>
@@ -202,13 +184,13 @@
 
 	
 	
-	
+	//CREAMOS LAS VARIABLES QUE ALMACENAREMOS EN EL LOCALSTORAGE DEL SITIO WEB PARA EVITAR RECARGAS
 	let defdata = createStorage({
 		schedule: {
 			data: []
 		},
-		modal: {
-			enable: true
+		exams: {
+			list: []
 		}, 
 		courses: {
 			list: []
@@ -240,31 +222,34 @@
 			updating: false, 
 			protocol: protocol,
 			modulesTitles: {
-				'-1': 'Info', 
-				0: 'Lista de cursos', 
+				'-1': 'Información adicional', 
+				0: 'Menu principal', 
 				1: 'Tareas pendientes', 
 				2: 'Conferencias', 
-				3: 'Lista de Foros', 
+				3: 'Lista de Foros',
+				4: 'Lista de Exámenes',
 				'qr': 'Generar Llave'
 			},
 			icon_link: 'mdi-cursor-pointer',
 			now: (new Date()).getTime(),
-			styleAula: styleAula
-			
+			styleAula: styleAula,
+			colors: ['#4a9bed', '#ff5722', '#f5be39', '#cd4242', '#4caf50', '#845aec', '#77858f', '#563c63', '#280fb4', '#204f6e']
 		},
 		computed: {
 			scheduleTimes(){
-				let times2 = [], h = {}
+				let times2 = [], h = {}, times3 = []
+
 				this.schedule.data.forEach(course => {
 					let [s, e] = [(new Date(course.start)).getHours(), (new Date(course.end)).getHours()]
 					for (let i = 0; i < e - s; i++) if (!times2.find(e => e == s + i)) times2.push(s + i)
 				})
 				times2.sort((a, b) => a - b)
-
+				for (let i = times2[0] - 1; i <= times2[times2.length - 1] + 1; i++) times3.push(i)
+				
 
 				for (let i = 1; i <= 5; i++) {
 					h[i] = {}
-					times2.forEach(e => {
+					times3.forEach(e => {
 						let tem = this.schedule.data.filter(course => {
 							const [dateS, dateE] = [new Date(course.start), new Date(course.end)]
 							return dateS.getDay() == i && (e >= dateS.getHours() && e < dateE.getHours())
@@ -272,12 +257,12 @@
 						h[i][e] = {size: 1, courses: tem}
 					})
 
-					for (let ii = 0; ii < times2.length - 1; ii++) {
-						const [currentTime, afterTime] = [h[i][times2[ii]], h[i][times2[ii + 1]]];
+					for (let ii = 0; ii < times3.length - 1; ii++) {
+						const [currentTime, afterTime] = [h[i][times3[ii]], h[i][times3[ii + 1]]];
 						if (
-							times2[ii] + 1 == times2[ii + 1] && 
-							currentTime.courses.length == 1 && afterTime.courses.length == 1 &&
-							currentTime.courses[0].title == afterTime.courses[0].title
+							times3[ii] + 1 == times3[ii + 1] && 
+							currentTime.courses.length == afterTime.courses.length &&
+							[...currentTime.courses].sort((a,b) => a.title > b.title ? 1 : -1).reduce((a, b) => a + b.title, '') == [...afterTime.courses].sort((a,b) => a.title > b.title ? 1 : -1).reduce((a, b) => a + b.title, '')
 						) {
 							afterTime.size += currentTime.size
 							currentTime.size = 0
@@ -285,7 +270,7 @@
 					}
 				}
 
-				return {schedule: h, hours: times2};
+				return {schedule: h, hours: times3};
 			},
 			homeworks_list(){
 				const l = [...this.homeworks.list].sort((a,b) => a.dateEnd > b.dateEnd ? 1 : -1)
@@ -314,15 +299,19 @@
 				return l_info
 			},
 			actividities(){
-				return this.homeworks_list.get.length + this.conferences_list.length +  this.forums_list.get.length
+				return this.homeworks_list.get.length + this.conferences_list.length +  this.forums_list.get.length + this.exams.list.length
 			}
 		},
 		watch: {
 			...defdata.mutations,
 		},
 		methods: {
+			colorCourse(course){
+				if (course.includes(' (')) course = this.removeGroupsText(course)
+				return this.colors[this.courses.list.findIndex(e => e.name == course) ?? 0]
+			},
 			removeGroupsText(course){
-				return course.replace(' (A)', '').slice(6)
+				return course.replace(/ \([a-z]\)/gi, '').slice(6)
 			},
 			addZeroTime(num){
 				return (num > 9 ? '' : '0')+num
@@ -398,6 +387,25 @@
 
 
 			},
+			async loadExams(){
+				let exams = []
+				for (let course of this.courses.list) {
+					course.exams.isUpdating = !0
+					course.exams.count = 0
+
+					const res = await fetch(this.protocol + '://aulavirtual.unamad.edu.pe/web/Evaluations/ListAllEvaluations?s=' + course.sectionId)
+					if (res.ok) {
+						(await res.json()).forEach(exam => {
+							exam.sectionId = course.sectionId
+							exam.nameCourse = course.name
+							course.exams.count++
+							exams.push(exam)
+						})
+					}
+					course.exams.isUpdating = !1
+				}
+				this.exams.list = exams
+			},
 			async loadForums(){
 				let listforums = []
 				for (const course of this.courses.list) {
@@ -445,6 +453,7 @@
 			},
 			loadData2(){
 				this.loadConferences()
+				this.loadExams()
 				this.loadHomeworks()
 				this.loadForums()
 			},
@@ -457,6 +466,11 @@
 						this.updating = false
 						this.courses.list = data.map(d => {return {
 							homeworks: {
+								isUpdating: !1,
+								count: 0,
+								viewArchived: !1
+							},
+							exams: {
 								isUpdating: !1,
 								count: 0,
 								viewArchived: !1
@@ -500,7 +514,7 @@
 			this.loadCourses()
 			setInterval(()=>{
 				
-				console.log('Update Data');
+				console.log('Update');
 				this.loadData2()
 				
 			}, 1000 * 90)
@@ -515,7 +529,6 @@
 			chrome.runtime.sendMessage('getinfo');
 		},
 		mounted(){
-			
 		}
 	})
 }

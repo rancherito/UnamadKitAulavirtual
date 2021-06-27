@@ -226,7 +226,10 @@ Vue.component('vcd-date', {
 })
 Vue.component('vcd-cooldown',{
 	template: /*HTML */
-	`<div class="cd-cooldown f-c">{{dateView}}</div>
+	`<div class="cd-cooldown f-c">
+		Termina en
+		<span>{{dateView}}</span>
+	</div>
 	`,
 	data(){
 		return {
@@ -247,6 +250,24 @@ Vue.component('vcd-cooldown',{
 		}
 	},
 	
+})
+Vue.component('vcd-exam', {
+	template: /*html */
+	`
+	<div class="cd-list">
+		<div class="cd-list-time">
+			<vcd-btn minimizeApp class="acd-waves" :href="$root.protocol + '://aulavirtual.unamad.edu.pe/web/evaluations/ListAllTests?s=' + data.sectionId"></vcd-btn>
+		</div>
+		<div class="cd-list-content">
+			<div class="cd-list-title">{{data.title}}</div>
+			<div class="cd-list-subtitle">CURSO: {{data.nameCourse}}</div>
+			<div class="cd-list-subtitle2">
+				Intentos: {{data.intent}}
+			</div>
+		</div>
+	</div>
+	`,
+	props: ['data']
 })
 Vue.component('vcd-homework', {
 	template: /* HTML */
@@ -341,13 +362,45 @@ Vue.component('vcd-conference', {
 		}
 	}
 })
-
-
+Vue.component('vcd-tabbox',{
+	template: /*HTML */
+	`
+	<div class="cd-nav-btn-content f-c">
+		<a :id="'tabbox_' + tabid" href="#" class="cd-nav-btn" :class="$root.tabposition == tabid ? 'active' : ''" @click="$root.tabposition = tabid">
+			<div>
+				<b v-if="counter">{{counter}}</b>
+				<i class="mdi" :class="icon"></i>
+			</div>
+			<span>{{text}}</span>
+		</a>
+		<div class="mdl-tooltip mdl-tooltip--top" :data-mdl-for="'tabbox_' + tabid">{{text}}</div>
+	</div>
+	`,
+	props: {
+		tabid: String, 
+		text: {default: 'tab name'}, 
+		icon: {default: 'mdi-folder-home'}, 
+		counter: {default: 0}, 
+	}
+})
 
 Vue.component('vcd-info',{
 	template: /* HTML */
 	`
 	<div>
+		<div class="cd-list">
+			<div class="cd-list-content">
+				Notas Version: 0.1.3 beta<br><br>
+				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Módulo de exámenes.<br>
+			</div>
+		</div>
+		<div class="cd-list">
+			<div class="cd-list-content">
+				Notas Version: 0.1.2 beta<br><br>
+				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Sincronización con intranet para extraccion de datos del horario académico.<br>
+				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Módulo de horario académico.<br>
+			</div>
+		</div>
 		<div class="cd-list">
 			<div class="cd-list-content">
 				Notas Version: 0.1.1 beta<br><br>
@@ -407,7 +460,7 @@ Vue.component('vcd-helper-list',{
 			<span style="padding: .5rem 1rem; background-color: var(--panel); border-radius: .5rem; margin-right: 2px">Inicia</span>
 			<span v-if="archived" style="padding: .5rem 1rem; background-color: var(--panel); border-radius: .5rem">({{archived}}) Por Archivar</span>
 		</div>
-		<span style="padding: .5rem 1rem; background-color: var(--panel); border-radius: .5rem">Termina en</span>
+		<span></span>
 	</div>
 	`,
 	props: {archived: 0}
