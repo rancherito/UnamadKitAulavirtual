@@ -260,7 +260,7 @@ Vue.component('vcd-exam', {
 		</div>
 		<div class="cd-list-content">
 			<div class="cd-list-title">{{data.title}}</div>
-			<div class="cd-list-subtitle">CURSO: {{data.nameCourse}}</div>
+			<div class="cd-list-subtitle" :style="{color: $root.colorCourse(data.nameCourse)}">CURSO: {{data.nameCourse}}</div>
 			<div class="cd-list-subtitle2">
 				Intentos: {{data.intent}}
 			</div>
@@ -285,7 +285,7 @@ Vue.component('vcd-homework', {
 			
 			<div class="cd-list-title">{{data.title}}</div>
 			<!--<div class="cd-list-description" v-html="homework.description"></div>-->
-			<div class="cd-list-subtitle">CURSO: {{data.nameCourse}}</div>
+			<div class="cd-list-subtitle" :style="{color: $root.colorCourse(data.nameCourse)}">CURSO: {{data.nameCourse}}</div>
 			<div class="cd-list-subtitle2">
 				{{data.isGroup ? 'GRUPAL':'INDIVIDUAL'}} | Intentos: {{data.intents - data.homeworkstds}}/{{data.intents}}
 			</div>
@@ -319,7 +319,7 @@ Vue.component('vcd-forums', {
 		</div>
 		<div class="cd-list-content">
 			<div class="cd-list-title">{{data.name}}</div>
-			<div class="cd-list-subtitle">CURSO: {{data.nameCourse}}</div>
+			<div class="cd-list-subtitle" :style="{color: $root.colorCourse(data.nameCourse)}">CURSO: {{data.nameCourse}}</div>
 		</div>
 		<div class="cd-list-access">
 			<vcd-cooldown :date="data.dateEnd"></vcd-cooldown>
@@ -347,7 +347,7 @@ Vue.component('vcd-conference', {
 
 		<div class="cd-list-content">
 			<div class="cd-list-title">{{data.title}}</div>
-			<div class="cd-list-subtitle">CURSO: {{data.nameCourse}}</div>
+			<div class="cd-list-subtitle" :style="{color: $root.colorCourse(data.nameCourse)}">CURSO: {{data.nameCourse}}</div>
 		</div>
 		<div class="cd-list-access">
 			<vcd-cooldown :date="data.endTime"></vcd-cooldown>
@@ -390,63 +390,69 @@ Vue.component('vcd-info',{
 	<div>
 		<div class="cd-list">
 			<div class="cd-list-content">
+				Notas Version: 0.1.4 beta<br><br>
+				<span><i class="mdi mdi-auto-fix cd-text-primary mdi-24px"></i> Corrección de colores del horario.</span><br>
+			</div>
+		</div>
+		<div class="cd-list">
+			<div class="cd-list-content">
 				Notas Version: 0.1.3 beta<br><br>
-				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Módulo de exámenes.<br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Módulo de exámenes.</span><br>
 			</div>
 		</div>
 		<div class="cd-list">
 			<div class="cd-list-content">
 				Notas Version: 0.1.2 beta<br><br>
-				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Sincronización con intranet para extraccion de datos del horario académico.<br>
-				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Módulo de horario académico.<br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Sincronización con intranet para extraccion de datos del horario académico.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Módulo de horario académico.</span><br>
 			</div>
 		</div>
 		<div class="cd-list">
 			<div class="cd-list-content">
 				Notas Version: 0.1.1 beta<br><br>
-				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Los botones de acceso rápido ahora siempre estarán visibles en la parte derecha de la página.<br>
-				<i class="mdi mdi-minus cd-text-primary mdi-24px"></i> El diseño personalizado automatico se elimino.<br>
-				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Para activar el diseño personalizado se añadio un nuevo botón al lado inferior derecho.<br>
-				<i class="mdi mdi-information cd-text-primary mdi-24px"></i> Actualización de datos cada 130 segundos.<br>
-				<i class="mdi mdi-auto-fix cd-text-primary mdi-24px"></i> Corrección de errores al contabilizar participaciones en foros.<br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Los botones de acceso rápido ahora siempre estarán visibles en la parte derecha de la página.</span><br>
+				<span><i class="mdi mdi-minus cd-text-primary mdi-24px"></i> El diseño personalizado automatico se elimino.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Para activar el diseño personalizado se añadio un nuevo botón al lado inferior derecho.</span><br>
+				<span><i class="mdi mdi-information cd-text-primary mdi-24px"></i> Actualización de datos cada 130 segundos.</span><br>
+				<span><i class="mdi mdi-auto-fix cd-text-primary mdi-24px"></i> Corrección de errores al contabilizar participaciones en foros.</span><br>
 			</div>
 		</div>
 		<div class="cd-list">
 			
 			<div class="cd-list-content">
 				Notas Version: 0.0.5 beta<br><br>
-				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Añadido de experiencias de usuario(UX), para un mejor manejo de la aplicación.<br>
-				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Uso de color #ec2449 para indicar una actividad pendiente y #8bc34a para indicar una actividad resuelta.<br>
-				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Las actividades resueltas y que estén en estado activo no son contabilizadas.<br>
-				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Al abrir el link de una actividad se minimizará el panel de acceso rápido.<br>
-				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> El link de acceso se movió al lado izquierdo el cual solo se activará cuando inicie la actividad según lo programado por el docente.<br>
-				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Se añadido un calendario al lado izquierdo que indica la fecha de inicio de la actividad.<br>
-				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Se añadió una cuenta regresiva al lado derecho para indicar la fecha de cierre de la actividad.<br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Añadido de experiencias de usuario(UX), para un mejor manejo de la aplicación.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Uso de color #ec2449 para indicar una actividad pendiente y #8bc34a para indicar una actividad resuelta.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Las actividades resueltas y que estén en estado activo no son contabilizadas.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Al abrir el link de una actividad se minimizará el panel de acceso rápido.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> El link de acceso se movió al lado izquierdo el cual solo se activará cuando inicie la actividad según lo programado por el docente.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Se añadido un calendario al lado izquierdo que indica la fecha de inicio de la actividad.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Se añadió una cuenta regresiva al lado derecho para indicar la fecha de cierre de la actividad.</span><br>
 
 			</div>
 		</div>
 		<div class="cd-list">
 			<div class="cd-list-content">
 				Notas Version: 0.0.4 beta<br><br>
-				<i class="mdi mdi-auto-fix cd-text-primary mdi-24px"></i> Corrección de errores a la hora de visualizar foros.<br>
-				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Integración de API de localStorage para preservar información de manera local.<br>
-				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Integración de API de Fetch que mejora las solicitides al servidor.<br>
+				<span><i class="mdi mdi-auto-fix cd-text-primary mdi-24px"></i> Corrección de errores a la hora de visualizar foros.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Integración de API de localStorage para preservar información de manera local.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Integración de API de Fetch que mejora las solicitides al servidor.</span><br>
 			</div>
 		</div>
 		<div class="cd-list">
 			<div class="cd-list-content">
 				Notas Version: 0.0.3 beta<br><br>
-				<i class="mdi mdi-auto-fix cd-text-primary mdi-24px"></i> Corrección de peticiones HTTPS que impedian acceder a la api de la web desde HTTP.<br>
-				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Detección de tareas grupales.
+				<span><i class="mdi mdi-auto-fix cd-text-primary mdi-24px"></i> Corrección de peticiones HTTPS que impedian acceder a la api de la web desde HTTP.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Detección de tareas grupales.</span>
 			</div>
 		</div>
 		<div class="cd-list">
 			<div class="cd-list-content">
 				Notas Version: 0.0.2 beta<br><br>
-				<i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Módulos implementados de Cursos, Tareas, Conferencias y Foros.<br>
-				<i class="mdi mdi-information cd-text-primary mdi-24px"></i> Datos recopilados desde la API de esta web.<br>
-				<i class="mdi mdi-information cd-text-primary mdi-24px"></i> Actualización de datos cada 60 segundos.<br>
-				<i class="mdi mdi-information cd-text-primary mdi-24px"></i> Actividades expiradas no se toman en cuenta.<br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Módulos implementados de Cursos, Tareas, Conferencias y Foros.</span><br>
+				<span><i class="mdi mdi-information cd-text-primary mdi-24px"></i> Datos recopilados desde la API de esta web.</span><br>
+				<span><i class="mdi mdi-information cd-text-primary mdi-24px"></i> Actualización de datos cada 60 segundos.</span><br>
+				<span><i class="mdi mdi-information cd-text-primary mdi-24px"></i> Actividades expiradas no se toman en cuenta.</span><br>
 			</div>
 		</div>
 	</div>

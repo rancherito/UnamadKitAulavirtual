@@ -8,7 +8,7 @@
 		anunces.parentNode.appendChild(wrapper);
 		wrapper.appendChild(anunces)
 	}*/
-	document.head.appendChild(htmlToElement('<link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">'))
+	document.head.appendChild(htmlToElement('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.4.55/css/materialdesignicons.min.css">'))
 	document.head.appendChild(htmlToElement('<link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet"></link>'))
 
 	document.body.appendChild(htmlToElement(
@@ -20,20 +20,26 @@
 				<a v-show="menuTabposition" href="#" class="cd-btn-navmenu" @click="tabposition = -1; menuTabposition = 1">
 					<i class="mdi mdi-information"></i>
 				</a>
+				<a v-show="menuTabposition" class="cd-btn-navmenu" @click="tabposition = 'share'; menuTabposition = 1" href="#">
+					<i class="mdi mdi-share-variant"></i>
+				</a>
 				<a v-show="menuTabposition" href="#" @click="loadCourses" class="cd-btn-navmenu" :disabled="updating">
 					<i class="mdi mdi-reload" :class="updating ? 'mdi-spin' : ''"></i>
 				</a>
 				<a class="cd-btn-navmenu" @click="applyNewStyle = !applyNewStyle" href="#">
 					<i class="mdi" :class="applyNewStyle ? 'mdi-invert-colors-off' : 'mdi-format-color-fill'"></i>
 				</a>
+				<a v-show="menuTabposition" class="cd-btn-navmenu" @click="tabposition = 'qr'; menuTabposition = 1" href="#">
+					<i class="mdi mdi-qrcode"></i>
+				</a>
 			</div>
 			<div>
 				
-				<a v-if="schedule.data.length" class="cd-btn-navmenu" @click="menuTabposition = 2" href="#" :class="menuTabposition == 2 ? 'active' : ''">
+				<a class="cd-btn-navmenu" @click="menuTabposition = 2" href="#" :class="menuTabposition == 2 ? 'active' : ''">
 					<i class="mdi mdi-calendar"></i>
 				</a>
 				<a class="cd-btn-navmenu" @click="menuTabposition = 1" href="#" :class="menuTabposition == 1 || menuTabposition == 0 ? 'active' : ''">
-					<span v-if="actividities">{{actividities}}</span>
+					<span v-if="actividities > 0 && menuTabposition == 0">{{actividities}}</span>
 					<i class="mdi mdi-school"></i>
 				</a>
 				<a v-if="menuTabposition != 0" class="cd-btn-navmenu" @click="menuTabposition = 0" href="#">
@@ -45,34 +51,46 @@
 		
 		<div id="modalschedule" style="display: none;" v-show="menuTabposition == 2">
 			<div class="cd-schedule-container f-c">
-				<div class="cd-schedule">
+				<div v-if="schedule.data.length" class="cd-schedule">
 					<div class="cd-schedule-head">
-						<span style="width: 60px; background: var(--panel)"></span>
-						<span v-for="(day, i) of days" style="width: calc(20% - (60px / 5))" :style="{background: (new Date()).getDay() == i + 1? 'var(--panel)' : 'transparent'}">
-							{{day}}
-						</span>
+						<div style="width: 60px; background: var(--bg)"></div>
+						<div v-for="(day, i) of days" class="f-c" style="width: calc(20% - (60px / 5))" >
+							<span :style="{background: (new Date()).getDay() == i + 1? 'var(--primary)' : 'transparent'}" class="f-c">{{day}}</span>
+						</div>
 					</div>
 					<div class="cd-schedule-body" :style="{'max-height': (scheduleTimes.hours.length * 40) + 'px'}">
 						<div class="cd-schedule-hours">
-							<span v-for="(hour, h) in scheduleTimes.hours" class="f-c" style="height: 40px; max-height: 40px}">
+							<span v-for="(hour, h) in scheduleTimes.hours" class="f-c" style="height: 40px; max-height: 40px; min-height: 40px">
 								<b style="transform: translateY(-50%)">{{hour}}</b>
 							</span>
 						</div>
 						<div class="cd-schedule-courses">
-							<div class="cd-schedule-day" v-for="(day, i) in scheduleTimes.schedule">
-								<div v-for="courses of day" style="overflow: hidden" v-if="courses.size" :style="{background: (new Date()).getDay() == i? 'var(--panel)' : 'transparent', height: (courses.size * 40) + 'px', 'max-height': (courses.size * 40) + 'px'}">
-									<div v-for="course in courses.courses" class="cd-schedule-course" :class="{'cd-schedule-dcourse' :courses.courses.length > 1}" :style="{'max-width': (100/courses.courses.length) + '%', 'width': (100/courses.courses.length) + '%'}">
-										<span class="f-c" :style="{background: colorCourse(course.title)}">{{removeGroupsText(course.title)}}</span> 
+							<div style="width: 100%; display: flex">
+								<div class="cd-schedule-day" v-for="(day, i) in scheduleTimes.schedule">
+									<div v-for="courses of day" style="overflow: hidden" v-if="courses.size" :style="{background: (new Date()).getDay() == i? 'var(--panel)' : 'transparent', height: (courses.size * 40) + 'px', 'max-height': (courses.size * 40) + 'px'}">
+										<div v-for="course in courses.courses" class="cd-schedule-course" :class="{'cd-schedule-dcourse' :courses.courses.length > 1}" :style="{'max-width': (100/courses.courses.length) + '%', 'width': (100/courses.courses.length) + '%'}">
+											<span class="f-c" :style="{background: colorCourse(course.title)}">{{removeGroupsText(course.title)}}</span> 
+										</div>
 									</div>
 								</div>
 							</div>
+							
 						</div>
 					</div>
 					
 				</div>
+				<div v-else class="cd-schedule-info f-c">
+					<h1 style="text-align: center"> <i class="mdi mdi-school"></i> </h1>
+					<h5 style="text-align: center">Sincronización de horario académico</h5>
+					<p style="text-align: center">
+						Para sincronizar tu horario académico ve a <a target="_blank" :href="protocol + '://intranet.unamad.edu.pe/'" style="color: var(--primary)">intranet.unamad.edu.pe</a> e inicia sesión. En la parte superior derecha habra un indicador que te avisara si ya se sincronizo los datos,
+						cuando hayas terminado regresa a tu aula virtual y recarga la página.
+					</p>
+				</div>
 			</div>
+			
 		</div>
-		<div id="modelinject" class="acd-fadeOut" style="display: none;" v-show="menuTabposition == 1">
+		<div id="modelinject" style="display: none;" v-show="menuTabposition == 1">
 			
 			<div class="cd-dialog">
 				
@@ -96,28 +114,40 @@
 							<div ref="qrplaceholder"></div>
 						</div>
 						<br>
-						<span>NO compartas este codigo QR<span>
+						<span style="text-align: center">Este código QR es único y solo te pertenece a ti, ¡No lo compartas!<span>
+						<div style="text-align: center">Módulo en fase experimental</div>
+					</div>
+					<div class="mdl-dialog__content f-c" style="height: 100%" v-show="tabposition == 'share'">
+						<div style="flex: 1;" class="f-c">
+							<div style="color: white; font-size: 4rem; padding-bottom: 4rem"> <i class="mdi mdi-school"></i></div>
+							<p style="text-align: center">
+								Una aplicación hecha por estudiantes para estudiantes, gracias por hacer uso de esta herramienta.
+								Si deseas compartir esta extensión con otros compañeros, de seguro lo agradeceran. :D<br><br>
+								<a target="_blank" style="border-radius: var(--rounded)" href="https://chrome.google.com/webstore/detail/unamad-aulavirtual-qacces/lichjjhggabiijdmbhnkfkbfgdjigecl" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">LINK DE LA EXTENSIÓN</a>
 						
+							</p>
+							
+						</div>
 					</div>
 					<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 0">
 						<div v-for="course in courses_list" class="cd-list">
-							<i class="cd-list-icon mdi" :class="course.exams.isUpdating || course.homeworks.isUpdating || course.forums.isUpdating|| course.conferencesUpdating ? 'mdi-loading mdi-spin' : 'mdi-book'"></i>
-							<div class="cd-list-content">
-								<div class="cd-list-title">{{course.name}}</div>
+							<i :style="{color: colorCourse(course.name)}" class="cd-list-icon mdi" :class="course.exams.isUpdating || course.homeworks.isUpdating || course.forums.isUpdating|| course.conferencesUpdating ? 'mdi-loading mdi-spin' : 'mdi-book'"></i>
+							<div class="cd-list-content" >
+								<div class="cd-list-title" :style="{color: colorCourse(course.name)}">{{course.name}}</div>
 								<div 
 									class="cd-list-subtitle2" 
 									v-if="course.homeworks.count + course.forums.count + course.conferences + course.exams.count">
 
-									<span v-if="course.homeworks.count" class="mdl-chip mdl-chip-sm">
+									<span v-if="course.homeworks.count" class="cd-pointer mdl-chip mdl-chip-sm" @click="tabposition = 1">
 										<span class="mdl-chip__text">{{'Tareas: ' + course.homeworks.count}}</span>
 									</span>
-									<span v-if="course.forums.count" class="mdl-chip mdl-chip-sm">
+									<span v-if="course.forums.count" class="cd-pointer mdl-chip mdl-chip-sm" @click="tabposition = 3">
 										<span class="mdl-chip__text">{{'Foros: ' + course.forums.count}}</span>
 									</span>
-									<span v-if="course.conferences" class="mdl-chip mdl-chip-sm">
+									<span v-if="course.conferences" class="cd-pointer mdl-chip mdl-chip-sm" @click="tabposition = 2">
 										<span class="mdl-chip__text">{{'Confer.: ' + course.conferences}}</span>
 									</span>
-									<span v-if="course.exams.count" class="mdl-chip mdl-chip-sm">
+									<span v-if="course.exams.count" class="cd-pointer mdl-chip mdl-chip-sm" @click="tabposition = 4">
 										<span class="mdl-chip__text">{{'Exam.: ' + course.exams.count}}</span>
 									</span>
 								</div>
@@ -228,11 +258,13 @@
 				2: 'Conferencias', 
 				3: 'Lista de Foros',
 				4: 'Lista de Exámenes',
-				'qr': 'Generar Llave'
+				'qr': 'Sync',
+				'share': 'Compartir'
 			},
 			icon_link: 'mdi-cursor-pointer',
 			now: (new Date()).getTime(),
 			styleAula: styleAula,
+			qr: '',
 			colors: ['#4a9bed', '#ff5722', '#f5be39', '#cd4242', '#4caf50', '#845aec', '#77858f', '#563c63', '#280fb4', '#204f6e']
 		},
 		computed: {
@@ -244,7 +276,7 @@
 					for (let i = 0; i < e - s; i++) if (!times2.find(e => e == s + i)) times2.push(s + i)
 				})
 				times2.sort((a, b) => a - b)
-				for (let i = times2[0] - 1; i <= times2[times2.length - 1] + 1; i++) times3.push(i)
+				for (let i = times2[0]; i <= times2[times2.length - 1] + 1; i++) times3.push(i)
 				
 
 				for (let i = 1; i <= 5; i++) {
@@ -519,16 +551,25 @@
 				
 			}, 1000 * 90)
 
-
-
-
 			chrome.runtime.onMessage.addListener((message, sender, sendResponse)=>{
 				if (message.schedule != undefined) this.schedule.data = message.schedule
-				//if (message.qrstring != undefined) console.log(message.qrstring)
 			});
 			chrome.runtime.sendMessage('getinfo');
 		},
 		mounted(){
+			
+
+			chrome.runtime.onMessage.addListener(async (message, sender, sendResponse)=>{
+				if (message.qrstring != undefined){ 
+					let bqr = new QRCode({
+						content: message.qrstring,
+						width: 400,
+						height: 400
+					});
+
+					this.$refs.qrplaceholder.innerHTML = bqr.svg()
+				}
+			});
 		}
 	})
 }

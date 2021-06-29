@@ -61,6 +61,9 @@
 .cd-text-primary{
     color: var(--primary);
 }
+.cd-pointer{
+    cursor: pointer;
+}
 .cd-scroll-custom::-webkit-scrollbar,
 .mdl-dialog__content::-webkit-scrollbar {
     width: 12px;
@@ -77,7 +80,17 @@
     border-radius: 18px;
     border: 1px solid var(--bg);
 }
-
+.cd-schedule-info{
+    background: var(--bg);
+    width: 100%;
+    max-width: 600px;
+    padding: 2rem;
+    border-radius: var(--rounded);
+    color: white;
+}
+.cd-schedule-info *{
+    color: white;
+}
 .cd-schedule-container{
     flex: 1;
     height: 100%;
@@ -95,10 +108,15 @@
 .cd-schedule-head{
     display: flex;
 }
-.cd-schedule-head * {
-    height: 40px;
+.cd-schedule-head > * {
+    height: 60px;
     text-align: center;
-    line-height: 40px;
+    padding: 1rem 0;
+}
+.cd-schedule-head span{
+    height: 100%;
+    width: 100%;
+    border-radius: var(--rounded);
 }
 .cd-schedule-body{
     display: flex;
@@ -108,14 +126,16 @@
     flex: 1;
     height: 100%;
     display: flex;
+    padding: 0 0 1rem 0;
 }
 .cd-schedule-hours{
     display: flex;
     flex-direction: column;
-    background: var(--panel);
+    background: var(--bg);
+    padding: 0 2px;
 }
 .cd-schedule-hours span{
-    width: 60px;
+    width: 56px;
     text-align: center;
     border-top: 1px solid rgba(255, 255, 255, 0.5);
     display: flex;
@@ -126,9 +146,12 @@
     border-radius: var(--rounded);
     background: var(--bg);
     padding: 0 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.5);
 }
 .cd-schedule-day{
     width: 20%;
+    border-radius: var(--rounded);
+    overflow: hidden;
 }
 .cd-schedule-day > div{
     display: flex;
