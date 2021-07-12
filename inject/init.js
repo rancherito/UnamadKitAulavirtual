@@ -345,6 +345,9 @@
 			...defdata.mutations,
 		},
 		methods: {
+			minimizeApp(){
+				this.menuTabposition = 0
+			},
 			colorCourse(course){
 				if (course.includes(' (')) course = this.removeGroupsText(course)
 				return this.colors[this.courses.list.findIndex(e => e.name == course) ?? 0]
@@ -366,11 +369,6 @@
 				const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate(), a.getHours(), a.getMinutes());
 				const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate(), b.getHours(), b.getMinutes());
 				return Math.floor((utc2 - utc1) / _MS_PER_DAY);
-			},
-			getCookie(name) {
-				const value = `; ${document.cookie}`;
-				const parts = value.split(`; ${name}=`);
-				if (parts.length === 2) return parts.pop().split(';').shift();
 			},
 			async loadConferences(){
 				let listconferences = []

@@ -295,7 +295,7 @@ Vue.component('vcd-homework', {
 			<!--<div class="cd-list-description" v-html="homework.description"></div>-->
 			<div class="cd-list-subtitle" :style="{color: $root.colorCourse(data.nameCourse)}">CURSO: {{data.nameCourse}}</div>
 			<div class="cd-list-subtitle2">
-				{{data.isGroup ? 'GRUPAL':'INDIVIDUAL'}} | Intentos: {{data.intents - data.homeworkstds}}/{{data.intents}}
+				{{data.isGroup ? 'GRUPAL':'INDIVIDUAL'}} | Intentos: {{data.intents - data.homeworkstds}}/{{data.intents}} | <a @click="$root.minimizeApp" class="cd-small-chip" :href="$root.protocol + '://aulavirtual.unamad.edu.pe/web/homework?s=' + data.sectionId">Ver tareas<a>
 			</div>
 			
 		</div>

@@ -64,6 +64,14 @@
 .cd-pointer{
     cursor: pointer;
 }
+.cd-small-chip{
+    color: white;
+    background: var(--primary);
+    border-radius: .5rem;
+    height: 20px;
+    display: inline-block;
+    padding: 0 .25rem
+}
 .cd-scroll-custom::-webkit-scrollbar,
 .mdl-dialog__content::-webkit-scrollbar {
     width: 12px;
