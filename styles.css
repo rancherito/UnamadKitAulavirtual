@@ -151,7 +151,6 @@
 .cd-schedule-day{
     width: 20%;
     border-radius: var(--rounded);
-    overflow: hidden;
 }
 .cd-schedule-day > div{
     display: flex;

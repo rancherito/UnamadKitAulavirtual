@@ -39,7 +39,7 @@
 					<i class="mdi mdi-calendar"></i>
 				</a>
 				<a class="cd-btn-navmenu" @click="menuTabposition = 1" href="#" :class="menuTabposition == 1 || menuTabposition == 0 ? 'active' : ''">
-					<span v-if="actividities > 0 && menuTabposition == 0">{{actividities}}</span>
+					<span v-if="actividities > 0 && menuTabposition != 1">{{actividities}}</span>
 					<i class="mdi mdi-school"></i>
 				</a>
 				<a v-if="menuTabposition != 0" class="cd-btn-navmenu" @click="menuTabposition = 0" href="#">
@@ -66,10 +66,13 @@
 						</div>
 						<div class="cd-schedule-courses">
 							<div style="width: 100%; display: flex">
-								<div class="cd-schedule-day" v-for="(day, i) in scheduleTimes.schedule">
-									<div v-for="courses of day" style="overflow: hidden" v-if="courses.size" :style="{background: (new Date()).getDay() == i? 'var(--panel)' : 'transparent', height: (courses.size * 40) + 'px', 'max-height': (courses.size * 40) + 'px'}">
+								<div class="cd-schedule-day" v-for="(day, i) in scheduleTimes.schedule" :style="{background: (new Date()).getDay() == i? 'var(--panel)' : 'transparent'}">
+									<div v-for="(courses, hour) in day"  v-if="courses.size" :style="{'max-height': (courses.size * 40) + 'px', height: (courses.size * 40) + 'px'}">
 										<div v-for="course in courses.courses" class="cd-schedule-course" :class="{'cd-schedule-dcourse' :courses.courses.length > 1}" :style="{'max-width': (100/courses.courses.length) + '%', 'width': (100/courses.courses.length) + '%'}">
-											<span class="f-c" :style="{background: colorCourse(course.title)}">{{removeGroupsText(course.title)}}</span> 
+											<span class="f-c" 
+											style="overflow: hidden" 
+											:style="{background: colorCourse(course.title), position: ( (new Date(now)).getHours() >= courses.init && (new Date(now)).getHours() < courses.end && (new Date(now)).getDay() == i ? 'relative' : 'inherit')}" 
+											:class="{'acd-waves': (new Date(now)).getHours() >= courses.init && (new Date(now)).getHours() < courses.end && (new Date(now)).getDay() == i}">{{removeGroupsText(course.title)}}</span> 
 										</div>
 									</div>
 								</div>
@@ -130,9 +133,12 @@
 						</div>
 					</div>
 					<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 0">
+					
 						<div v-for="course in courses_list" class="cd-list">
 							<i :style="{color: colorCourse(course.name)}" class="cd-list-icon mdi" :class="course.exams.isUpdating || course.homeworks.isUpdating || course.forums.isUpdating|| course.conferencesUpdating ? 'mdi-loading mdi-spin' : 'mdi-book'"></i>
+							
 							<div class="cd-list-content" >
+								
 								<div class="cd-list-title" :style="{color: colorCourse(course.name)}">{{course.name}}</div>
 								<div 
 									class="cd-list-subtitle2" 
@@ -184,7 +190,7 @@
 						
 					</div>
 					<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 3">
-						<div v-if="forums_list.get.length">
+						<div v-if="forums_list.get.length + forums_list.archived.length">
 							<vcd-helper-list></vcd-helper-list>
 							<vcd-forums v-for="forum in forums_list.get" :data="forum"></vcd-forums>
 							<vcd-forums v-for="forum in forums_list.archived" :data="forum"></vcd-forums>
@@ -276,17 +282,17 @@
 					for (let i = 0; i < e - s; i++) if (!times2.find(e => e == s + i)) times2.push(s + i)
 				})
 				times2.sort((a, b) => a - b)
-				for (let i = times2[0]; i <= times2[times2.length - 1] + 1; i++) times3.push(i)
+				if(times2.length) for (let i = times2[0]; i <= times2[times2.length - 1] + 1; i++) times3.push(i)
 				
 
 				for (let i = 1; i <= 5; i++) {
 					h[i] = {}
 					times3.forEach(e => {
-						let tem = this.schedule.data.filter(course => {
+						let tem = [...this.schedule.data].filter(course => {
 							const [dateS, dateE] = [new Date(course.start), new Date(course.end)]
 							return dateS.getDay() == i && (e >= dateS.getHours() && e < dateE.getHours())
 						})
-						h[i][e] = {size: 1, courses: tem}
+						h[i][e] = {size: 1, courses: tem, init: e, end: e + 1}
 					})
 
 					for (let ii = 0; ii < times3.length - 1; ii++) {
@@ -297,6 +303,7 @@
 							[...currentTime.courses].sort((a,b) => a.title > b.title ? 1 : -1).reduce((a, b) => a + b.title, '') == [...afterTime.courses].sort((a,b) => a.title > b.title ? 1 : -1).reduce((a, b) => a + b.title, '')
 						) {
 							afterTime.size += currentTime.size
+							afterTime.init -= currentTime.size
 							currentTime.size = 0
 						}
 					}
@@ -378,7 +385,10 @@
 							if (!a.test(conference.url)) conference.url = 'https://' + conference.url
 							conference.sectionId = course.sectionId
 							conference.nameCourse = course.name
-							if(conference.state != "Finalizado") {listconferences.push(conference); course.conferences++}
+							if(conference.state != "Finalizado" || (new Date(conference.endTime)).getTime() > this.now) {
+								listconferences.push(conference); 
+								course.conferences++
+							}
 						});
 					}
 					course.conferencesUpdating = !1
@@ -407,7 +417,7 @@
 							task.sectionId = course.sectionId
 							task.nameCourse = course.name
 
-							if (task.state == 'ACT') {
+							if (task.state == 'ACT' || (new Date(task.dateEndCustom)).getTime() > this.now) {
 								listhomework.push(task); 
 								if(task.homeworkstds == 0) course.homeworks.count++
 							}
@@ -449,7 +459,9 @@
 							forum.sectionId = course.sectionId
 							forum.nameCourse = course.name
 							forum.participations = 0
-							if(forum.state){
+
+							
+							if(forum.state || (new Date(conference.dateEnd)).getTime() > this.now){
 
 								listforums.push(forum);
 
@@ -532,7 +544,6 @@
 				
 			}
 			
-
 			fetch(this.protocol + '://campus.unamad.edu.pe/timeutc').then(res => res.json()).then(data=>{
 				///console.log(typeof data, data);
 				const pre_utc = new Date((data.currentFileTime/10000 - 11644473600000) - (1000 * 60 * 60 * 5))

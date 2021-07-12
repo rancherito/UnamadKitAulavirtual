@@ -227,20 +227,28 @@ Vue.component('vcd-date', {
 Vue.component('vcd-cooldown',{
 	template: /*HTML */
 	`<div class="cd-cooldown f-c">
-		Termina en
-		<span>{{dateView}}</span>
+		{{isAfter ? 'Termina en': 'Inicia en'}}
+		<span>{{isAfter? dateViewEnd: dateViewStart}}</span>
 	</div>
 	`,
-	data(){
-		return {
-			interval: null
-		}
-	},
-	props: ['date'],
+	props: ['dateEnd', 'dateStart'],
 	computed: {
-		dateView(){
+		isAfter(){
+			return this.$root.now > (new Date(this.dateStart)).getTime()
+		},
+		dateViewEnd(){
 			const now = this.$root.now
-			const distance = (new Date(this.date)).getTime() - now;
+			const distance = (new Date(this.dateEnd)).getTime() - now;
+			
+			const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+			const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+			const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+			const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+			return distance < 0 ? '0m 0s' : (days ? days + "d ": '') + (hours + days ? hours + "h " : '') + (days ? '' : minutes + "m ") + (days + hours ? '' :seconds + 's')
+		},
+		dateViewStart(){
+			const now = this.$root.now
+			const distance = (new Date(this.dateStart)).getTime() - now;
 			
 			const days = Math.floor(distance / (1000 * 60 * 60 * 24));
 			const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -292,7 +300,7 @@ Vue.component('vcd-homework', {
 			
 		</div>
 		<div class="cd-list-access">
-			<vcd-cooldown :date="data.dateEndCustom"></vcd-cooldown>
+			<vcd-cooldown :dateEnd="data.dateEndCustom" :dateStart="data.dateBeginCustom"></vcd-cooldown>
 		</div>
 		
 	</div>
@@ -322,7 +330,7 @@ Vue.component('vcd-forums', {
 			<div class="cd-list-subtitle" :style="{color: $root.colorCourse(data.nameCourse)}">CURSO: {{data.nameCourse}}</div>
 		</div>
 		<div class="cd-list-access">
-			<vcd-cooldown :date="data.dateEnd"></vcd-cooldown>
+			<vcd-cooldown :dateEnd="data.dateEnd" :dateStart="data.dateBegin"></vcd-cooldown>
 		</div>
 	</div>
 	`,
@@ -350,7 +358,7 @@ Vue.component('vcd-conference', {
 			<div class="cd-list-subtitle" :style="{color: $root.colorCourse(data.nameCourse)}">CURSO: {{data.nameCourse}}</div>
 		</div>
 		<div class="cd-list-access">
-			<vcd-cooldown :date="data.endTime"></vcd-cooldown>
+			<vcd-cooldown :dateEnd="data.endTime" :dateStart="data.startTime"></vcd-cooldown>
 		</div>
 	</div>
 	`,
@@ -388,6 +396,13 @@ Vue.component('vcd-info',{
 	template: /* HTML */
 	`
 	<div>
+		<div class="cd-list">
+			<div class="cd-list-content">
+				Notas Version: 1.0.0 alpha<br><br>
+				<span><i class="mdi mdi-information cd-text-primary mdi-24px"></i> Lanzamiento oficial de la extensión.</span><br>
+				<span><i class="mdi mdi-information cd-text-primary mdi-24px"></i> Corrección de visualizacion de foros que desaparecian aún cuando no han finalizado.</span><br>
+			</div>
+		</div>
 		<div class="cd-list">
 			<div class="cd-list-content">
 				Notas Version: 0.1.4 beta<br><br>
