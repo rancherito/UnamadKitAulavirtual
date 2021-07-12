@@ -461,7 +461,7 @@
 							forum.participations = 0
 
 							
-							if(forum.state || (new Date(conference.dateEnd)).getTime() > this.now){
+							if(forum.state || (new Date(forum.dateEnd)).getTime() > this.now){
 
 								listforums.push(forum);
 
