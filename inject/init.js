@@ -259,7 +259,7 @@
 			protocol: protocol,
 			modulesTitles: {
 				'-1': 'Información adicional', 
-				0: 'Menu principal', 
+				0: 'Menu', 
 				1: 'Tareas pendientes', 
 				2: 'Conferencias', 
 				3: 'Lista de Foros',
