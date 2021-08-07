@@ -16,83 +16,57 @@
 	`<div id="vueapp">
 		<div v-if="applyNewStyle" v-html="styleAula"></div>
 		<div id="cd-navmenu" :class="menuTabposition == 0 ? '' : 'cd-navmenu-open'">
-			<div style="padding-top: 60px">
-				<a v-show="menuTabposition" href="#" class="cd-btn-navmenu" @click="tabposition = -1; menuTabposition = 1">
-					<i class="mdi mdi-information"></i>
-				</a>
-				<a v-show="menuTabposition" class="cd-btn-navmenu" @click="tabposition = 'share'; menuTabposition = 1" href="#">
-					<i class="mdi mdi-share-variant"></i>
-				</a>
-				<a v-show="menuTabposition" href="#" @click="loadCourses" class="cd-btn-navmenu" :disabled="updating">
-					<i class="mdi mdi-reload" :class="updating ? 'mdi-spin' : ''"></i>
-				</a>
-				<a class="cd-btn-navmenu" @click="applyNewStyle = !applyNewStyle" href="#">
-					<i class="mdi" :class="applyNewStyle ? 'mdi-invert-colors-off' : 'mdi-format-color-fill'"></i>
-				</a>
-				<a v-show="menuTabposition" class="cd-btn-navmenu" @click="tabposition = 'qr'; menuTabposition = 1" href="#">
-					<i class="mdi mdi-qrcode"></i>
-				</a>
+			<div style="padding-top: 60px; display: flex; flex-direction: column">
+				<vue-custom-tooltip label="Información de versiones" position="is-left">
+					<a v-show="menuTabposition" href="#" class="cd-btn-navmenu" @click="tabposition = -1; menuTabposition = 1">
+						<i class="mdi mdi-information"></i>
+					</a>
+				</vue-custom-tooltip>
+				<vue-custom-tooltip label="Compartir" position="is-left">
+					<a v-show="menuTabposition" class="cd-btn-navmenu" @click="tabposition = 'share'; menuTabposition = 1" href="#">
+						<i class="mdi mdi-share-variant"></i>
+					</a>
+				</vue-custom-tooltip>
+				<vue-custom-tooltip label="Actualizar datos" position="is-left">
+					<a v-show="menuTabposition" href="#" @click="loadCourses" class="cd-btn-navmenu" :disabled="updating">
+						<i class="mdi mdi-reload" :class="updating ? 'mdi-spin' : ''"></i>
+					</a>
+				</vue-custom-tooltip>
+				<vue-custom-tooltip label="Sincronizar" position="is-left">
+					<a v-show="menuTabposition" class="cd-btn-navmenu" @click="tabposition = 'qr'; menuTabposition = 1" href="#">
+						<i class="mdi mdi-qrcode"></i>
+					</a>
+				</vue-custom-tooltip>
 			</div>
 			<div>
-				
-				<a class="cd-btn-navmenu" @click="menuTabposition = 2" href="#" :class="menuTabposition == 2 ? 'active' : ''">
-					<i class="mdi mdi-calendar"></i>
-				</a>
-				<a class="cd-btn-navmenu" @click="menuTabposition = 1" href="#" :class="menuTabposition == 1 || menuTabposition == 0 ? 'active' : ''">
-					<span v-if="actividities > 0 && menuTabposition != 1">{{actividities}}</span>
-					<i class="mdi mdi-school"></i>
-				</a>
-				<a v-if="menuTabposition != 0" class="cd-btn-navmenu" @click="menuTabposition = 0" href="#">
-					<i class="mdi mdi-close"></i>
-				</a>
+				<vue-custom-tooltip label="Cambiar tema" position="is-left">
+					<a class="cd-btn-navmenu" @click="applyNewStyle = !applyNewStyle" href="#" v-if="menuTabposition == 0">
+						<i class="mdi" :class="applyNewStyle ? 'mdi-invert-colors-off' : 'mdi-format-color-fill'"></i>
+					</a>
+				</vue-custom-tooltip>
+					
+				<vue-custom-tooltip label="Horario" position="is-left">
+					<a class="cd-btn-navmenu" @click="menuTabposition = 2" href="#" :class="menuTabposition == 2 ? 'active' : ''" id="btn_id_schedule">
+						<i class="mdi mdi-calendar"></i>
+					</a>
+				</vue-custom-tooltip>
+				<vue-custom-tooltip label="Panel principal" position="is-left">
+					<a class="cd-btn-navmenu" @click="menuTabposition = 1" href="#" :class="menuTabposition == 1 || menuTabposition == 0 ? 'active' : ''">
+						<span v-if="actividities > 0 && menuTabposition != 1">{{actividities}}</span>
+						<i class="mdi mdi-school"></i>
+					</a>
+				</vue-custom-tooltip>
+				<vue-custom-tooltip label="Cerrar panel" position="is-left">
+					<a v-if="menuTabposition != 0" class="cd-btn-navmenu" @click="menuTabposition = 0" href="#">
+						<i class="mdi mdi-close"></i>
+					</a>
+				</vue-custom-tooltip>
 			</div>
 			
 		</div>
 		
-		<div id="modalschedule" style="display: none;" v-show="menuTabposition == 2">
-			<div class="cd-schedule-container f-c">
-				<div v-if="schedule.data.length" class="cd-schedule">
-					<div class="cd-schedule-head">
-						<div style="width: 60px; background: var(--bg)"></div>
-						<div v-for="(day, i) of days" class="f-c" style="width: calc(20% - (60px / 5))" >
-							<span :style="{background: (new Date()).getDay() == i + 1? 'var(--primary)' : 'transparent'}" class="f-c">{{day}}</span>
-						</div>
-					</div>
-					<div class="cd-schedule-body" :style="{'max-height': (scheduleTimes.hours.length * 40) + 'px'}">
-						<div class="cd-schedule-hours">
-							<span v-for="(hour, h) in scheduleTimes.hours" class="f-c" style="height: 40px; max-height: 40px; min-height: 40px">
-								<b style="transform: translateY(-50%)">{{hour}}</b>
-							</span>
-						</div>
-						<div class="cd-schedule-courses">
-							<div style="width: 100%; display: flex">
-								<div class="cd-schedule-day" v-for="(day, i) in scheduleTimes.schedule" :style="{background: (new Date()).getDay() == i? 'var(--panel)' : 'transparent'}">
-									<div v-for="(courses, hour) in day"  v-if="courses.size" :style="{'max-height': (courses.size * 40) + 'px', height: (courses.size * 40) + 'px'}">
-										<div v-for="course in courses.courses" class="cd-schedule-course" :class="{'cd-schedule-dcourse' :courses.courses.length > 1}" :style="{'max-width': (100/courses.courses.length) + '%', 'width': (100/courses.courses.length) + '%'}">
-											<span class="f-c" 
-											style="overflow: hidden" 
-											:style="{background: colorCourse(course.title), position: ( (new Date(now)).getHours() >= courses.init && (new Date(now)).getHours() < courses.end && (new Date(now)).getDay() == i ? 'relative' : 'inherit')}" 
-											:class="{'acd-waves': (new Date(now)).getHours() >= courses.init && (new Date(now)).getHours() < courses.end && (new Date(now)).getDay() == i}">{{removeGroupsText(course.title)}}</span> 
-										</div>
-									</div>
-								</div>
-							</div>
-							
-						</div>
-					</div>
-					
-				</div>
-				<div v-else class="cd-schedule-info f-c">
-					<h1 style="text-align: center"> <i class="mdi mdi-school"></i> </h1>
-					<h5 style="text-align: center">Sincronización de horario académico</h5>
-					<p style="text-align: center">
-						Para sincronizar tu horario académico ve a <a target="_blank" :href="protocol + '://intranet.unamad.edu.pe/'" style="color: var(--primary)">intranet.unamad.edu.pe</a> e inicia sesión. En la parte superior derecha habra un indicador que te avisara si ya se sincronizo los datos,
-						cuando hayas terminado regresa a tu aula virtual y recarga la página.
-					</p>
-				</div>
-			</div>
-			
-		</div>
+		<cd-schedule v-show="menuTabposition == 2"></cd-schedule>
+		
 		<div id="modelinject" style="display: none;" v-show="menuTabposition == 1">
 			
 			<div class="cd-dialog">
@@ -248,7 +222,6 @@
 		applyNewStyle: false
 	})
 	
-
 	new Vue({
 		el: '#vueapp',
 		data: {
@@ -274,43 +247,7 @@
 			colors: ['#4a9bed', '#ff5722', '#f5be39', '#cd4242', '#4caf50', '#845aec', '#77858f', '#563c63', '#280fb4', '#204f6e']
 		},
 		computed: {
-			scheduleTimes(){
-				let times2 = [], h = {}, times3 = []
-
-				this.schedule.data.forEach(course => {
-					let [s, e] = [(new Date(course.start)).getHours(), (new Date(course.end)).getHours()]
-					for (let i = 0; i < e - s; i++) if (!times2.find(e => e == s + i)) times2.push(s + i)
-				})
-				times2.sort((a, b) => a - b)
-				if(times2.length) for (let i = times2[0]; i <= times2[times2.length - 1] + 1; i++) times3.push(i)
-				
-
-				for (let i = 1; i <= 5; i++) {
-					h[i] = {}
-					times3.forEach(e => {
-						let tem = [...this.schedule.data].filter(course => {
-							const [dateS, dateE] = [new Date(course.start), new Date(course.end)]
-							return dateS.getDay() == i && (e >= dateS.getHours() && e < dateE.getHours())
-						})
-						h[i][e] = {size: 1, courses: tem, init: e, end: e + 1}
-					})
-
-					for (let ii = 0; ii < times3.length - 1; ii++) {
-						const [currentTime, afterTime] = [h[i][times3[ii]], h[i][times3[ii + 1]]];
-						if (
-							times3[ii] + 1 == times3[ii + 1] && 
-							currentTime.courses.length == afterTime.courses.length &&
-							[...currentTime.courses].sort((a,b) => a.title > b.title ? 1 : -1).reduce((a, b) => a + b.title, '') == [...afterTime.courses].sort((a,b) => a.title > b.title ? 1 : -1).reduce((a, b) => a + b.title, '')
-						) {
-							afterTime.size += currentTime.size
-							afterTime.init -= currentTime.size
-							currentTime.size = 0
-						}
-					}
-				}
-
-				return {schedule: h, hours: times3};
-			},
+			
 			homeworks_list(){
 				const l = [...this.homeworks.list].sort((a,b) => a.dateEnd > b.dateEnd ? 1 : -1)
 

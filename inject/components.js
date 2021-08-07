@@ -370,6 +370,114 @@ Vue.component('vcd-conference', {
 		}
 	}
 })
+
+Vue.component('cd-schedule', {
+	template: /*HTML*/
+	`
+	<div id="modalschedule" style="display: none;">
+		<div class="cd-schedule-container f-c">
+			<div v-if="$root.schedule.data.length" class="cd-schedule">
+				<div class="cd-schedule-head">
+					<div style="width: 60px; background: var(--bg)"></div>
+					<div v-for="(day, i) of $root.days" class="f-c" style="width: calc(20% - (60px / 5))" >
+						<span :style="{background: (new Date(now)).getDay() == i + 1? 'var(--primary)' : 'transparent'}" class="f-c">{{day}}</span>
+					</div>
+				</div>
+				<div class="cd-schedule-body" :style="{'max-height': (scheduleTimes.hours.length * 40) + 'px'}">
+					<div class="cd-schedule-hours">
+						<span v-for="(hour, h) in scheduleTimes.hours" class="f-c" style="height: 40px; max-height: 40px; min-height: 40px">
+							<b style="transform: translateY(-50%)">{{time12(hour)}}</b>
+						</span>
+					</div>
+					<div class="cd-schedule-courses">
+						<div style="width: 100%; display: flex">
+							<div class="cd-schedule-day" v-for="(day, i) in scheduleTimes.schedule" :style="{background: (new Date(now)).getDay() == i? 'var(--panel)' : 'transparent'}">
+								<div v-for="(courses, hour) in day"  v-if="courses.size" :style="{'max-height': (courses.size * 40) + 'px', height: (courses.size * 40) + 'px'}">
+									<div v-for="course in courses.courses" class="cd-schedule-course" :class="{'cd-schedule-dcourse' :courses.courses.length > 1}" :style="{'max-width': (100/courses.courses.length) + '%', 'width': (100/courses.courses.length) + '%'}">
+										
+										<span 
+											class="f-c cd-schedule-course-item"
+											:style="{background: $root.colorCourse(course.title), position: isActiveCourse(courses, i) ? 'relative' : 'inherit'}" 
+											:class="{'acd-waves': isActiveCourse(courses, i)}"
+										>
+												{{$root.removeGroupsText(course.title)}}
+										</span>
+										<b class="cd-schedule-course-time">{{time12(new Date(course.start).getHours())}}-{{time12(parseInt(hour)+1)}}</b>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				
+			</div>
+			<div v-else class="cd-schedule-info f-c">
+				<h1 style="text-align: center"> <i class="mdi mdi-school"></i> </h1>
+				<h5 style="text-align: center">Sincronización de horario académico</h5>
+				<p style="text-align: center">
+					Para sincronizar tu horario académico ve a <a target="_blank" :href="protocol + '://intranet.unamad.edu.pe/'" style="color: var(--primary)">intranet.unamad.edu.pe</a> e inicia sesión. En la parte superior derecha habra un indicador que te avisara si ya se sincronizo los datos,
+					cuando hayas terminado regresa a tu aula virtual y recarga la página.
+				</p>
+			</div>
+		</div>
+		
+	</div>
+	`,
+	data(){
+		return {
+			now: this.$root.now
+		}
+	},
+	methods: {
+		isActiveCourse(course, iteration){
+			return (new Date(this.now)).getHours() >= course.init && (new Date(this.now)).getHours() < course.end && (new Date(this.now)).getDay() == iteration
+		},
+		time12(hour){
+			const hour12 = (hour > 12 ? hour - 12 : hour)
+			return /*(hour12 >= 10 ? '' : '0') +*/ hour12 + (hour > 11? 'pm' : 'am')
+		},
+	},
+	computed: {
+		scheduleTimes(){
+			let times2 = [], h = {}, times3 = []
+
+			this.$root.schedule.data.forEach(course => {
+				let [s, e] = [(new Date(course.start)).getHours(), (new Date(course.end)).getHours()]
+				for (let i = 0; i < e - s; i++) if (!times2.find(e => e == s + i)) times2.push(s + i)
+			})
+			times2.sort((a, b) => a - b)
+			if(times2.length) for (let i = times2[0]; i <= times2[times2.length - 1] + 1; i++) times3.push(i)
+			
+
+			for (let i = 1; i <= 5; i++) {
+				h[i] = {}
+				times3.forEach(e => {
+					let tem = [...this.$root.schedule.data].filter(course => {
+						const [dateS, dateE] = [new Date(course.start), new Date(course.end)]
+						return dateS.getDay() == i && (e >= dateS.getHours() && e < dateE.getHours())
+					})
+					h[i][e] = {size: 1, courses: tem, init: e, end: e + 1}
+				})
+
+				for (let ii = 0; ii < times3.length - 1; ii++) {
+					const [currentTime, afterTime] = [h[i][times3[ii]], h[i][times3[ii + 1]]];
+					if (
+						times3[ii] + 1 == times3[ii + 1] && 
+						currentTime.courses.length == afterTime.courses.length &&
+						[...currentTime.courses].sort((a,b) => a.title > b.title ? 1 : -1).reduce((a, b) => a + b.title, '') == [...afterTime.courses].sort((a,b) => a.title > b.title ? 1 : -1).reduce((a, b) => a + b.title, '')
+					) {
+						afterTime.size += currentTime.size
+						afterTime.init -= currentTime.size
+						currentTime.size = 0
+					}
+				}
+			}
+
+			return {schedule: h, hours: times3};
+		}
+	}
+})
 Vue.component('vcd-tabbox',{
 	template: /*HTML */
 	`
