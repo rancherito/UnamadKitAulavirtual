@@ -1,0 +1,12 @@
+{
+    "emmet.preferences": {
+    
+    },
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact"
+    },
+    "[javascript]": {
+
+        "editor.autoClosingBrackets": "always"
+    }
+}

@@ -187,7 +187,7 @@ Vue.component('vcd-btn', {
 	},
 	methods: {
 		launchEvents(){
-			if (this.minimizeApp) this.$root.menuTabposition = 0
+			if (this.minimizeApp) this.$root.moduleActiveId = 0
 		}
 	}
 })
@@ -313,7 +313,6 @@ Vue.component('vcd-homework', {
 		}
 	}
 })
-
 Vue.component('vcd-forums', {
 	template: /*HTML*/
 	`
@@ -370,7 +369,6 @@ Vue.component('vcd-conference', {
 		}
 	}
 })
-
 Vue.component('cd-schedule', {
 	template: /*HTML*/
 	`
@@ -416,7 +414,7 @@ Vue.component('cd-schedule', {
 				<h1 style="text-align: center"> <i class="mdi mdi-school"></i> </h1>
 				<h5 style="text-align: center">Sincronización de horario académico</h5>
 				<p style="text-align: center">
-					Para sincronizar tu horario académico ve a <a target="_blank" :href="protocol + '://intranet.unamad.edu.pe/'" style="color: var(--primary)">intranet.unamad.edu.pe</a> e inicia sesión. En la parte superior derecha habra un indicador que te avisara si ya se sincronizo los datos,
+					Para sincronizar tu horario académico ve a <a target="_blank" :href="$root.protocol + '://intranet.unamad.edu.pe/'" style="color: var(--primary)">intranet.unamad.edu.pe</a> e inicia sesión. En la parte superior derecha habra un indicador que te avisara si ya se sincronizo los datos,
 					cuando hayas terminado regresa a tu aula virtual y recarga la página.
 				</p>
 			</div>
@@ -499,11 +497,10 @@ Vue.component('vcd-tabbox',{
 		counter: {default: 0}, 
 	}
 })
-
 Vue.component('vcd-info',{
 	template: /* HTML */
 	`
-	<div>
+	<vcd-autoScroll padding="0 1rem">
 		<div class="cd-list">
 			<div class="cd-list-content">
 				Notas Version: 1.0.0 alpha<br><br>
@@ -578,8 +575,7 @@ Vue.component('vcd-info',{
 				<span><i class="mdi mdi-information cd-text-primary mdi-24px"></i> Actividades expiradas no se toman en cuenta.</span><br>
 			</div>
 		</div>
-	</div>
-	
+	</vcd-autoScroll>
 	`
 })
 Vue.component('vcd-helper-list',{
@@ -593,4 +589,34 @@ Vue.component('vcd-helper-list',{
 	</div>
 	`,
 	props: {archived: 0}
+})
+Vue.component('vcd-module',{
+	template:/*HTML*/ `
+		<div id="modelinject">
+			<div class="cd-dialog">
+				<div class="cd-dialog-actions-top">
+					<div class="mdl-typography--headline" style="color: white">{{title}}</div>
+					<div style="display: flex"></div>
+				</div>
+				<div class="cd-dialog-content" style="flex: 1; position: relative">
+					<div style="position: absolute; height: 100%; width: 100%">
+						<slot></slot>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	`,
+	props: ['title']
+})
+
+Vue.component('vcd-autoScroll', {
+	template: /*HTML */`
+		<div style="height: 100%; flex: 1">
+			<div style="overflowY: auto; height: 100%;" class="cd-scroll-custom"  :style="{padding: padding}"><slot></slot></div>
+		</div>
+	`,
+	props: {
+		padding: {default: '0'}
+	}
 })
