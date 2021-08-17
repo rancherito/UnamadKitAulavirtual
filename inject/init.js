@@ -8,7 +8,7 @@
 			anunces.parentNode.appendChild(wrapper);
 			wrapper.appendChild(anunces)
 		}*/
-		document.head.appendChild(htmlToElement('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.4.55/css/materialdesignicons.min.css">'))
+		document.head.appendChild(htmlToElement('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.9.55/css/materialdesignicons.min.css">'))
 		document.head.appendChild(htmlToElement('<link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet"></link>'))
 
 		document.body.appendChild(htmlToElement(
@@ -16,6 +16,7 @@
 			`
 		<div id="vueapp">
 			<div v-if="applyNewStyle" v-html="styleAula"></div>
+			<vcd-info-notify></vcd-info-notify>
 			<div id="cd-navmenu" :class="{'cd-navmenu-open': openPanel}">
 				<template v-if="openPanel">
 					<div style="padding-top: 60px; display: flex; flex-direction: column">

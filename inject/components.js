@@ -224,9 +224,9 @@ Vue.component('vcd-date', {
 		}
 	}
 })
-Vue.component('vcd-cooldown',{
+Vue.component('vcd-countdown',{
 	template: /*HTML */
-	`<div class="cd-cooldown f-c">
+	`<div class="cd-countdown f-c">
 		{{isAfter ? 'Termina en': 'Inicia en'}}
 		<span>{{isAfter? dateViewEnd: dateViewStart}}</span>
 	</div>
@@ -300,7 +300,7 @@ Vue.component('vcd-homework', {
 			
 		</div>
 		<div class="cd-list-access">
-			<vcd-cooldown :dateEnd="data.dateEndCustom" :dateStart="data.dateBeginCustom"></vcd-cooldown>
+			<vcd-countdown :dateEnd="data.dateEndCustom" :dateStart="data.dateBeginCustom"></vcd-countdown>
 		</div>
 		
 	</div>
@@ -329,7 +329,7 @@ Vue.component('vcd-forums', {
 			<div class="cd-list-subtitle" :style="{color: $root.colorCourse(data.nameCourse)}">CURSO: {{data.nameCourse}}</div>
 		</div>
 		<div class="cd-list-access">
-			<vcd-cooldown :dateEnd="data.dateEnd" :dateStart="data.dateBegin"></vcd-cooldown>
+			<vcd-countdown :dateEnd="data.dateEnd" :dateStart="data.dateBegin"></vcd-countdown>
 		</div>
 	</div>
 	`,
@@ -357,7 +357,7 @@ Vue.component('vcd-conference', {
 			<div class="cd-list-subtitle" :style="{color: $root.colorCourse(data.nameCourse)}">CURSO: {{data.nameCourse}}</div>
 		</div>
 		<div class="cd-list-access">
-			<vcd-cooldown :dateEnd="data.endTime" :dateStart="data.startTime"></vcd-cooldown>
+			<vcd-countdown :dateEnd="data.endTime" :dateStart="data.startTime"></vcd-countdown>
 		</div>
 	</div>
 	`,
@@ -367,6 +367,98 @@ Vue.component('vcd-conference', {
 			const [now, date] = [this.$root.now, (new Date(this.data.startTime)).getTime()]
 			return now > date
 		}
+	}
+})
+Vue.component('vcd-info-notify',{
+	template: /*HTML */`
+		<div class="cd-info-notify" v-if="$root.schedule.data.length && (info.current.length + info.next.length > 0)">
+			<div class="cd-info-notify-currenteCourse cd-info-notify-course" style="margin-bottom: 2px" v-show="info.current.length && (!next || info.next.length == 0)">
+				<i class="mdi mdi-alarm-check f-c"></i>
+				<div style="flex: 1">
+					<div style="font-size: .8rem;font-weight: bold;color: var(--success);">CURSO ACTUAL</div>
+					<div v-for="course in info.current">{{course.title}}</div>
+				</div>
+				
+			</div>
+			<div class="cd-info-notify-nextCourse cd-info-notify-course" v-if="info.next.length && (next || info.current.length == 0)">
+				<i class="mdi mdi-calendar-end f-c"></i>
+				<div style="display: flex; flex: 1">
+					<div style="flex: 1">
+						<div style="font-size: .8rem;font-weight: bold;color: var(--text-default);">CURSO PROXIMO</div>
+						<div v-for="course in info.next">{{$root.removeGroupsText(course.title)}}</div>
+					</div>
+					<div class="cd-countdown f-c" style="margin-left: .5rem">
+						Inicia en
+						<span>{{dateViewStart(info.next[0].start)}}</span>
+					</div>
+				</div>
+				
+			</div>
+			<a class="cd-notify-nextinfo f-c" href="#" @click="next = !next" v-show="info.current.length && info.next.length">
+				<i class="mdi" :class="next? 'mdi-chevron-right':  'mdi-chevron-left'"></i>
+			</a>
+		</div>
+	`,
+	data(){
+		return {
+			next: false
+		}
+	},
+	computed: {
+		info(){
+			const now = new Date(this.$root.now)
+			const courses = {}
+			let courseNext = []
+			let courseCurrent = []
+			//OBTENEMOS LOS CURSOS QUE CORRESPONDEN AL DIA ACTUAL Y LUEGO LO ORDENAMOS POR FECHA DE INICIO
+			const list = [...this.$root.schedule.data.filter(e => (new Date(e.start)).getDay() == now.getDay())].sort((a, b) => a.start.localeCompare(b.start))
+			
+
+			list.forEach(i => {
+
+				//BUSQUEDA DEL PROXIMO CURSO
+				if (courses[i.start] == undefined) courses[i.start] = []
+				courses[i.start].push(i)
+
+				//BUSQUEDA DEL CURSO ACTIVO
+				const [dStart, dEnd] = [new Date(i.start), new Date(i.end)]
+				if (dStart.getHours() <= now.getHours() && dEnd.getHours() > now.getHours()) {
+					courseCurrent.push(i)
+				}
+			});
+
+			for (const i in courses) {
+				const CourseFound = new Date(i);
+				if ((CourseFound.getHours() * 60 * 60 ) + (CourseFound.getMinutes() * 60 ) + CourseFound.getSeconds()  > (now.getHours() * 60 * 60 ) + (now.getMinutes() * 60 ) + now.getSeconds()) {
+					courseNext = courses[i]
+					break
+				}
+			}
+
+
+
+			return {current: courseCurrent, next: courseNext}
+		}
+	},
+	methods: {
+		
+		dateViewStart(date){
+			
+			const now = this.$root.now
+
+			let dateNow = new Date(now)
+			let dateCourse = new Date(date)
+
+			dateNow.setHours(dateCourse.getHours(), dateCourse.getMinutes(), 0, 0)
+
+			const distance = dateNow.getTime() - now;
+			
+			const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+			const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+			const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+			const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+			return distance < 0 ? '0m 0s' : (days ? days + "d ": '') + (hours + days ? hours + "h " : '') + (days ? '' : minutes + "m ") + (days + hours ? '' :seconds + 's')
+		},
 	}
 })
 Vue.component('cd-schedule', {

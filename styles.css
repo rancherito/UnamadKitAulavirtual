@@ -194,6 +194,38 @@
     border-radius: 18px;
     border: 1px solid var(--bg);
 }
+.cd-info-notify{
+    position: fixed;
+    bottom: 1rem;
+    border-radius: var(--rounded);
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    z-index: 10202;
+    display: flex;
+}
+.cd-info-notify-course,
+.cd-notify-nextinfo {
+    border-radius: var(--rounded);
+    background-color: var(--panel);
+    color: white;
+    padding: .5rem;
+    display: flex;
+}
+.cd-notify-nextinfo{
+    font-size: 1.5rem;
+    background-color: var(--primary);
+    margin-left: .5rem;
+}
+.cd-info-notify-course > i {
+    margin-right: .5rem;
+    font-size: 1.5rem;
+    height: 30px;
+    width: 30px;
+    border-radius: .5rem;
+    background: white;
+    color: var(--primary);
+}
 .cd-schedule-info{
     background: var(--bg);
     width: 100%;
@@ -428,7 +460,7 @@
     bottom: 0;
     transition: background all .2s;
 }
-.cd-cooldown{
+.cd-countdown{
     display: flex;
     flex-direction: column;
     width: 80px;
@@ -441,7 +473,7 @@
     margin-right: 2px;
     font-size: .7rem;
 }
-.cd-cooldown span{
+.cd-countdown span{
     display: block;
     font-size: 1rem;
     margin-top: -5px;
