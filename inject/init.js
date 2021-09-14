@@ -8,14 +8,22 @@
 			anunces.parentNode.appendChild(wrapper);
 			wrapper.appendChild(anunces)
 		}*/
+		
+		console.log(document.querySelector('.col-lg-8.ng-scope > .row'));
 		document.head.appendChild(htmlToElement('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.9.55/css/materialdesignicons.min.css">'))
-		document.head.appendChild(htmlToElement('<link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet"></link>'))
-
 		document.body.appendChild(htmlToElement(
 			/*html*/
 			`
 		<div id="vueapp">
-			<div v-if="applyNewStyle" v-html="styleAula"></div>
+			<div id="nav-native-fix">
+				<a href="/logout" className="cd-btn-native" id="other-close-session" v-show="applyNewStyle">
+					<img src="" alt="" />
+				</a>
+				<a href="/logout" className="cd-btn-native" id="other-close-session" v-show="applyNewStyle">
+					<i class="mdi mdi-logout"></i>
+				</a>
+			</div>
+			
 			<vcd-info-notify></vcd-info-notify>
 			<div id="cd-navmenu" :class="{'cd-navmenu-open': openPanel}">
 				<template v-if="openPanel">
@@ -44,7 +52,7 @@
 				</template>
 				<div style="display: flex; flex-direction: column">
 					<vue-custom-tooltip label="Cambiar tema" position="is-left">
-						<a class="cd-btn-navmenu" @click="applyNewStyle = !applyNewStyle" href="#" v-if="!openPanel">
+						<a class="cd-btn-navmenu" @click="applyNewStyle = !applyNewStyle; applyTheme()" href="#" v-if="!openPanel">
 							<i class="mdi" :class="applyNewStyle ? 'mdi-invert-colors-off' : 'mdi-format-color-fill'"></i>
 						</a>
 					</vue-custom-tooltip>
@@ -283,9 +291,15 @@
 				}
 			},
 			watch: {
-				...defdata.mutations,
+				...defdata.mutations
 			},
 			methods: {
+				applyTheme(){
+					
+					if (this.applyNewStyle) document.body.id = "bodyView"
+					else document.body.removeAttribute('id')
+					
+				},
 				minimizeApp() {
 					this.moduleActiveId = 0
 				},
@@ -510,8 +524,13 @@
 				chrome.runtime.sendMessage('getinfo');
 			},
 			mounted() {
-
-
+				this.applyTheme()
+				document.addEventListener('keyup', (e) => {
+					if(e.key === "Escape") {
+						this.openPanel = false 
+						this.moduleActiveId = 'md_activities'
+					}
+				})
 				chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 					if (message.qrstring != undefined) {
 						let bqr = new QRCode({

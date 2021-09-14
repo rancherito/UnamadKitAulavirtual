@@ -1,0 +1,294 @@
+
+body#bodyView.theme-dark div[ng-controller=IndexController]>div:nth-child(2) {
+    display: grid;
+    grid-template-areas:
+        "a b";
+    grid-template-columns: 1fr 500px;
+    grid-template-rows: 1fr;
+    gap: 1rem;
+}
+#bodyView .c_footer{
+    display: none;
+}
+#bodyView .quick-nav .quick-nav-bg {
+    background: var(--panel) !important;
+}
+#bodyView .page-content{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 80px;
+    z-index: 100;
+    margin: 0 !important;
+    padding: 4rem !important;
+    background: linear-gradient(180deg, var(--panel-light) 0, var(--panel-light) 200px, #f1f1f1 200px, #f1f1f1 100%);
+    overflow-y: auto;
+}
+#bodyView .col-lg-3.col-md-12>.col-lg-12:nth-child(1) img {
+    display: none;
+}
+#bodyView .list-unstyled.breadcrumb *{
+    color: white !important;
+}
+#bodyView .col-lg-3.col-md-12>.col-lg-12:nth-child(1) {
+    top: 2rem;
+    right: 4rem;
+    text-align: right;
+    position: fixed;
+    float: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+}
+#bodyView .col-lg-3.col-md-12>.col-lg-12:nth-child(1) *{
+    color: white !important;
+}
+#bodyView .left-menu {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    height: 100vh;
+    z-index: 101;
+    width: 80px !important;
+    overflow: hidden;
+}
+#bodyView .left-menu::before{
+    content: '';
+    position: absolute;
+    top: 1rem;
+    width: 100%;
+    background-image: url('https://i.ibb.co/4Fq74Xh/logo-1.png');
+    background-size: 50px auto;
+    height: 100px;
+    background-position: center;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+}
+#bodyView .logo-container{
+    display: none;
+}
+#bodyView .left-menu::after {
+    content: 'UNAMAD';
+    position: absolute;
+    top: 100px;
+    font-weight: bold;
+    font-size: .8rem;
+    color: white;
+    width: 100%;
+    text-align: center;
+}
+#bodyView .left-menu .logo-inverse{
+    display: none;
+}
+/*https://i.ibb.co/4Fq74Xh/logo-1.png*/
+#bodyView #course-no-mobile {
+    max-height: none !important;
+    grid-area: a;
+}
+
+#bodyView .page-content>.ng-scope>*:nth-child(2)>.row {
+    grid-area: b;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+#bodyView .page-content>.ng-scope>*:nth-child(2)>.row>* {
+    width: 100% !important;
+    padding-bottom: 1rem;
+    margin: 0;
+}
+
+#bodyView div[ng-controller=IndexController] .row>.col-md-6.hidden-sm {
+    display: none !important;
+}
+
+body#bodyView.theme-dark #course-no-mobile,
+body#bodyView.theme-dark div[ng-controller=IndexController] .row>.col-md-6.hidden-sm,
+body#bodyView.theme-dark .page-content>.ng-scope>*:nth-child(2)>.row {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+#bodyView .cd-anunces {
+    display: flex;
+}
+
+#bodyView button:focus {
+    outline: none !important;
+}
+
+#bodyView .btn.btn-back {
+    background-color: var(--web-primary) !important;
+}
+
+@media (min-width: 768px) {
+    body#bodyView.theme-dark nav.left-menu {
+        border-bottom: 0 solid var(--web-primary) !important;
+    }
+}
+
+body#bodyView.theme-dark>nav.left-menu {
+    background: var(--panel) !important;
+    border-bottom: 0 solid var(--web-primary) !important;
+}
+
+#bodyView .quick-nav-trigger {
+    background: var(--panel);
+}
+
+#bodyView nav.top-menu {
+    background: #f3f3f3 !important;
+}
+
+#bodyView .box-courses .row.row-labels {
+    /*display: none;*/
+}
+
+#bodyView .box-courses .img-course {
+    padding: 1rem 0;
+    margin: 0;
+}
+
+#bodyView .box-courses .img-course img {
+    width: 100%;
+}
+
+body#bodyView.theme-dark .title-course {
+    white-space: normal;
+    font-size: 1.2rem;
+}
+#bodyView .row-course{
+    background: transparent !important;
+}
+#bodyView .row-course>a {
+    display: flex;
+}
+#bodyView .btn{
+    border: 0 !important;
+    border-radius: 1rem;
+    background: linear-gradient(45deg, #b91634, #ec2449) !important;
+}
+body#bodyView.theme-dark .box-courses {
+    max-height: none !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 !important;
+    display: grid !important;
+    gap: .5rem;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+}
+body#bodyView.theme-dark #course-no-mobile .row {
+    margin: 0 0 4px 0 !important;
+}
+body#bodyView.menu-top.menu-static nav.left-menu+nav.top-menu {
+    padding: 0 !important;
+    height: 56px !important;
+}
+
+body#bodyView.theme-dark .content-dates,
+body#bodyView.theme-dark .content-dates+div,
+body#bodyView.theme-dark .content-Announcement,
+body#bodyView.theme-dark .row-body.box-courses > .row,
+body#bodyView.theme-dark .row-body2,
+#bodyView .tool-item,
+#bodyView .item-Announcement,
+#bodyView .desc-box,
+#bodyView .list-student-css,
+#bodyView .item-forum,
+#bodyView .sidebar-panel,
+#bodyView .course-container,
+#bodyView .item-annoucement,
+#bodyView .group-card {
+    background-color: var(--card) !important;
+    color: #293238 !important;
+    border-radius: 1rem;
+    border: 1px solid #f1f1f1;
+    box-shadow: 0 1px 2px 0px #0000001f;
+}
+
+body#bodyView.theme-dark .content-dates span.title-header,
+body#bodyView.theme-dark .content-dates+div span.title-header,
+body#bodyView.theme-dark .content-Announcement span.title-header,
+body#bodyView.theme-dark .row-body.box-courses>.row span.title-header,
+body#bodyView.theme-dark .row-body2 span.title-header,
+#bodyView .tool-item span.title-header,
+#bodyView .item-Announcement span.title-header,
+#bodyView .desc-box span.title-header,
+#bodyView .list-student-css span.title-header,
+#bodyView .item-forum span.title-header,
+#bodyView .sidebar-panel span.title-header,
+#bodyView .course-container span.title-header,
+#bodyView .item-annoucement span.title-header,
+#bodyView .group-card  span.title-header{
+    color: rgb(108, 109, 123) !important;
+}
+#bodyView span.title-header {
+    color: white !important;
+}
+#bodyView .course-container {
+    margin: 0;
+}
+body#bodyView.theme-dark hr {
+    display: none;
+}
+
+#bodyView .row-course>a>div:nth-child(1) {
+    padding: 0;
+    padding-left: 1rem;
+    width: 3rem;
+}
+
+#bodyView .row-course>a>div:nth-child(2) {
+    padding: 1rem;
+    flex: 1;
+}
+
+#bodyView .row-course>a>div:nth-child(2) .row {
+    margin: 0;
+}
+
+#bodyView .box-courses .row-course:not(:last-child) {
+    margin-bottom: 2px;
+}
+
+#bodyView .cd-icon-rotate::before {
+    animation-name: rotateanimation;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+#bodyView .tool-item img {
+    filter: invert(19%) sepia(62%) saturate(4489%) hue-rotate(337deg) brightness(101%) contrast(89%)
+}
+#nav-native-fix{
+    position: fixed;
+    bottom: 1rem;
+    z-index: 102;
+    width: 80px;
+    display: grid;
+    gap: .5rem;
+    justify-content: center;
+}
+#nav-native-fix > *{
+    height: 40px;
+    width: 40px;
+    background-color: var(--web-primary);
+    color: white;
+    font-size: 1.5rem;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+@media (max-width: 768px) {
+    #bodyView .row-course>a>div:nth-child(1) {
+        display: none;
+    }
+}

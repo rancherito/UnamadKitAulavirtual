@@ -2,13 +2,15 @@
     /*--primary: #00e59b;*/
     --primary: #ec2449;
     --secondary: #673ab7;
-    --panel: #0c0f1d;
+    --panel: #01101b;
+    --panel-light: #0a1825;
     --text-default: #d5d8e2;
     --bg: rgb(26, 28, 39);
     --web-primary: #ec2449;
     --ff-secondary: 'Caveat', cursive;
     --success: #8bc34a; /*#05cc47*/
     --rounded: 1rem;
+    --card: white;
 }
 
 .tooltip {

@@ -1,144 +1,6 @@
 
 const styleAula = `
 <style>
-body.theme-dark div[ng-controller=IndexController] > div:nth-child(2){
-    display: grid;
-    grid-template-areas:
-    "a b";
-    grid-template-columns: 1fr 500px;
-    grid-template-rows: 1fr;
-    gap: 1rem;
-}
-#course-no-mobile{
-    max-height: none !important;
-    grid-area: a;
-}
-.page-content>.ng-scope>*:nth-child(2)>.row {
-    grid-area: b;
-    display: grid;
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-}
-.page-content>.ng-scope>*:nth-child(2)>.row > *{
-    width: 100% !important;
-    padding: 1rem;
-    margin: 0;
-}
-div[ng-controller=IndexController] .row>.col-md-6.hidden-sm {
-    display: none !important;
-}
-body.theme-dark  #course-no-mobile,
-body.theme-dark  div[ng-controller=IndexController] .row>.col-md-6.hidden-sm,
-body.theme-dark  .page-content>.ng-scope>*:nth-child(2)>.row{
-    padding: 0;
-    margin: 0;
-    width: 100%;
-}
-
-.cd-anunces{
-    display: flex;
-}
-button:focus{
-    outline: none !important;
-}
-.btn.btn-back{
-    background-color: var(--web-primary) !important;
-}
-@media (min-width: 768px) {
-    body.theme-dark nav.left-menu {
-        border-bottom: 5px solid var(--web-primary) !important;
-    }
-}
-body.theme-dark > nav.left-menu {
-    background: var(--panel) !important;
-    border-bottom: 5px solid var(--web-primary) !important;
-}
-.quick-nav-trigger{
-    background: var(--panel);
-}
-nav.top-menu{
-    background: #f3f3f3 !important;
-}
-.box-courses .row.row-labels{
-    display: none;
-}
-.box-courses .img-course {
-    padding: 1rem 0;
-    margin: 0;
-}
-.box-courses .img-course img {
-    width: 100%;
-}
-body.theme-dark .title-course {
-    white-space: normal;
-}
-.row-course > a{
-    display: flex;
-    background: white;
-    border-bottom: 1px solid lightgray;
-}
-body.theme-dark .box-courses {
-    max-height: none !important;
-}
-body.menu-top.menu-static nav.left-menu + nav.top-menu{
-	padding: 0 !important;
-	height: 56px !important;
-}
-body.theme-dark .content-dates,
-body.theme-dark .content-dates + div,
-body.theme-dark .content-Announcement,
-body.theme-dark #course-no-mobile,
-body.theme-dark .row-body2,
-.tool-item,
-.item-Announcement,
-.desc-box,
-.list-student-css,
-.item-forum,
-.sidebar-panel,
-.course-container,
-.item-annoucement,
-.group-card {
-    background-color: white !important;
-    border-radius: .5rem;
-    border: none;
-    box-shadow: rgba(0, 0, 0, 0.14) 0px 2px 2px 0px,
-    rgba(0, 0, 0, 0.2) 0px 3px 1px -2px,
-    rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
-}
-body.theme-dark hr{
-    display: none;
-}
-
-.row-course>a  > div:nth-child(1){
-    padding: 0;
-    padding-left: 1rem;
-    width: 3rem;
-}
-.row-course>a>div:nth-child(2) {
-    padding: 1rem;
-    flex: 1;
-}
-.row-course>a>div:nth-child(2) .row{
-    margin: 0;
-}
-
-.box-courses .row-course:not(:last-child){
-    margin-bottom: 2px;
-}
-
-.cd-icon-rotate::before{
-    animation-name: rotateanimation;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-}
-
-@media (max-width: 768px) {
-    .row-course>a>div:nth-child(1) {
-        display: none;
-    }
-}
 </style>
 `
 
@@ -376,7 +238,7 @@ Vue.component('vcd-info-notify',{
 				<i class="mdi mdi-alarm-check f-c"></i>
 				<div style="flex: 1">
 					<div style="font-size: .8rem;font-weight: bold;color: var(--success);">CURSO ACTUAL</div>
-					<div v-for="course in info.current">{{course.title}}</div>
+					<div v-for="course in info.current">{{$root.removeGroupsText(course.title)}}</div>
 				</div>
 				
 			</div>
@@ -384,7 +246,7 @@ Vue.component('vcd-info-notify',{
 				<i class="mdi mdi-calendar-end f-c"></i>
 				<div style="display: flex; flex: 1">
 					<div style="flex: 1">
-						<div style="font-size: .8rem;font-weight: bold;color: var(--text-default);">CURSO PROXIMO</div>
+						<div style="font-size: .8rem;font-weight: bold;color: var(--text-default);">SIGUIENTE CURSO</div>
 						<div v-for="course in info.next">{{$root.removeGroupsText(course.title)}}</div>
 					</div>
 					<div class="cd-countdown f-c" style="margin-left: .5rem">
@@ -395,7 +257,7 @@ Vue.component('vcd-info-notify',{
 				
 			</div>
 			<a class="cd-notify-nextinfo f-c" href="#" @click="next = !next" v-show="info.current.length && info.next.length">
-				<i class="mdi" :class="next? 'mdi-chevron-right':  'mdi-chevron-left'"></i>
+				<i class="mdi" :class="next? 'mdi-chevron-left':  'mdi-chevron-right'"></i>
 			</a>
 		</div>
 	`,
