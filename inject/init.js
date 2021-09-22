@@ -17,10 +17,9 @@
 		<div id="vueapp">
 			<div id="nav-native-fix">
 				<a href="/logout" className="cd-btn-native" id="other-close-session" v-show="applyNewStyle">
-					<img src="" alt="" />
-				</a>
-				<a href="/logout" className="cd-btn-native" id="other-close-session" v-show="applyNewStyle">
-					<i class="mdi mdi-logout"></i>
+					<svg style="height:24px" viewBox="0 0 24 24">
+						<path fill="#FFF" d="M16,17V14H9V10H16V7L21,12L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z" />
+					</svg>
 				</a>
 			</div>
 			
@@ -53,22 +52,31 @@
 				<div style="display: flex; flex-direction: column">
 					<vue-custom-tooltip label="Cambiar tema" position="is-left">
 						<a class="cd-btn-navmenu" @click="applyNewStyle = !applyNewStyle; applyTheme()" href="#" v-if="!openPanel">
-							<i class="mdi" :class="applyNewStyle ? 'mdi-invert-colors-off' : 'mdi-format-color-fill'"></i>
+							<svg style="width:24px;height:24px" viewBox="0 0 24 24" v-if="applyNewStyle">
+								<path fill="#FFF" d="M20.65,20.87L18.3,18.5L12,12.23L8.44,8.66L7,7.25L4.27,4.5L3,5.77L5.78,8.55C3.23,11.69 3.42,16.31 6.34,19.24C7.9,20.8 9.95,21.58 12,21.58C13.79,21.58 15.57,21 17.03,19.8L19.73,22.5L21,21.23L20.65,20.87M12,19.59C10.4,19.59 8.89,18.97 7.76,17.83C6.62,16.69 6,15.19 6,13.59C6,12.27 6.43,11 7.21,10L12,14.77V19.59M12,5.1V9.68L19.25,16.94C20.62,14 20.09,10.37 17.65,7.93L12,2.27L8.3,5.97L9.71,7.38L12,5.1Z" />
+							</svg>
+							<svg style="width:24px;height:24px" viewBox="0 0 24 24" v-else>
+								<path fill="currentColor" d="M17.5,12A1.5,1.5 0 0,1 16,10.5A1.5,1.5 0 0,1 17.5,9A1.5,1.5 0 0,1 19,10.5A1.5,1.5 0 0,1 17.5,12M14.5,8A1.5,1.5 0 0,1 13,6.5A1.5,1.5 0 0,1 14.5,5A1.5,1.5 0 0,1 16,6.5A1.5,1.5 0 0,1 14.5,8M9.5,8A1.5,1.5 0 0,1 8,6.5A1.5,1.5 0 0,1 9.5,5A1.5,1.5 0 0,1 11,6.5A1.5,1.5 0 0,1 9.5,8M6.5,12A1.5,1.5 0 0,1 5,10.5A1.5,1.5 0 0,1 6.5,9A1.5,1.5 0 0,1 8,10.5A1.5,1.5 0 0,1 6.5,12M12,3A9,9 0 0,0 3,12A9,9 0 0,0 12,21A1.5,1.5 0 0,0 13.5,19.5C13.5,19.11 13.35,18.76 13.11,18.5C12.88,18.23 12.73,17.88 12.73,17.5A1.5,1.5 0 0,1 14.23,16H16A5,5 0 0,0 21,11C21,6.58 16.97,3 12,3Z" />
+							</svg>
 						</a>
 					</vue-custom-tooltip>
 						
 					<vue-custom-tooltip label="Horario" position="is-left">
 						<a class="cd-btn-navmenu"  href="#" @click="openPanel = true; moduleActiveId = 'md_schedule'" :class="{active: moduleActiveId == 'md_schedule'}" id="btn_id_schedule">
-							<i class="mdi mdi-calendar"></i>
+							<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+								<path fill="#FFF" d="M9,10V12H7V10H9M13,10V12H11V10H13M17,10V12H15V10H17M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5A2,2 0 0,1 5,3H6V1H8V3H16V1H18V3H19M19,19V8H5V19H19M9,14V16H7V14H9M13,14V16H11V14H13M17,14V16H15V14H17Z" />
+							</svg>
 						</a>
 					</vue-custom-tooltip>
 					<vue-custom-tooltip label="Panel principal" position="is-left">
 						<a class="cd-btn-navmenu" @click="openPanel = true; moduleActiveId = 'md_activities'" href="#" :class="{active: moduleActiveId == 'md_activities'}">
 							<span v-if="actividities > 0 && moduleActiveId != 1">{{actividities}}</span>
-							<i class="mdi mdi-school"></i>
+							<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+								<path fill="#FFF" d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
+							</svg>
 						</a>
 					</vue-custom-tooltip>
-					<vue-custom-tooltip label="Cerrar panel" position="is-left">
+					<vue-custom-tooltip label="Cerrar panel (ESC)" position="is-left">
 						<a v-if="openPanel" class="cd-btn-navmenu" @click="openPanel = false; moduleActiveId = 'md_activities'" href="#">
 							<i class="mdi mdi-close"></i>
 						</a>

@@ -62,7 +62,9 @@
             methods: {
                 loadData(){
                     this.isLoading = true
-                    fetch(protocol + '://intranet.unamad.edu.pe/alumno/horario-semana/get?start='+join(init)+'&end='+join(end)).then(e => e.json()).then(data => {
+                    let currentUrl = window.location.href
+                    let userTarget = currentUrl.includes('alumno') ? 'alumno' : 'profesor'
+                    fetch(protocol + '://intranet.unamad.edu.pe/' + userTarget +'/horario-semana/get?start='+join(init)+'&end='+join(end)).then(e => e.json()).then(data => {
                         //console.log(data);
                         this.data = data;
                         chrome.runtime.sendMessage(data);

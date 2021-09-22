@@ -235,7 +235,7 @@ Vue.component('vcd-info-notify',{
 	template: /*HTML */`
 		<div class="cd-info-notify" v-if="$root.schedule.data.length && (info.current.length + info.next.length > 0)">
 			<div class="cd-info-notify-currenteCourse cd-info-notify-course" style="margin-bottom: 2px" v-show="info.current.length && (!next || info.next.length == 0)">
-				<i class="mdi mdi-alarm-check f-c"></i>
+				
 				<div style="flex: 1">
 					<div style="font-size: .8rem;font-weight: bold;color: var(--success);">CURSO ACTUAL</div>
 					<div v-for="course in info.current">{{$root.removeGroupsText(course.title)}}</div>
@@ -243,22 +243,23 @@ Vue.component('vcd-info-notify',{
 				
 			</div>
 			<div class="cd-info-notify-nextCourse cd-info-notify-course" v-if="info.next.length && (next || info.current.length == 0)">
-				<i class="mdi mdi-calendar-end f-c"></i>
+				
 				<div style="display: flex; flex: 1">
 					<div style="flex: 1">
-						<div style="font-size: .8rem;font-weight: bold;color: var(--text-default);">SIGUIENTE CURSO</div>
+						<div style="font-size: .8rem;font-weight: bold;color: var(--text-default);">SIGUIENTE CURSO EN: {{dateViewStart(info.next[0].start)}}</div>
 						<div v-for="course in info.next">{{$root.removeGroupsText(course.title)}}</div>
 					</div>
-					<div class="cd-countdown f-c" style="margin-left: .5rem">
-						Inicia en
-						<span>{{dateViewStart(info.next[0].start)}}</span>
-					</div>
 				</div>
-				
+				<a class="cd-notify-nextinfo f-c" href="#" @click="next = !next" v-show="info.current.length && info.next.length">
+					<svg style="height:24px" viewBox="0 0 24 24" v-if="next">
+						<path fill="#FFF" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
+					</svg>
+					<svg style="height:24px" viewBox="0 0 24 24" v-else>
+						<path fill="#FFF" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+					</svg>
+				</a>
 			</div>
-			<a class="cd-notify-nextinfo f-c" href="#" @click="next = !next" v-show="info.current.length && info.next.length">
-				<i class="mdi" :class="next? 'mdi-chevron-left':  'mdi-chevron-right'"></i>
-			</a>
+			
 		</div>
 	`,
 	data(){
@@ -434,14 +435,15 @@ Vue.component('vcd-tabbox',{
 	template: /*HTML */
 	`
 	<div class="cd-nav-btn-content f-c">
-		<a :id="'tabbox_' + tabid" href="#" class="cd-nav-btn" :class="$root.tabposition == tabid ? 'active' : ''" @click="$root.tabposition = tabid">
-			<div>
-				<b v-if="counter">{{counter}}</b>
-				<i class="mdi" :class="icon"></i>
-			</div>
-			<span>{{text}}</span>
-		</a>
-		<div class="mdl-tooltip mdl-tooltip--top" :data-mdl-for="'tabbox_' + tabid">{{text}}</div>
+		<vue-custom-tooltip :label="text" position="is-top">
+			<a :id="'tabbox_' + tabid" href="#" class="cd-nav-btn" :class="$root.tabposition == tabid ? 'active' : ''" @click="$root.tabposition = tabid">
+				<div>
+					<b v-if="counter">{{counter}}</b>
+					<i class="mdi" :class="icon"></i>
+				</div>
+				<span>{{text}}</span>
+			</a>
+		</vue-custom-tooltip>
 	</div>
 	`,
 	props: {

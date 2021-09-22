@@ -169,9 +169,13 @@ body#bodyView.theme-dark .title-course {
     display: flex;
 }
 #bodyView .btn{
-    border: 0 !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    border-top: 0 !important;
+    border-bottom: 0 !important;
     border-radius: 1rem;
     background: linear-gradient(45deg, #b91634, #ec2449) !important;
+    
 }
 body#bodyView.theme-dark .box-courses {
     max-height: none !important;
@@ -195,6 +199,7 @@ body#bodyView.theme-dark .content-dates+div,
 body#bodyView.theme-dark .content-Announcement,
 body#bodyView.theme-dark .row-body.box-courses > .row,
 body#bodyView.theme-dark .row-body2,
+#bodyView .content-data,
 #bodyView .tool-item,
 #bodyView .item-Announcement,
 #bodyView .desc-box,
@@ -203,7 +208,9 @@ body#bodyView.theme-dark .row-body2,
 #bodyView .sidebar-panel,
 #bodyView .course-container,
 #bodyView .item-annoucement,
-#bodyView .group-card {
+#bodyView .group-card,
+#bodyView .col-lg-9>.col-lg-12.col-md-12:nth-child(2) .row.panel-bg.padding-15,
+#bodyView .col-lg-12.box-answers#box-courses .item {
     background-color: var(--card) !important;
     color: #293238 !important;
     border-radius: 1rem;
