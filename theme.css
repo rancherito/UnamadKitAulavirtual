@@ -175,7 +175,7 @@ body#bodyView.theme-dark .title-course {
     border-bottom: 0 !important;
     border-radius: 1rem;
     background: linear-gradient(45deg, #b91634, #ec2449) !important;
-    
+    color: white !important;
 }
 body#bodyView.theme-dark .box-courses {
     max-height: none !important;
@@ -259,6 +259,13 @@ body#bodyView.theme-dark hr {
     margin: 0;
 }
 
+@media (max-width: 1500px) {
+    #bodyView .row-course>a>div:nth-child(2) .row.row-labels {
+        margin: 0;
+        display: none !important;
+    }
+
+}
 #bodyView .box-courses .row-course:not(:last-child) {
     margin-bottom: 2px;
 }
@@ -276,11 +283,14 @@ body#bodyView.theme-dark hr {
 #nav-native-fix{
     position: fixed;
     bottom: 1rem;
+    top: 120px;
     z-index: 102;
     width: 80px;
-    display: grid;
+    display: flex;
     gap: .5rem;
-    justify-content: center;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
 }
 #nav-native-fix > *{
     height: 40px;

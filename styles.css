@@ -397,6 +397,20 @@
 .cd-dialog-actions-top a:hover{
     color: white;
 }
+.cd-btn{
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 36px;
+    padding: .5rem;
+    background-color: var(--primary);
+    
+}
+.cd-btn svg{
+    fill: white;
+}
 .cd-btn-navmenu{
     height: 60px;
     width: 60px;
@@ -746,8 +760,10 @@
 }
 .mdl-chip-sm{
     padding: 0 .5rem;
-    height: 20px;
-    line-height: 20px;
+    height: 22px;
+    line-height: 22px;
+    background-color: var(--primary);
+    border-radius: var(--rounded);
 }
 .mdl-chip-sm .mdl-chip__text{
     font-size: .8rem;

@@ -8,15 +8,19 @@
 			anunces.parentNode.appendChild(wrapper);
 			wrapper.appendChild(anunces)
 		}*/
-		
-		console.log(document.querySelector('.col-lg-8.ng-scope > .row'));
 		document.head.appendChild(htmlToElement('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.9.55/css/materialdesignicons.min.css">'))
 		document.body.appendChild(htmlToElement(
 			/*html*/
 			`
+		
 		<div id="vueapp">
 			<div id="nav-native-fix">
-				<a href="/logout" className="cd-btn-native" id="other-close-session" v-show="applyNewStyle">
+				<a style="background-color: var(--panel-light)" title="Cerrar Sesión" href="/" className="cd-btn-native" id="other-close-session" v-show="applyNewStyle">
+					<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+						<path fill="#FFF" d="M12,3L20,9V21H15V14H9V21H4V9L12,3Z" />
+					</svg>
+				</a>
+				<a title="Cerrar Sesión" href="/logout" className="cd-btn-native" id="other-close-session" v-show="applyNewStyle">
 					<svg style="height:24px" viewBox="0 0 24 24">
 						<path fill="#FFF" d="M16,17V14H9V10H16V7L21,12L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z" />
 					</svg>
@@ -60,7 +64,9 @@
 							</svg>
 						</a>
 					</vue-custom-tooltip>
-						
+					
+					
+
 					<vue-custom-tooltip label="Horario" position="is-left">
 						<a class="cd-btn-navmenu"  href="#" @click="openPanel = true; moduleActiveId = 'md_schedule'" :class="{active: moduleActiveId == 'md_schedule'}" id="btn_id_schedule">
 							<svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -114,6 +120,7 @@
 						<div style="text-align: center">Módulo en fase experimental</div>
 					</div>
 				</vcd-module>
+
 					
 				<vcd-module :title="modulesTitles[tabposition]" v-show="moduleActiveId == 'md_activities'">				
 					<div style="display: flex; flex-direction: column;">
@@ -206,6 +213,7 @@
 		))
 
 
+		
 
 		//CREAMOS LAS VARIABLES QUE ALMACENAREMOS EN EL LOCALSTORAGE DEL SITIO WEB PARA EVITAR RECARGAS
 		let defdata = createStorage({
@@ -235,7 +243,8 @@
 			user: null,
 			applyNewStyle: false
 		})
-
+		if (defdata.variables.applyNewStyle) document.body.id = "bodyView"
+		else document.body.removeAttribute('id')
 		new Vue({
 			el: '#vueapp',
 			data: {

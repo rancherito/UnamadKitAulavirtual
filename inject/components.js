@@ -38,7 +38,7 @@ Vue.component('vcd-void-box',{
 })
 Vue.component('vcd-btn', {
 	template: /*HTML */
-	`<a @click="launchEvents" class="mdl-button mdl-button--raised mdl-button--colored" :class="'cd-btn-' + type">
+	`<a @click="launchEvents" class="cd-btn" :class="'cd-btn-' + type">
 		<i class="mdi mdi-24px" :class="icon"></i>
 	</a>
 	`,
@@ -49,7 +49,10 @@ Vue.component('vcd-btn', {
 	},
 	methods: {
 		launchEvents(){
-			if (this.minimizeApp) this.$root.moduleActiveId = 0
+			if (this.minimizeApp) {
+				this.$root.moduleActiveId = 'md_activities'
+				this.openPanel = false
+			}
 		}
 	}
 })
@@ -459,9 +462,19 @@ Vue.component('vcd-info',{
 	<vcd-autoScroll padding="0 1rem">
 		<div class="cd-list">
 			<div class="cd-list-content">
+				Notas Version: 1.0.11<br><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Nuevo diseño de tema.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Botón de inicio y cerrar sesión en el nuevo tema.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Cuenta regresiva del próximo curso a iniciarce en el horario.</span><br>
+				<span><i class="mdi mdi-auto-fix cd-text-primary mdi-24px"></i> Corrección de de colores.</span><br>
+				<span><i class="mdi mdi-auto-fix cd-text-primary mdi-24px"></i> Corrección al momento de sincronizar horario del estudiante.</span><br>
+			</div>
+		</div>
+		<div class="cd-list">
+			<div class="cd-list-content">
 				Notas Version: 1.0.0 alpha<br><br>
 				<span><i class="mdi mdi-information cd-text-primary mdi-24px"></i> Lanzamiento oficial de la extensión.</span><br>
-				<span><i class="mdi mdi-information cd-text-primary mdi-24px"></i> Corrección de visualizacion de foros que desaparecian aún cuando no han finalizado.</span><br>
+				<span><i class="mdi mdi-auto-fix cd-text-primary mdi-24px"></i> Corrección de visualizacion de foros que desaparecian aún cuando no han finalizado.</span><br>
 			</div>
 		</div>
 		<div class="cd-list">
