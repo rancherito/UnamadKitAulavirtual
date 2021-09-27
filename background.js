@@ -33,7 +33,8 @@ function do_something(tab) {
 }
 */
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (sender.origin.includes('intranet.unamad.edu.pe')) {
+    
+    if (sender.url.includes('intranet.unamad.edu.pe')) {
         localStorage.setItem('schedule', JSON.stringify(message))
        chrome.cookies.getAllCookieStores(function (cookieStores) {
             let storeid = ''
@@ -54,7 +55,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         })
     }
-    if (sender.origin.includes('aulavirtual.unamad.edu.pe')) {
+    if (sender.url.includes('aulavirtual.unamad.edu.pe')) {
         let schedule = localStorage.getItem('schedule') ?? '[]'
         chrome.tabs.sendMessage(sender.tab.id, {
             schedule: JSON.parse(schedule)
