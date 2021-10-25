@@ -10,8 +10,8 @@ body#bodyView.theme-dark div[ng-controller=IndexController]>div:nth-child(2) {
 #bodyView .c_footer{
     display: none;
 }
-.quick-nav .quick-nav-bg {
-    background: var(--panel) !important;
+#bodyView .quick-nav .quick-nav-bg {
+    background-color: var(--panel) !important;
 }
 #bodyView [src*=".svg"] {
     filter: invert(19%) sepia(62%) saturate(4489%) hue-rotate(337deg) brightness(101%) contrast(89%);
@@ -64,6 +64,12 @@ body#bodyView.theme-dark div[ng-controller=IndexController]>div:nth-child(2) {
 #bodyView img[src*="/icon-g-anuncios.svg"] {
     content: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGRhdGEtbmFtZT0iTGF5ZXIgMSIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjMDAwMDAwIiBkPSJNMTkuOTkxMjEsMi4wMDJhLjk5OTQzLjk5OTQzLDAsMCwwLTEsMXYuNjM2NzJhOS4wMzYxNyw5LjAzNjE3LDAsMCwxLTcsMy4zNjMyOGgtNmEzLjAwMzI4LDMuMDAzMjgsMCwwLDAtMywzdjJhMy4wMDMyOCwzLjAwMzI4LDAsMCwwLDMsM0g2LjQ3NUw0LjA3MjI3LDIwLjYwODRBLjk5OTMxLjk5OTMxLDAsMCwwLDQuOTkxMjEsMjIuMDAyaDRhLjk5ODU3Ljk5ODU3LDAsMCwwLC45MTg5NS0uNjA2NDRMMTIuNjMzOTEsMTUuMDRhOS4wMjgwNSw5LjAyODA1LDAsMCwxLDYuMzU3MywzLjMyNTA3VjE5LjAwMmExLDEsMCwwLDAsMiwwdi0xNkEuOTk5NDIuOTk5NDIsMCwwLDAsMTkuOTkxMjEsMi4wMDJabS0xNCwxMWExLjAwMDY3LDEuMDAwNjcsMCwwLDEtMS0xdi0yYTEuMDAwNjgsMS4wMDA2OCwwLDAsMSwxLTFoMXY0Wm0yLjM0MDgyLDdINi41MDc4MWwyLjE0MjU4LTVoMS44MjQyMlpNMTguOTkxMjEsMTUuNTIzOGExMS4wNTIsMTEuMDUyLDAsMCwwLTctMi41MjE4NWgtM3YtNGgzYTExLjA1MjgxLDExLjA1MjgxLDAsMCwwLDctMi41MjIzNFoiLz48L3N2Zz4=");
 }
+#bodyView .modal-backdrop{
+    z-index: 99 !important;
+}
+#bodyView .modal-dialog {
+    box-shadow: 0 6px 9px 2px #00000017;
+}
 #bodyView .page-content{
     position: fixed;
     top: 0;
@@ -72,7 +78,7 @@ body#bodyView.theme-dark div[ng-controller=IndexController]>div:nth-child(2) {
     left: 80px;
     z-index: 100;
     margin: 0 !important;
-    padding: 4rem !important;
+    padding: 6rem 4rem 4rem 4rem !important;
     background: linear-gradient(180deg, transparent 0, transparent 220px, #f1f1f1 220px, #f1f1f1 100%);
     overflow-y: auto;
 }
@@ -101,21 +107,23 @@ background-position-y: center;
 #bodyView .col-lg-3.col-md-12>.col-lg-12:nth-child(1) img {
     display: none;
 }
-#bodyView .list-unstyled.breadcrumb *{
-    color: white !important;
-}
 #bodyView .col-lg-3.col-md-12>.col-lg-12:nth-child(1) {
-    top: 2rem;
-    right: 4rem;
+    top: 0;
+    left: 0;
+    line-height: 6rem;
     text-align: right;
     position: fixed;
     float: none !important;
     margin: 0 !important;
     padding: 0 !important;
-    width: auto !important;
+    width: 100% !important;
+    text-align: center;
 }
-#bodyView .col-lg-3.col-md-12>.col-lg-12:nth-child(1) *{
-    color: white !important;
+#bodyView .col-lg-3.col-md-12>.col-lg-12:nth-child(1) .title-header{
+    font-size: 2rem !important;
+    font-weight: lighter;
+    width: 100% !important;
+    display: block;
 }
 #bodyView .left-menu {
     position: fixed;
@@ -222,19 +230,6 @@ body#bodyView.theme-dark>nav.left-menu {
     /*display: none;*/
 }
 
-#bodyView .box-courses .img-course {
-    padding: 1rem 0;
-    margin: 0;
-}
-
-#bodyView .box-courses .img-course img {
-    width: 100%;
-}
-
-body#bodyView.theme-dark .title-course {
-    white-space: normal;
-    font-size: 1.2rem;
-}
 #bodyView .row-course{
     background: transparent !important;
 }
@@ -247,13 +242,12 @@ body#bodyView.theme-dark .title-course {
     border-top: 0 !important;
     border-bottom: 0 !important;
     border-radius: 1rem;
-    background: linear-gradient(45deg, #b91634, #ec2449) !important;
+    background: var(--gradient-primary) !important;
     color: white !important;
 }
 body#bodyView.theme-dark .box-courses {
     max-height: none !important;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: initial;
     padding: 0 !important;
     display: grid !important;
     gap: .5rem;
@@ -283,12 +277,16 @@ body#bodyView.theme-dark .row-body2,
 #bodyView .item-annoucement,
 #bodyView .group-card,
 #bodyView .col-lg-9>.col-lg-12.col-md-12:nth-child(2) .row.panel-bg.padding-15,
-#bodyView .col-lg-12.box-answers#box-courses .item {
+#bodyView .col-lg-12.box-answers#box-courses .item,
+#bodyView [ng-controller=ChatController] .messaging {
     background-color: var(--card) !important;
     color: #293238 !important;
-    border-radius: 1rem;
+    border-radius: 2rem;
     border: 1px solid #f1f1f1;
     box-shadow: 0 1px 2px 0px #0000001f;
+}
+#bodyView [ng-controller=ChatController] .messaging{
+    overflow: hidden;
 }
 
 body#bodyView.theme-dark .content-dates span.title-header,
@@ -306,9 +304,6 @@ body#bodyView.theme-dark .row-body2 span.title-header,
 #bodyView .item-annoucement span.title-header,
 #bodyView .group-card  span.title-header{
     color: rgb(108, 109, 123) !important;
-}
-#bodyView span.title-header {
-    color: white !important;
 }
 #bodyView .course-container {
     margin: 0;
@@ -332,13 +327,12 @@ body#bodyView.theme-dark hr {
     margin: 0;
 }
 
-@media (max-width: 1500px) {
-    #bodyView .row-course>a>div:nth-child(2) .row.row-labels {
-        margin: 0;
-        display: none !important;
-    }
-
+#bodyView .row-course>a>div:nth-child(2) .row.row-labels {
+    margin: 0;
+    display: none !important;
 }
+
+
 #bodyView .box-courses .row-course:not(:last-child) {
     margin-bottom: 2px;
 }
@@ -351,22 +345,22 @@ body#bodyView.theme-dark hr {
 }
 #nav-native-fix{
     position: fixed;
-    bottom: 1rem;
-    top: 120px;
+    left: 1rem;
+    top: 1px;
     z-index: 102;
-    width: 80px;
+    height: 80px;
     display: flex;
     gap: .5rem;
     justify-content: space-between;
-    flex-direction: column;
     align-items: center;
 }
 #nav-native-fix > *{
     height: 40px;
-    width: 40px;
+    min-width: 40px;
+    padding: 0 .5rem;
     background-color: var(--web-primary);
     color: white;
-    font-size: 1.5rem;
+    font-size: 1rem;
     border-radius: 1rem;
     display: flex;
     justify-content: center;
@@ -378,3 +372,59 @@ body#bodyView.theme-dark hr {
         display: none;
     }
 }
+
+
+body#bodyView.theme-dark .page-content >* {
+    max-width: 1600px;
+    width: 100% !important;
+}
+body#bodyView.theme-dark div[ng-controller="IndexController"] {
+    max-width: 1000px;
+    width: 100% !important;
+}
+#bodyView .page-content::before,
+#bodyView .page-content::after {
+    height: 100%;
+    bottom: 0;
+}
+
+#bodyView .page-content::after {
+    opacity: .95 !important;
+    background-color: #F5F5F5;
+}
+
+#bodyView .page-content {
+    left: 0 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+body#bodyView.theme-dark>nav.left-menu {
+    display: none !important;
+}
+
+#bodyView .page-content div[ng-controller=CourseController]> :nth-child(1)> :nth-child(1)> :nth-child(3) > div {
+    
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-auto-rows: 120px;
+    gap: 1rem;
+    margin: 0 !important;
+}
+#bodyView .page-content div[ng-controller=CourseController]> :nth-child(1)> :nth-child(1)> :nth-child(3)>div>div{
+    padding: 0 !important;
+}
+#bodyView .page-content div[ng-controller=CourseController]> :nth-child(1)> :nth-child(1)> :nth-child(3)>div>div{
+    width: 100%;
+}
+#bodyView .page-content div[ng-controller=CourseController]> :nth-child(1)> :nth-child(1)> :nth-child(3)>div>div a div{
+    margin: 0 !important;
+    height: 100%;
+}
+
+
+
+/*
+STYLES NEW THEME
+
+*/

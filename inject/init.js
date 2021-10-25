@@ -8,7 +8,6 @@
 			anunces.parentNode.appendChild(wrapper);
 			wrapper.appendChild(anunces)
 		}*/
-		document.head.appendChild(htmlToElement('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.9.55/css/materialdesignicons.min.css">'))
 		document.body.appendChild(htmlToElement(
 			/*html*/
 			`
@@ -20,10 +19,11 @@
 						<path fill="#FFF" d="M12,3L20,9V21H15V14H9V21H4V9L12,3Z" />
 					</svg>
 				</a>
-				<a title="Cerrar Sesión" href="/logout" className="cd-btn-native" id="other-close-session" v-show="applyNewStyle">
+				<a title="Cerrar Sesión" href="/logout" className="cd-btn-native" id="other-home" v-show="applyNewStyle">
 					<svg style="height:24px" viewBox="0 0 24 24">
 						<path fill="#FFF" d="M16,17V14H9V10H16V7L21,12L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z" />
 					</svg>
+					<span style="padding-left: .5rem">Cerrar Sesion</span>
 				</a>
 			</div>
 			
@@ -76,7 +76,7 @@
 					
 
 					<vue-custom-tooltip label="Horario" position="is-left">
-						<a class="cd-btn-navmenu"  href="#" @click="openPanel = true; moduleActiveId = 'md_schedule'" :class="{active: moduleActiveId == 'md_schedule'}" id="btn_id_schedule">
+						<a class="cd-btn-navmenu"  href="#" @click="openPanel = true; moduleActiveId = 'md_schedule_2'" :class="{active: moduleActiveId == 'md_schedule'}" id="btn_id_schedule">
 							<svg style="width:24px;height:24px" viewBox="0 0 24 24">
 								<path fill="#FFF" d="M9,10V12H7V10H9M13,10V12H11V10H13M17,10V12H15V10H17M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5A2,2 0 0,1 5,3H6V1H8V3H16V1H18V3H19M19,19V8H5V19H19M9,14V16H7V14H9M13,14V16H11V14H13M17,14V16H15V14H17Z" />
 							</svg>
@@ -130,14 +130,24 @@
 						<div style="text-align: center">Módulo en fase experimental</div>
 					</div>
 				</vcd-module>
-
+				<vcd-module title="Horario" v-show="moduleActiveId == 'md_schedule_2'">
+					<cd-schedule-2></cd-schedule-2>
+				</vcd-module>
 					
 				<vcd-module :title="modulesTitles[tabposition]" v-show="moduleActiveId == 'md_activities'">				
-					<div style="display: flex; flex-direction: column;">
+					<div style="display: flex; flex-direction: column; height: 100%">
 						<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 0">
 						
 							<div v-for="course in courses_list" class="cd-list">
-								<i :style="{color: colorCourse(course.name)}" class="cd-list-icon mdi" :class="course.exams.isUpdating || course.homeworks.isUpdating || course.forums.isUpdating|| course.conferencesUpdating ? 'mdi-loading mdi-spin' : 'mdi-book'"></i>
+							
+								<svg v-if="course.exams.isUpdating || course.homeworks.isUpdating || course.forums.isUpdating|| course.conferencesUpdating" class="cd-list-icon" :style="{fill: colorCourse(course.name)}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+									<path d="M19.91,15.51H15.38a1,1,0,0,0,0,2h2.4A8,8,0,0,1,4,12a1,1,0,0,0-2,0,10,10,0,0,0,16.88,7.23V21a1,1,0,0,0,2,0V16.5A1,1,0,0,0,19.91,15.51ZM12,2A10,10,0,0,0,5.12,4.77V3a1,1,0,0,0-2,0V7.5a1,1,0,0,0,1,1h4.5a1,1,0,0,0,0-2H6.22A8,8,0,0,1,20,12a1,1,0,0,0,2,0A10,10,0,0,0,12,2Z"/>
+								</svg>
+
+								<svg v-else class="cd-list-icon" :style="{fill: colorCourse(course.name)}" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24">
+									<path d="M17,2H5A1,1,0,0,0,4,3V19a1,1,0,0,0,1,1H6v1a1,1,0,0,0,1,1H7a1,1,0,0,0,1-1V20h9a3,3,0,0,0,3-3V5A3,3,0,0,0,17,2ZM14,18H6V4h8Zm4-1a1,1,0,0,1-1,1H16V4h1a1,1,0,0,1,1,1Z"/>
+								</svg>
+
 								
 								<div class="cd-list-content" >
 									
@@ -240,7 +250,8 @@
 		//CREAMOS LAS VARIABLES QUE ALMACENAREMOS EN EL LOCALSTORAGE DEL SITIO WEB PARA EVITAR RECARGAS
 		let defdata = createStorage({
 			schedule: {
-				data: []
+				data: [],
+				default: true
 			},
 			exams: {
 				list: []
@@ -272,7 +283,7 @@
 			data: {
 				...defdata.variables,
 				months: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-				days: ['LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES'],
+				days: ['LU', 'MA', 'MI', 'JU', 'VI'],
 				updating: false,
 				protocol: protocol,
 				modulesTitles: {
@@ -288,10 +299,10 @@
 				icon_link: 'mdi-cursor-pointer',
 				now: (new Date()).getTime(),
 				qr: '',
-				colors: ['#4a9bed', '#ff5722', '#f5be39', '#cd4242', '#4caf50', '#845aec', '#77858f', '#563c63', '#280fb4', '#204f6e']
+				colors: ['#697ce2', '#f5b551', '#3dbbf4', '#f9445a', '#00d06a', '#845aec', '#77858f', '#563c63', '#280fb4', '#204f6e']
 			},
 			computed: {
-
+//
 				homeworks_list() {
 					const l = [...this.homeworks.list].sort((a, b) => a.dateEnd > b.dateEnd ? 1 : -1)
 
@@ -339,7 +350,8 @@
 					
 				},
 				minimizeApp() {
-					this.moduleActiveId = 0
+					this.openPanel = false 
+					this.moduleActiveId = 'md_activities'
 				},
 				colorCourse(course) {
 					if (course.includes(' (')) course = this.removeGroupsText(course)
@@ -362,6 +374,29 @@
 					const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate(), a.getHours(), a.getMinutes());
 					const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate(), b.getHours(), b.getMinutes());
 					return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+				},
+				async loadLibrary(courses){
+					for (const course of courses) {
+						let response = await fetch(this.protocol + `://aulavirtual.unamad.edu.pe/web/unit/${course.sectionId}/get?s=${course.sectionId}`)
+						if (response.ok) {
+							(await response.json()).forEach(unit => {
+								if (unit.contents.length) {
+									unit.contents.forEach(content => {
+										fetch(this.protocol + `://aulavirtual.unamad.edu.pe/web/unit/contenidos/${content.id}`).then(e => e.json()).then(contentDeep => {
+											console.log(contentDeep);
+										})
+									});
+									/**/
+								}
+								
+							})
+							
+								//console.log(info);
+							/*if (info.contents.length) {
+							}
+							*/
+						}
+					}
 				},
 				async loadConferences() {
 					let listconferences = []
@@ -491,6 +526,8 @@
 					this.loadExams()
 					this.loadHomeworks()
 					this.loadForums()
+
+					/*this.loadLibrary(this.courses.list)*/
 				},
 				async loadCourses() {
 
@@ -557,16 +594,24 @@
 				}, 1000 * 90)
 
 				chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-					if (message.schedule != undefined) this.schedule.data = message.schedule
+					if (message.schedule != undefined) {
+						message.schedule.forEach(e => {
+							e.startNormalized = {day: new Date(e.start).getDay(), hour: new Date(e.start).getHours(), minute: new Date(e.start).getMinutes()}
+							e.endNormalized = {day: new Date(e.end).getDay(), hour: new Date(e.end).getHours(), minute: new Date(e.end).getMinutes()}
+						})
+						this.schedule.data = message.schedule
+					}
 				});
 				chrome.runtime.sendMessage('getinfo');
 			},
 			mounted() {
+				document.querySelector('.quick-nav-trigger')?.addEventListener('click', ()=>{
+					this.minimizeApp()
+				})
 				this.applyTheme()
 				document.addEventListener('keyup', (e) => {
 					if(e.key === "Escape") {
-						this.openPanel = false 
-						this.moduleActiveId = 'md_activities'
+						this.minimizeApp()
 					}
 				})
 				chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {

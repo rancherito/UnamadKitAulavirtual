@@ -1,14 +1,18 @@
 {
     "name" : "UNAMAD AULAVIRTUAL - QACCESS",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "manifest_version": 2,
     "description" : "Gestion de actividades del aulavirtual",
     "permissions" : ["activeTab", "cookies", "*://aulavirtual.unamad.edu.pe/*", "*://intranet.unamad.edu.pe/*"],
     "content_scripts" : [
         {
             "js" : ["jsqr.js", "vue.min.js", "inject/v-tooltip.min.js" ,"inject/components.js","inject/modules.js", "inject/init.js"],
-            "css": ["theme.css", "styles.css"],
+            "css": ["styles.css", "theme.css"],
             "matches" : ["*://aulavirtual.unamad.edu.pe/*"]
+        },
+         {
+            "css": ["inject/dashboard.css"],
+            "matches" : ["*://aulavirtual.unamad.edu.pe/"]
         },
         {
             "js" : ["jsqr.js", "vue.min.js", "injectIntranet/init.js"],
