@@ -281,7 +281,7 @@ body#bodyView.theme-dark .row-body2,
 #bodyView [ng-controller=ChatController] .messaging {
     background-color: var(--card) !important;
     color: #293238 !important;
-    border-radius: 2rem;
+    border-radius: var(--rounded2);
     border: 1px solid #f1f1f1;
     box-shadow: 0 1px 2px 0px #0000001f;
 }

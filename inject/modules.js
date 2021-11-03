@@ -7,7 +7,7 @@ Vue.component('vcd-exam', {
 		</div>
 		<div class="cd-list-content">
 			<div class="cd-list-title">{{data.title}}</div>
-			<div class="cd-list-subtitle" :style="{color: $root.colorCourse(data.nameCourse)}">CURSO: {{data.nameCourse}}</div>
+			<div class="cd-list-subtitle" :style="{color: $root.colorCourse(data.nameCourse).solid}">CURSO: {{data.nameCourse}}</div>
 			<div class="cd-list-subtitle2">
 				Intentos: {{data.intent}}
 			</div>
@@ -36,7 +36,7 @@ Vue.component('vcd-homework', {
 			
 			<div class="cd-list-title">{{data.title}}</div>
 			<!--<div class="cd-list-description" v-html="homework.description"></div>-->
-			<div class="cd-list-subtitle" :style="{color: $root.colorCourse(data.nameCourse)}">CURSO: {{data.nameCourse}}</div>
+			<div class="cd-list-subtitle" :style="{color: $root.colorCourse(data.nameCourse).solid}">CURSO: {{data.nameCourse}}</div>
 			<div class="cd-list-subtitle2">
 				{{data.isGroup ? 'GRUPAL':'INDIVIDUAL'}} | Intentos: {{data.intents - data.homeworkstds}}/{{data.intents}} | <a @click="$root.minimizeApp" class="cd-small-chip" :href="$root.protocol + '://aulavirtual.unamad.edu.pe/web/homework?s=' + data.sectionId">Ver tareas<a>
 			</div>
@@ -73,7 +73,7 @@ Vue.component('vcd-forums', {
 		</div>
 		<div class="cd-list-content">
 			<div class="cd-list-title">{{data.name}}</div>
-			<div class="cd-list-subtitle" :style="{color: $root.colorCourse(data.nameCourse)}">CURSO: {{data.nameCourse}}</div>
+			<div class="cd-list-subtitle" :style="{color: $root.colorCourse(data.nameCourse).solid}">CURSO: {{data.nameCourse}}</div>
 		</div>
 		<div class="cd-list-access">
 			<vcd-countdown :dateEnd="data.dateEnd" :dateStart="data.dateBegin"></vcd-countdown>
@@ -103,7 +103,7 @@ Vue.component('vcd-conference', {
 
 		<div class="cd-list-content">
 			<div class="cd-list-title">{{data.title}}</div>
-			<div class="cd-list-subtitle" :style="{color: $root.colorCourse(data.nameCourse)}">CURSO: {{data.nameCourse}}</div>
+			<div class="cd-list-subtitle" :style="{color: $root.colorCourse(data.nameCourse).solid}">CURSO: {{data.nameCourse}}</div>
 		</div>
 		<div class="cd-list-access">
 			<vcd-countdown :dateEnd="data.endTime" :dateStart="data.startTime"></vcd-countdown>
@@ -214,24 +214,25 @@ Vue.component('vcd-info-notify',{
 Vue.component('cd-schedule-2', {
 	template: /*html*/`
 	<div style="position: relative; height: 100%">
-		<div class="f-end" style="right: 1rem; top: -4rem; position: absolute">
-			<a class="cd-btn" href="#" @click="$root.schedule.default = !$root.schedule.default">
-				
-				<span style="padding-right: .5rem">{{$root.schedule.default ? 'General' : 'Dias'}}</span>
-				<svg style="width:24px;height:24px" viewBox="0 0 24 24" v-if="$root.schedule.default">
-					<path d="M3,11H11V3H3M3,21H11V13H3M13,21H21V13H13M13,3V11H21V3" />
-				</svg>
-				<svg style="width:24px;height:24px" viewBox="0 0 24 24" v-else>
-					<path d="M3,4H7V8H3V4M9,5V7H21V5H9M3,10H7V14H3V10M9,11V13H21V11H9M3,16H7V20H3V16M9,17V19H21V17H9" />
-				</svg>
-			</a>
-		</div>
+		
 			
 		<div style="height: 100%; padding: 1rem; overflow-y: auto">
-			
+			<div class="f-end">
+				<a class="cd-btn" href="#" @click="$root.schedule.default = !$root.schedule.default" style="border: 1px solid var(--primary); background: transparent; padding: 0 1rem">
+					
+					<span style="padding-right: .5rem">{{$root.schedule.default ? 'General' : 'Dias'}}</span>
+					<svg style="width:24px;height:24px" viewBox="0 0 24 24" v-if="$root.schedule.default">
+						<path d="M3,11H11V3H3M3,21H11V13H3M13,21H21V13H13M13,3V11H21V3" />
+					</svg>
+					<svg style="width:24px;height:24px" viewBox="0 0 24 24" v-else>
+						<path d="M3,4H7V8H3V4M9,5V7H21V5H9M3,10H7V14H3V10M9,11V13H21V11H9M3,16H7V20H3V16M9,17V19H21V17H9" />
+					</svg>
+				</a>
+			</div>
+			<v-box s=".5"></v-box>
 			<div v-if="$root.schedule.default">
 				<div style="display: grid; grid-template-columns: repeat(5, 1fr); width: calc(100% - 60px - .5rem);gap: 0.5rem; margin-bottom: .5rem; margin-left: calc(60px + .5rem)">
-					<div class="f-c" v-for="(day, i) of days" :class="{'cd-schedule-per-day-active-day': currentdDay == i + 1}" @click="selectedDay = i + 1" style="cursor: pointer;flex: 1; height: 32px; border-radius: var(--rounded2); color: white" :style="{background: selectedDay == i + 1 ? 'var(--primary)' : 'var(--panel)'}">{{day}}</div>
+					<div class="f-c" v-for="(day, i) of days" :class="{'cd-schedule-per-day-active-day': currentDay == i + 1}" @click="selectedDay = i + 1" style="cursor: pointer;flex: 1; height: 32px; border-radius: var(--rounded2); color: white" :style="{background: selectedDay == i + 1 ? 'var(--primary)' : 'var(--panel)'}">{{day}}</div>
 				</div>
 				
 				<div style="display: flex" v-if="currentSchedule.timesSchedule.length">
@@ -243,7 +244,7 @@ Vue.component('cd-schedule-2', {
 					<section style="flex: 1; padding-top: 20px">
 						<div v-for="(group, ix) of currentSchedule.schedule" :style="{height: 40 * group.sizeStack + 'px'}" style="display: flex">
 							<div class="f-c c" style="flex: 1 1 0px; height: 100%; padding: 2px 0 0 2px" v-for="courseName of group.courses" :style="{'padding-top': ix == 0 ? 0 : '2px'}">
-								<div class="f-c" style="height: 100%; width: 100%; border-radius: var(--rounded); padding: 0.5rem; color: white" :style="{background: $root.colorCourse(courseName), 'font-size': 1 + (group.courses.length > 1 ? -.3 : 0) + (group.sizeStack > 1? .2 : 0) + 'rem'}">
+								<div class="f-c" style="height: 100%; width: 100%; border-radius: var(--rounded); padding: 0.5rem; color: white" :style="{background: $root.colorCourse(courseName).linear, 'font-size': 1 + (group.courses.length > 1 ? -.3 : 0) + (group.sizeStack > 1? .2 : 0) + 'rem'}">
 									{{$root.removeGroupsText(courseName)}}
 								</div>
 							</div>
@@ -270,14 +271,15 @@ Vue.component('cd-schedule-2', {
 	data(){
 		return {
 			selectedDay: new Date(this.$root.now).getDay(),
-			currentdDay: new Date(this.$root.now).getDay(),
 			days: ['LU', 'MA', 'MI', 'JU', 'VI']
 		}
 	},
 	computed: {
+		currentDay(){
+			return new Date(this.$root.now).getDay()
+		},
 		currentSchedule(){
-			let currentSchedule = [...this.$root.schedule.data]
-			.filter(e => e.startNormalized?.day == this.selectedDay)
+			let currentSchedule = [...this.$root.schedule.data].filter(e => e.startNormalized?.day == this.selectedDay)
 
 			let times = [], timesSchedule = [], schedule = []
 			currentSchedule.forEach(e => {
@@ -303,7 +305,6 @@ Vue.component('cd-schedule-2', {
 				}
 			}
 			if(timesSchedule.length) timesSchedule.push(timesSchedule[timesSchedule.length - 1] + 1)
-			console.log(timesSchedule);
 			return {schedule, timesSchedule}
 		}
 	},
@@ -336,7 +337,7 @@ Vue.component('cd-schedule', {
 										
 										<span 
 											class="f-c cd-schedule-course-item"
-											:style="{'background': $root.colorCourse(course.title)}"
+											:style="{'background': $root.colorCourse(course.title).linear}"
 										>
 											{{time12(new Date(course.start).getHours())}}-{{time12(parseInt(hour)+1)}}
 										</span>
@@ -353,7 +354,7 @@ Vue.component('cd-schedule', {
 			<v-box></v-box>
 			<div v-if="$root.schedule.data.length">
 				<div class="f-start" v-for="course of $root.courses.list">
-					<span style="height: 1rem; width: 1rem; background-color: var(--panel)" :style="{'background-color': $root.colorCourse(course.name)}"></span>
+					<span style="height: 1rem; width: 1rem; background-color: var(--panel)" :style="{'background': $root.colorCourse(course.name).linear}"></span>
 					<v-box s=".5"></v-box>
 					<span style="flex: 1">{{course.name}}</span>
 				</div>
@@ -369,6 +370,7 @@ Vue.component('cd-schedule', {
 		</div>
 		
 	`,
+
 	data(){
 		return {
 			now: this.$root.now
@@ -531,8 +533,18 @@ Vue.component('vcd-module',{
 		<div id="modelinject">
 			<div class="cd-dialog">
 				<div class="cd-dialog-actions-top">
+					
 					<div class="mdl-typography--headline" style="color: white">{{title}}</div>
-					<div style="display: flex"></div>
+					<div class="f-fill"></div>
+					<a class="cd-btn" @click="$root.moduleActiveId = 'md_activities'; $root.tabposition = 'dashboard'" href="#" v-if="$root.moduleActiveId != 'md_activities' || $root.tabposition != 'dashboard'">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1.4em" style="fill: #fff"><rect width="9" height="9" x="2" y="2" class="uim-primary" rx="1"></rect><rect width="9" height="9" x="2" y="13" class="uim-tertiary" rx="1"></rect><rect width="9" height="9" x="13" y="2" class="uim-tertiary" rx="1"></rect><rect width="9" height="9" x="13" y="13" class="uim-tertiary" rx="1"></rect></svg>
+						<v-box s=".5"></v-box>
+						<span>Menu</span>
+					</a>
+					<v-box s=".5"></v-box>
+					<a class="cd-btn" @click="$root.openPanel = false; $root.moduleActiveId = 'md_activities'" href="#">
+						<svg viewBox="0 0 24 24" style="width: 24px;"><path fill="#fff" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path></svg>
+					</a>
 				</div>
 				<div class="cd-dialog-content">
 					<div style="position: absolute; height: 100%; width: 100%">

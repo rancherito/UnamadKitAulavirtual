@@ -10,9 +10,7 @@
 		}*/
 		document.body.appendChild(htmlToElement(
 			/*html*/
-			`
-		
-		<div id="vueapp">
+		`<div id="vueapp">
 			<div id="nav-native-fix">
 				<a style="background-color: var(--panel-light)" title="Cerrar Sesión" href="/" className="cd-btn-native" id="other-close-session" v-show="applyNewStyle">
 					<svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -31,50 +29,10 @@
 			<div id="cd-navmenu" :class="{'cd-navmenu-open': openPanel}">
 				<template v-if="openPanel">
 					<div style="padding-top: 60px; display: flex; flex-direction: column">
-						<vue-custom-tooltip label="Información de versiones" position="is-left">
-							<a v-show="moduleActiveId" href="#" class="cd-btn-navmenu" @click="moduleActiveId = 'md_info'" :class="{active: moduleActiveId == 'md_info'}">
-								<svg style="width:24px;height:24px" viewBox="0 0 24 24">
-									<path fill="#FFF" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-								</svg>
-							</a>
-						</vue-custom-tooltip>
-						<vue-custom-tooltip label="Compartir" position="is-left">
-							<a v-show="moduleActiveId" class="cd-btn-navmenu" @click="moduleActiveId = 'md_share'" :class="{active: moduleActiveId == 'md_share'}" href="#">
-								<svg style="width:24px;height:24px" viewBox="0 0 24 24">
-									<path fill="#FFF" d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
-								</svg>
-							</a>
-						</vue-custom-tooltip>
-						<vue-custom-tooltip label="Actualizar datos" position="is-left">
-							<a v-show="moduleActiveId" href="#" @click="loadCourses" class="cd-btn-navmenu" :disabled="updating">
-								<svg style="width:24px;height:24px" viewBox="0 0 24 24" :class="updating ? 'mdi-spin' : ''">
-									<path fill="#fff" d="M19 12V13.5C21.21 13.5 23 15.29 23 17.5C23 18.32 22.75 19.08 22.33 19.71L21.24 18.62C21.41 18.28 21.5 17.9 21.5 17.5C21.5 16.12 20.38 15 19 15V16.5L16.75 14.25L16.72 14.22C16.78 14.17 16.85 14.13 19 12M19 23V21.5C16.79 21.5 15 19.71 15 17.5C15 16.68 15.25 15.92 15.67 15.29L16.76 16.38C16.59 16.72 16.5 17.1 16.5 17.5C16.5 18.88 17.62 20 19 20V18.5L21.25 20.75L21.28 20.78C21.22 20.83 21.15 20.87 19 23M13 17.5C13 13.91 15.91 11 19.5 11C20.78 11 21.97 11.38 23 12C22.13 10.9 20.84 10.14 19.35 10.03C18.67 6.59 15.64 4 12 4C9.11 4 6.6 5.64 5.35 8.03C2.34 8.36 0 10.9 0 14C0 17.31 2.69 20 6 20H13.5C13.18 19.23 13 18.39 13 17.5Z" />
-								</svg>
-							</a>
-						</vue-custom-tooltip>
-						<vue-custom-tooltip label="Sincronizar" position="is-left">
-							<a v-show="moduleActiveId" class="cd-btn-navmenu" @click="moduleActiveId = 'md_sync'" :class="{active: moduleActiveId == 'md_sync'}" href="#">
-								<svg style="width:24px;height:24px" viewBox="0 0 24 24">
-									<path fill="#FFF" d="M4,4H10V10H4V4M20,4V10H14V4H20M14,15H16V13H14V11H16V13H18V11H20V13H18V15H20V18H18V20H16V18H13V20H11V16H14V15M16,15V18H18V15H16M4,20V14H10V20H4M6,6V8H8V6H6M16,6V8H18V6H16M6,16V18H8V16H6M4,11H6V13H4V11M9,11H13V15H11V13H9V11M11,6H13V10H11V6M2,2V6H0V2A2,2 0 0,1 2,0H6V2H2M22,0A2,2 0 0,1 24,2V6H22V2H18V0H22M2,18V22H6V24H2A2,2 0 0,1 0,22V18H2M22,22V18H24V22A2,2 0 0,1 22,24H18V22H22Z" />
-								</svg>
-							</a>
-						</vue-custom-tooltip>
+						
 					</div>
 				</template>
 				<div style="display: flex; flex-direction: column">
-					<vue-custom-tooltip label="Cambiar tema" position="is-left">
-						<a class="cd-btn-navmenu" @click="applyNewStyle = !applyNewStyle; applyTheme()" href="#" v-if="!openPanel">
-							<svg style="width:24px;height:24px" viewBox="0 0 24 24" v-if="applyNewStyle">
-								<path fill="#FFF" d="M20.65,20.87L18.3,18.5L12,12.23L8.44,8.66L7,7.25L4.27,4.5L3,5.77L5.78,8.55C3.23,11.69 3.42,16.31 6.34,19.24C7.9,20.8 9.95,21.58 12,21.58C13.79,21.58 15.57,21 17.03,19.8L19.73,22.5L21,21.23L20.65,20.87M12,19.59C10.4,19.59 8.89,18.97 7.76,17.83C6.62,16.69 6,15.19 6,13.59C6,12.27 6.43,11 7.21,10L12,14.77V19.59M12,5.1V9.68L19.25,16.94C20.62,14 20.09,10.37 17.65,7.93L12,2.27L8.3,5.97L9.71,7.38L12,5.1Z" />
-							</svg>
-							<svg style="width:24px;height:24px" viewBox="0 0 24 24" v-else>
-								<path fill="currentColor" d="M17.5,12A1.5,1.5 0 0,1 16,10.5A1.5,1.5 0 0,1 17.5,9A1.5,1.5 0 0,1 19,10.5A1.5,1.5 0 0,1 17.5,12M14.5,8A1.5,1.5 0 0,1 13,6.5A1.5,1.5 0 0,1 14.5,5A1.5,1.5 0 0,1 16,6.5A1.5,1.5 0 0,1 14.5,8M9.5,8A1.5,1.5 0 0,1 8,6.5A1.5,1.5 0 0,1 9.5,5A1.5,1.5 0 0,1 11,6.5A1.5,1.5 0 0,1 9.5,8M6.5,12A1.5,1.5 0 0,1 5,10.5A1.5,1.5 0 0,1 6.5,9A1.5,1.5 0 0,1 8,10.5A1.5,1.5 0 0,1 6.5,12M12,3A9,9 0 0,0 3,12A9,9 0 0,0 12,21A1.5,1.5 0 0,0 13.5,19.5C13.5,19.11 13.35,18.76 13.11,18.5C12.88,18.23 12.73,17.88 12.73,17.5A1.5,1.5 0 0,1 14.23,16H16A5,5 0 0,0 21,11C21,6.58 16.97,3 12,3Z" />
-							</svg>
-						</a>
-					</vue-custom-tooltip>
-					
-					
-
 					<vue-custom-tooltip label="Horario" position="is-left">
 						<a class="cd-btn-navmenu"  href="#" @click="openPanel = true; moduleActiveId = 'md_schedule_2'" :class="{active: moduleActiveId == 'md_schedule'}" id="btn_id_schedule">
 							<svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -113,7 +71,7 @@
 							<p style="text-align: center">
 								Una aplicación hecha por estudiantes para estudiantes, gracias por hacer uso de esta herramienta.
 								Si deseas compartir esta extensión con otros compañeros, de seguro lo agradeceran. :D<br><br>
-								<a target="_blank" style="border-radius: var(--rounded)" href="https://chrome.google.com/webstore/detail/unamad-aulavirtual-qacces/lichjjhggabiijdmbhnkfkbfgdjigecl" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">LINK DE LA EXTENSIÓN</a>
+								<a target="_blank" href="https://chrome.google.com/webstore/detail/unamad-aulavirtual-qacces/lichjjhggabiijdmbhnkfkbfgdjigecl" class="cd-btn">LINK DE LA EXTENSIÓN</a>
 						
 							</p>
 							
@@ -137,69 +95,91 @@
 				<vcd-module :title="modulesTitles[tabposition]" v-show="moduleActiveId == 'md_activities'">				
 					<div style="display: flex; flex-direction: column; height: 100%">
 						<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 0">
-						
-							<div v-for="course in courses_list" class="cd-list">
-							
-								<svg v-if="course.exams.isUpdating || course.homeworks.isUpdating || course.forums.isUpdating|| course.conferencesUpdating" class="cd-list-icon" :style="{fill: colorCourse(course.name)}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-									<path d="M19.91,15.51H15.38a1,1,0,0,0,0,2h2.4A8,8,0,0,1,4,12a1,1,0,0,0-2,0,10,10,0,0,0,16.88,7.23V21a1,1,0,0,0,2,0V16.5A1,1,0,0,0,19.91,15.51ZM12,2A10,10,0,0,0,5.12,4.77V3a1,1,0,0,0-2,0V7.5a1,1,0,0,0,1,1h4.5a1,1,0,0,0,0-2H6.22A8,8,0,0,1,20,12a1,1,0,0,0,2,0A10,10,0,0,0,12,2Z"/>
-								</svg>
-
-								<svg v-else class="cd-list-icon" :style="{fill: colorCourse(course.name)}" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24">
-									<path d="M17,2H5A1,1,0,0,0,4,3V19a1,1,0,0,0,1,1H6v1a1,1,0,0,0,1,1H7a1,1,0,0,0,1-1V20h9a3,3,0,0,0,3-3V5A3,3,0,0,0,17,2ZM14,18H6V4h8Zm4-1a1,1,0,0,1-1,1H16V4h1a1,1,0,0,1,1,1Z"/>
-								</svg>
-
-								
-								<div class="cd-list-content" >
-									
-									<div class="cd-list-title" :style="{color: colorCourse(course.name)}">{{course.name}}</div>
-									<div 
-										class="cd-list-subtitle2" 
-										v-if="course.homeworks.count + course.forums.count + course.conferences + course.exams.count">
-
-										<span v-if="course.homeworks.count" class="cd-pointer mdl-chip mdl-chip-sm" @click="tabposition = 1">
-											<span class="mdl-chip__text">{{'Tareas: ' + course.homeworks.count}}</span>
-										</span>
-										<span v-if="course.forums.count" class="cd-pointer mdl-chip mdl-chip-sm" @click="tabposition = 3">
-											<span class="mdl-chip__text">{{'Foros: ' + course.forums.count}}</span>
-										</span>
-										<span v-if="course.conferences" class="cd-pointer mdl-chip mdl-chip-sm" @click="tabposition = 2">
-											<span class="mdl-chip__text">{{'Confer.: ' + course.conferences}}</span>
-										</span>
-										<span v-if="course.exams.count" class="cd-pointer mdl-chip mdl-chip-sm" @click="tabposition = 4">
-											<span class="mdl-chip__text">{{'Exam.: ' + course.exams.count}}</span>
-										</span>
-									</div>
-									
-									<div class="cd-list-subtitle2" v-else>
-										<span style="height: 24px; display: block">Sin actividades pendientes</span>
+							<div style="display: grid; gap: 1rem; grid-teamplate-column: 1fr">
+								<div 
+								style="display: grid; gap: .5rem" 
+								v-for="course in coursesList" 
+								v-if="generalActividities.filter(e=>e.type != 'CONFERENCE').filter(e=>e.courseName == course.name).length"
+								>
+									<div v-for="activity of generalActividities.filter(e=>e.type != 'CONFERENCE').filter(e=>e.courseName == course.name)">
+										
+										<vcd-activity :data="activity"></vcd-activity>
 									</div>
 								</div>
 							</div>
-							
+								
+														
 						</div>
 						<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 1">
-							<div v-if="homeworks_list.get.length + homeworks_list.archived.length">
-								<vcd-helper-list></vcd-helper-list>
-								<vcd-homework v-for="homework in homeworks_list.get" :data="homework"></vcd-homework>
-								<vcd-homework class="acd-fadeOut" v-for="homework in homeworks_list.archived" :data="homework"></vcd-homework>
-								<!--
-								//BOTON PARA OCULTAR TAREAS REALIZADAS
-								<div class="cd-btn-archived" :class="{'cd-bg-secondary': homeworks.viewArchived}" @click="homeworks.viewArchived = !homeworks.viewArchived">
-									<span v-show="!homeworks.viewArchived">{{homeworks_list.archived.length}}</span>
-									{{homeworks.viewArchived ? 'Ocultar Realizados' : 'Ver Realizados'}}
-								</div>-->
-								
+							<div style="display: grid; gap: 1rem; grid-teamplate-column: 1fr">
+								<div 
+								style="display: grid; gap: .5rem" 
+								v-for="course in coursesList" 
+								v-if="generalActividitiesArchived.filter(e=>e.type != 'CONFERENCE').filter(e=>e.courseName == course.name).length"
+								>
+									<div v-for="activity of generalActividitiesArchived.filter(e=>e.type != 'CONFERENCE').filter(e=>e.courseName == course.name)">
+										<vcd-activity :data="activity"></vcd-activity>
+									</div>
+								</div>
 							</div>
-							<vcd-void-box v-else text="tareas"></vcd-void-box>
 						</div>
 
-						<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 2">
-							<div v-if="conferences_list.length">
-								<vcd-helper-list></vcd-helper-list>
-								<vcd-conference v-for="(conference, i) in conferences_list" :data="conference"></vcd-conference>
+						<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 'dashboard'">
+							<div class="cd-dashconferences">
+								<div v-for="conference of generalActividities.filter(e=>e.type == 'CONFERENCE')" class="cd-dashconferences-item">
+									<div :style="{fill: colorCourse(conference.courseName).solid}">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" ><path class="uim-tertiary" d="M12,22A10,10,0,1,1,22,12,10.01177,10.01177,0,0,1,12,22Z"></path><path class="uim-primary" d="M10,16.89062A2.00839,2.00839,0,0,1,8,14.8877V9.1123a2.00085,2.00085,0,0,1,3-1.73242l5,2.8877a2.00064,2.00064,0,0,1,0,3.46484l-5,2.8877A1.99618,1.99618,0,0,1,10,16.89062Z"></path></svg>
+										<span>{{conference.courseName.slice(0,22)}}</span>
+										<b v-if="now > (new Date(conference.dateBegin)).getTime()" class="acd-fadeOut" style="animation-iteration-count: infinite; animation-duration: 2s; animation-name: fadeOut2;"></b>
+									</div>
+									<span style="background: var(--panel); height: 30px; width: 80px; border-radius: var(--rounded); font-size: .8rem" class="f-c">
+										<vcd-countdown2 :date="now > (new Date(conference.dateBegin)).getTime() ? conference.dateEnd: conference.dateBegin"></vcd-countdown2>
+									</span>
+								</div>
 							</div>
-							<vcd-void-box v-else text="coferencias"></vcd-void-box>
-							
+							<v-box></v-box>
+							<div class="cd-dashboard">
+								<a class="f-c cd-dashboard-item" @click="tabposition=0" href="#" :style="{fill: colors[0]}">
+									<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24" ><path class="uim-tertiary" d="M5.1,4h14c0.6,0,1,0.4,1,1v14c0,0.6-0.4,1-1,1h-14c-0.6,0-1-0.4-1-1V5C4.1,4.4,4.5,4,5.1,4z"></path><path class="uim-primary" d="M22.1,14V5c0-1.7-1.3-3-3-3h-14c-1.7,0-3,1.3-3,3v14c0,1.7,1.3,3,3,3h14c1.7,0,3-1.3,3-3L22.1,14C22.1,14,22.1,14,22.1,14z M5.1,4h14c0.6,0,1,0.4,1,1v8h-2.5c-0.7,0-1.3,0.3-1.7,0.9L14.5,16H9.6l-1.4-2.1c-0.4-0.6-1-0.9-1.7-0.9H4.1V5C4.1,4.4,4.5,4,5.1,4z"></path></svg>
+									<v-box></v-box>
+									<span>Actividades</span>
+								</a>
+								<a class="f-c cd-dashboard-item" @click="tabposition=1" href="#" v-if="generalActividitiesArchived.length" :style="{fill: colors[1]}">
+									<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24" ><circle cx="10" cy="8.5" r="5" class="uim-quaternary"></circle><path class="uim-tertiary" d="M13.30884,12.22253C12.42566,13.00806,11.27496,13.5,10,13.5s-2.42566-0.49194-3.30884-1.27747C3.92603,13.48206,2,16.26324,2,19.5c0,0.00018,0,0.00037,0,0.00055C2.00012,20.05267,2.44788,20.50012,3,20.5h14c0.00018,0,0.00037,0,0.00055,0c0.55212-0.00012,0.99957-0.44788,0.99945-1C18,16.26324,16.07397,13.48206,13.30884,12.22253z"></path><path class="uim-primary" d="M18.3335,13.5c-0.26526,0.0003-0.51971-0.10515-0.707-0.293l-1.3335-1.333c-0.38694-0.39399-0.38123-1.02706,0.01275-1.414c0.38897-0.38202,1.01228-0.38202,1.40125,0l0.62647,0.626l1.95953-1.96c0.39399-0.38694,1.02706-0.38123,1.414,0.01275c0.38202,0.38897,0.38202,1.01227,0,1.40125l-2.6665,2.667C18.85321,13.39485,18.59877,13.5003,18.3335,13.5z"></path></svg>
+									<v-box></v-box>
+									<span>A. Archivadas</span>
+								</a>
+								<a class="f-c cd-dashboard-item" @click="moduleActiveId = 'md_schedule_2'" href="#" :style="{fill: colors[2]}">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path class="uim-tertiary" d="M22,9H2V6c0-1.65685,1.34315-3,3-3h14c1.65685,0,3,1.34315,3,3V9z"></path><path class="uim-quaternary" d="M2,19c0.00183,1.65613,1.34387,2.99817,3,3h14c1.65613-0.00183,2.99817-1.34387,3-3V9H2V19z"></path><path class="uim-primary" d="M7,7C6.44772,7,6,6.55228,6,6V2c0-0.55228,0.44772-1,1-1s1,0.44772,1,1v4C8,6.55228,7.55228,7,7,7z M17,7c-0.55228,0-1-0.44772-1-1V2c0-0.55228,0.44772-1,1-1s1,0.44772,1,1v4C18,6.55228,17.55228,7,17,7z"></path><circle cx="7" cy="13" r="1" class="uim-primary"></circle><circle cx="17" cy="13" r="1" class="uim-primary"></circle><circle cx="12" cy="13" r="1" class="uim-primary"></circle><circle cx="12" cy="17" r="1" class="uim-primary"></circle><circle cx="7" cy="17" r="1" class="uim-primary"></circle><circle cx="17" cy="17" r="1" class="uim-primary"></circle></svg>
+									<v-box></v-box>
+									<span>Horario</span>
+								</a>
+								<a class="f-c cd-dashboard-item" @click="moduleActiveId = 'md_sync'" href="#" :style="{fill: colors[3]}">
+									<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path class="uim-tertiary" d="m2,6l-2,0l0,-4a2,2 0 0 1 2,-2l4,0l0,2l-4,0m20,-2a2,2 0 0 1 2,2l0,4l-2,0l0,-4l-4,0l0,-2l4,0m-20,18l0,4l4,0l0,2l-4,0a2,2 0 0 1 -2,-2l0,-4l2,0m20,4l0,-4l2,0l0,4a2,2 0 0 1 -2,2l-4,0l0,-2l4,0z"/><path class="uim-primary" d="m4,4l6,0l0,6l-6,0l0,-6m16,0l0,6l-6,0l0,-6l6,0m-6,11l2,0l0,-2l-2,0l0,-2l2,0l0,2l2,0l0,-2l2,0l0,2l-2,0l0,2l2,0l0,3l-2,0l0,2l-2,0l0,-2l-3,0l0,2l-2,0l0,-4l3,0l0,-1m2,0l0,3l2,0l0,-3l-2,0m-12,5l0,-6l6,0l0,6l-6,0m2,-14l0,2l2,0l0,-2l-2,0m10,0l0,2l2,0l0,-2l-2,0m-10,10l0,2l2,0l0,-2l-2,0m-2,-5l2,0l0,2l-2,0l0,-2m5,0l4,0l0,4l-2,0l0,-2l-2,0l0,-2m2,-5l2,0l0,4l-2,0l0,-4"/></svg>
+									<v-box></v-box>
+									<span>Sincronización QR</span>
+								</a>
+								<a class="f-c cd-dashboard-item" @click="moduleActiveId = 'md_share'" href="#" :style="{fill: colors[4]}">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path class="uim-tertiary" d="M18,10c-2.20914,0-4-1.79086-4-4s1.79086-4,4-4s4,1.79086,4,4C21.99765,8.20816,20.20816,9.99765,18,10z M18,22c-2.20914,0-4-1.79086-4-4s1.79086-4,4-4s4,1.79086,4,4C21.99765,20.20816,20.20816,21.99765,18,22z M6,16c-2.20914,0-4-1.79086-4-4s1.79086-4,4-4s4,1.79086,4,4C9.99765,14.20816,8.20816,15.99765,6,16z"></path><path class="uim-primary" d="M9.81915 10.87286l5.10223-2.3476c-.42291-.51483-.72577-1.12769-.84937-1.8103L8.79431 9.14337C9.27545 9.61407 9.62341 10.20996 9.81915 10.87286zM14.92139 15.47473l-5.10321-2.34808c-.19623.66272-.54443 1.25848-1.0257 1.72913l5.27954 2.42926C14.19562 16.60242 14.49847 15.98956 14.92139 15.47473z"></path></svg>
+									<v-box></v-box>
+									<span>Compartir</span>
+								</a>
+								<a class="f-c cd-dashboard-item" @click="moduleActiveId = 'md_info'" href="#" :style="{fill: colors[5]}">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" ><circle cx="12" cy="12" r="10" class="uim-tertiary"></circle><path class="uim-primary" d="M12 17a.99943.99943 0 0 1-1-1V12a1 1 0 0 1 2 0v4A.99943.99943 0 0 1 12 17zM12 9a.9994.9994 0 0 1-.37988-.08008A1.14718 1.14718 0 0 1 11.29 8.71.98946.98946 0 0 1 11 8a.83154.83154 0 0 1 .08008-.37988A1.14718 1.14718 0 0 1 11.29 7.29a1.02883 1.02883 0 0 1 .33008-.21.99414.99414 0 0 1 .75976 0 1.03947 1.03947 0 0 1 .33008.21A1.05232 1.05232 0 0 1 13 8a.99042.99042 0 0 1-1 1z"></path></svg>
+									<v-box></v-box>
+									<span>Información</span>
+								</a>
+								<a class="f-c cd-dashboard-item" @click="loadCourses" href="#" :style="{fill: colors[6]}">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" ><path class="uim-tertiary" d="M18.42926,7.7542A6.99612,6.99612,0,0,0,5.06079,9.64433,3.994,3.994,0,0,0,6,17.52177H17A4.98638,4.98638,0,0,0,18.42926,7.7542Z"></path><path class="uim-primary" d="M15,16.75H12.75a1,1,0,0,1,0-2H14V13.5a1,1,0,0,1,2,0v2.25A1,1,0,0,1,15,16.75Z"></path><path class="uim-primary" d="M12,20.5a4,4,0,1,1,3.87158-4.99658,1.00011,1.00011,0,1,1-1.93847.49316,2.00218,2.00218,0,1,0-.61084,2,1.00012,1.00012,0,0,1,1.31543,1.50684A4.01637,4.01637,0,0,1,12,20.5Z"></path></svg>
+									<v-box></v-box>
+									<span>Actualizar</span>
+								</a>
+								<a class="f-c cd-dashboard-item" @click="applyNewStyle = !applyNewStyle; applyTheme()" href="#" :style="{fill: colors[7]}">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" ><path class="uim-quaternary" d="M15,23h-2c-1.10405-0.00126-1.99874-0.89595-2-2v-4c0.00126-1.10405,0.89595-1.99874,2-2h2c1.10405,0.00126,1.99874,0.89595,2,2v4C16.99874,22.10405,16.10405,22.99874,15,23z"></path><path class="uim-tertiary" d="M18,9h-8C8.34389,8.99819,7.00181,7.65611,7,6V4c0.00181-1.65611,1.34389-2.99819,3-3h8c1.65611,0.00181,2.99819,1.34389,3,3v2C20.99819,7.65611,19.65611,8.99819,18,9z"></path><path class="uim-primary" d="M12,11H6c-0.55206-0.00055-0.99945-0.44794-1-1V7c0.00055-0.55206,0.44794-0.99945,1-1h1V4H6C4.34387,4.00183,3.00183,5.34387,3,7v3c0.00183,1.65613,1.34387,2.99817,3,3h6c0.55206,0.00055,0.99945,0.44794,1,1v1h2v-1C14.99817,12.34387,13.65613,11.00183,12,11z"></path></svg>
+									<v-box></v-box>
+									<span>{{applyNewStyle ? 'Quitar Tema' :'Cambiar Tema'}}</span>
+								</a>
+							</div>
 						</div>
 						<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 3">
 							<div v-if="forums_list.get.length + forums_list.archived.length">
@@ -215,25 +195,6 @@
 								<vcd-exam :data="exam" v-for="exam of exams.list"></vcd-exam>
 							</div>
 							<vcd-void-box v-else text="Exámenes"></vcd-void-box>
-						</div>
-						<div class="cd-tabsbox">
-							<vcd-tabbox text="Menu" :counter="actividities" tabid="0">
-								<svg-mdi path="M16,20H20V16H16M16,14H20V10H16M10,8H14V4H10M16,8H20V4H16M10,14H14V10H10M4,14H8V10H4M4,20H8V16H4M10,20H14V16H10M4,8H8V4H4V8Z"></svg-mdi>
-							</vcd-tabbox>
-							<vcd-tabbox text="Tareas" :counter="homeworks_list.get.length" tabid="1">
-								<svg-mdi path="M16,5V4A2,2 0 0,0 14,2H10A2,2 0 0,0 8,4V5A4,4 0 0,0 4,9V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V9A4,4 0 0,0 16,5M10,4H14V5H10V4M12,9L14,11L12,13L10,11L12,9M18,16H9V18H8V16H6V15H18V16Z"></svg-mdi>
-							</vcd-tabbox>
-							<vcd-tabbox text="Conferencias" :counter="conferences_list.length" tabid="2">
-								<svg-mdi path="M18,16L14,12.8V16H6V8H14V11.2L18,8M20,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z"></svg-mdi>
-							</vcd-tabbox>
-							<vcd-tabbox text="Foros" :counter="forums_list.get.length" tabid="3">
-								<svg-mdi path="M12,23A1,1 0 0,1 11,22V19H7A2,2 0 0,1 5,17V7A2,2 0 0,1 7,5H21A2,2 0 0,1 23,7V17A2,2 0 0,1 21,19H16.9L13.2,22.71C13,22.89 12.76,23 12.5,23H12M3,15H1V3A2,2 0 0,1 3,1H19V3H3V15Z"></svg-mdi>
-							
-							</vcd-tabbox>
-							<vcd-tabbox text="Exámenes":counter="exams.list.length" tabid="4">
-								<svg-mdi path="M17,21L14.25,18L15.41,16.84L17,18.43L20.59,14.84L21.75,16.25M12.8,21H5C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H19A2,2 0 0,1 21,5V12.8C20.12,12.29 19.09,12 18,12L17,12.08V11H7V13H14.69C13.07,14.07 12,15.91 12,18C12,19.09 12.29,20.12 12.8,21M12,15H7V17H12M17,7H7V9H17"></svg-mdi>
-							
-							</vcd-tabbox>
 						</div>
 					
 					</div>
@@ -253,6 +214,9 @@
 				data: [],
 				default: true
 			},
+			generalActividities: [],
+			generalActividitiesArchived: [],
+			coursesList: [],
 			exams: {
 				list: []
 			},
@@ -288,9 +252,9 @@
 				protocol: protocol,
 				modulesTitles: {
 					'-1': 'Información adicional',
-					0: 'Menu principal',
-					1: 'Tareas pendientes',
-					2: 'Conferencias',
+					0: 'Actividades Pendientes',
+					1: 'Actividades Archivadas',
+					'dashboard': 'DASHBOARD',
 					3: 'Lista de Foros',
 					4: 'Lista de Exámenes',
 					'qr': 'Sync',
@@ -299,7 +263,7 @@
 				icon_link: 'mdi-cursor-pointer',
 				now: (new Date()).getTime(),
 				qr: '',
-				colors: ['#697ce2', '#f5b551', '#3dbbf4', '#f9445a', '#00d06a', '#845aec', '#77858f', '#563c63', '#280fb4', '#204f6e']
+				colors: ['#697ce2', '#f5b551', '#3dbbf4', '#f9445a', '#00d06a', '#845aec', '#77858f', '#17997c', '#09a281', '#204f6e']
 			},
 			computed: {
 //
@@ -353,9 +317,94 @@
 					this.openPanel = false 
 					this.moduleActiveId = 'md_activities'
 				},
+				//CREATE FUNCTION TO CONVERT HLS TO RGB STRING
+				hlsToRgb({h, l, s}) {
+					var r, g, b;
+
+					if (s == 0) {
+						r = g = b = l; // achromatic
+					} else {
+						function hue2rgb(p, q, t) {
+							if (t < 0) t += 1;
+							if (t > 1) t -= 1;
+							if (t < 1 / 6) return p + (q - p) * 6 * t;
+							if (t < 1 / 2) return q;
+							if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+							return p;
+						}
+
+						var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+						var p = 2 * l - q;
+						r = hue2rgb(p, q, h + 1 / 3);
+						g = hue2rgb(p, q, h);
+						b = hue2rgb(p, q, h - 1 / 3);
+					}
+
+					return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;	
+				},
+				hslToHex({h, s, l}) {
+					var r, g, b;
+
+					if (s == 0) {
+						r = g = b = l; // achromatic
+					} else {
+						function hue2rgb(p, q, t) {
+							if (t < 0) t += 1;
+							if (t > 1) t -= 1;
+							if (t < 1 / 6) return p + (q - p) * 6 * t;
+							if (t < 1 / 2) return q;
+							if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+							return p;
+						}
+
+						var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+						var p = 2 * l - q;
+						r = hue2rgb(p, q, h + 1 / 3);
+						g = hue2rgb(p, q, h);
+						b = hue2rgb(p, q, h - 1 / 3);
+					}
+
+					return '#' + Math.round(r * 255).toString(16) + Math.round(g * 255).toString(16) + Math.round(b * 255).toString(16);
+				},
+				hexToHSL(hex) {
+					var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+					var r = parseInt(result[1], 16);
+					var g = parseInt(result[2], 16);
+					var b = parseInt(result[3], 16);
+					r /= 255, g /= 255, b /= 255;
+					var max = Math.max(r, g, b), min = Math.min(r, g, b);
+					var h, s, l = (max + min) / 2;
+
+					if (max == min) {
+						h = s = 0; // achromatic
+					} else {
+						var d = max - min;
+						s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+						switch (max) {
+							case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+							case g: h = (b - r) / d + 2; break;
+							case b: h = (r - g) / d + 4; break;
+						}
+						h /= 6;
+					}
+
+					return {h, s, l};
+				},
+				saturateColor(color, saturation) {
+					let hsl = this.hexToHSL(color)
+					hsl.l = .43
+					hsl.s = .90
+					return this.hlsToRgb(hsl)
+				},
 				colorCourse(course) {
 					if (course.includes(' (')) course = this.removeGroupsText(course)
-					return this.colors[this.courses.list.findIndex(e => e.name == course) ?? 0]
+					let color = this.colors[this.courses.list.findIndex(e => e.name == course) ?? 0]
+					let color2 = this.saturateColor(color)
+					
+					return {linear: `linear-gradient(35deg, ${color2}, ${color})`, solid: color}
+				},
+				randomNumber(min, max) {
+					return Math.floor(Math.random() * (max - min + 1)) + min;
 				},
 				removeGroupsText(course) {
 					return course.replace(/ \([a-z]\)/gi, '').slice(6)
@@ -365,7 +414,7 @@
 				},
 				calculeNow() {
 					if (this.internetDate != null && this.localDate != null) this.now = this.$root.internetDate + (new Date().getTime() - this.$root.localDate);
-				},
+				}, 
 				dateDiffInDays(a, b) {
 					const _MS_PER_DAY = 1000 * 60
 					if (typeof a == 'string') a = new Date(a)
@@ -383,7 +432,7 @@
 								if (unit.contents.length) {
 									unit.contents.forEach(content => {
 										fetch(this.protocol + `://aulavirtual.unamad.edu.pe/web/unit/contenidos/${content.id}`).then(e => e.json()).then(contentDeep => {
-											console.log(contentDeep);
+											//console.log(contentDeep);
 										})
 									});
 									/**/
@@ -400,6 +449,7 @@
 				},
 				async loadConferences() {
 					let listconferences = []
+					let protoConferences = []
 					for (let course of this.courses.list) {
 						course.conferences = 0
 						course.conferencesUpdating = !0
@@ -411,7 +461,7 @@
 								if (!a.test(conference.url)) conference.url = 'https://' + conference.url
 								conference.sectionId = course.sectionId
 								conference.nameCourse = course.name
-								if (conference.state != "Finalizado" || (new Date(conference.endTime)).getTime() > this.now) {
+								if (conference.state != "Finalizado" || (new Date(conference.endTime)).getTime() > this.now || true) {
 									listconferences.push(conference);
 									course.conferences++
 								}
@@ -420,12 +470,28 @@
 						course.conferencesUpdating = !1
 					}
 					this.conferences.list = listconferences
-
+					listconferences.forEach(conference => {
+						protoConferences.push({
+							id: conference.id,
+							dateBegin: conference.startTime,
+							dateEnd: conference.endTime,
+							title: conference.title,
+							courseName: conference.nameCourse,
+							unit: conference.classid,
+							isEnded: conference.state.toLowerCase() == "finalizado",
+							type: 'CONFERENCE',
+							url: conference.url,
+							sectionId: conference.sectionId
+						})
+					})
+					protoConferences = protoConferences.filter((e, i) => i < 4)
+					this.generalActividities = this.generalActividities.filter(e => e.type != 'CONFERENCE').concat(protoConferences)
 				},
-				async loadHomeworks() {
+				async loadHomeworks(courses) {
 					var listhomework = []
+					var protoHomeworks = []
 
-					for (let course of this.courses.list) {
+					for (let course of courses) {
 						course.homeworks.isUpdating = !0
 						course.homeworks.count = 0
 						let res = await fetch(this.protocol + '://aulavirtual.unamad.edu.pe/web/homework/list?s=' + course.sectionId);
@@ -445,6 +511,23 @@
 
 								if (task.state == 'ACT' || (new Date(task.dateEndCustom)).getTime() > this.now) {
 									listhomework.push(task);
+									protoHomeworks.push({
+										id: task.id,
+										dateBegin: task.dateBeginCustom,
+										dateEnd: task.dateEndCustom,
+										title: task.title,
+										courseName: task.nameCourse,
+										unit: task.unidad,
+										isEnded: task.state != 'ACT',
+										type: 'HOMEWORK',
+										intents: task.intents,
+										intentsUseds: task.homeworkstds,
+										description: task.description,
+										sectionId: task.sectionId,
+										isGroup: task.isGroup,
+										url: this.protocol + '://aulavirtual.unamad.edu.pe/web/homework/upload?h='+ task.id +'&s=' + task.sectionId,
+										urlPanel: this.protocol + '://aulavirtual.unamad.edu.pe/web/homework?s=' + task.sectionId
+									});
 									if (task.homeworkstds == 0) course.homeworks.count++
 								}
 							});
@@ -452,11 +535,12 @@
 						course.homeworks.isUpdating = !1
 					}
 					this.homeworks.list = listhomework
-
-
+					this.generalActividities = this.generalActividities.filter(e => e.type != 'HOMEWORK').concat(protoHomeworks.filter(e => e.intentsUseds == 0))
+					this.generalActividitiesArchived = this.generalActividitiesArchived.filter(e => e.type != 'HOMEWORK').concat(protoHomeworks.filter(e => e.intentsUseds > 0))
 				},
 				async loadExams() {
 					let exams = []
+					let protoExams = []
 					for (let course of this.courses.list) {
 						course.exams.isUpdating = !0
 						course.exams.count = 0
@@ -473,9 +557,24 @@
 						course.exams.isUpdating = !1
 					}
 					this.exams.list = exams
+					exams.forEach(exam => {
+						protoExams.push({
+							id: exam.evaluationId,
+							dateBegin: exam.dateBegin,
+							intents: exam.intent,
+							courseName: exam.nameCourse,
+							unit: exam.unidad,
+							sectionId: exam.sectionId,
+							type: 'EXAM',
+							url: this.protocol + '://aulavirtual.unamad.edu.pe/web/evaluations/ListAllTests?s=' + exam.sectionId,
+							urlPanel: this.protocol + '://aulavirtual.unamad.edu.pe/web/evaluations/ListAllTests?s=' + exam.sectionId
+						})
+					})
+					this.generalActividities = this.generalActividities.filter(e => e.type != 'EXAM').concat(protoExams)
 				},
 				async loadForums() {
 					let listforums = []
+					let protoForums = []
 					for (const course of this.courses.list) {
 						course.forums.count = 0
 						course.forums.isUpdating = !0
@@ -519,15 +618,33 @@
 						course.forums.isUpdating = !1
 					}
 					this.forums.list = listforums;
-
+					listforums.forEach(forum => {
+						protoForums.push({
+							id: forum.forumId,
+							dateBegin: forum.dateBegin,
+							dateEnd: forum.dateEnd,
+							title: forum.name,
+							courseName: forum.nameCourse,
+							unit: forum.unidadName,
+							isEnded: forum.isEnded,
+							type: 'FORUM',
+							answers: forum.answers,
+							myAnswers: forum.participations,
+							sectionId: forum.sectionId,
+							url: this.protocol + '://aulavirtual.unamad.edu.pe/web/forum/details?f=' + forum.forumId + '&s=' + forum.sectionId,
+							urlPanel: this.protocol + '://aulavirtual.unamad.edu.pe/web/forum?s=' + forum.sectionId
+						})
+					})
+					this.generalActividities = this.generalActividities.filter(act => act.type != 'FORUM').concat(protoForums.filter(forum => forum.myAnswers == 0))
+					this.generalActividitiesArchived = this.generalActividitiesArchived.filter(act => act.type != 'FORUM').concat(protoForums.filter(forum => forum.myAnswers > 0))
 				},
 				loadData2() {
 					this.loadConferences()
 					this.loadExams()
-					this.loadHomeworks()
+					this.loadHomeworks(this.courses.list)
 					this.loadForums()
 
-					/*this.loadLibrary(this.courses.list)*/
+					this.loadLibrary(this.courses.list)
 				},
 				async loadCourses() {
 
@@ -535,6 +652,7 @@
 					let response = await fetch(this.protocol + '://aulavirtual.unamad.edu.pe/web/user/info/system/courseinrole')
 					if (response.ok) {
 						response.json().then(data => {
+							this.coursesList = data
 							this.updating = false
 							this.courses.list = data.map(d => {
 								return {
