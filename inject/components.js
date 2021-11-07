@@ -150,7 +150,9 @@ Vue.component('vcd-activity', {
 						<div v-if="data.type == 'HOMEWORK'" style="padding: 0 0.5rem; border-radius: .5rem; height: 32px; background: var(--panel-light)" class="f-start">
 							<span>Intentos: {{data.intents - data.intentsUseds}}/{{data.intents}}</span>
 						</div>
-						
+						<div v-if="data.type == 'EXAM'" style="padding: 0 0.5rem; border-radius: .5rem; height: 32px; background: var(--panel-light)" class="f-start">
+							<span>Intentos restantes: {{data.intents}}</span>
+						</div>
 					</div>
 					<div title="" class="cd-activity-type f-c" :style="{'border-color': $root.colorCourse(data.courseName).solid}">
 						
@@ -168,6 +170,150 @@ Vue.component('vcd-activity', {
 			return now > date
 		}
 	}
+})
+Vue.component('vcd-dashconferences-item', {
+	template: /*html*/`
+		<a class="cd-dashconferences-item" :class="{'cd-dashconferences-item-disable': !isBegin}" :href="isBegin? data.url : '#'" :target="isBegin? '_blank' : ''">
+			<div :style="{fill: $root.colorCourse(data.courseName).solid}">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path class="uim-tertiary" d="M14,18H5c-1.65611-0.00181-2.99819-1.34389-3-3V9c0.00181-1.65611,1.34389-2.99819,3-3h9c1.65611,0.00181,2.99819,1.34389,3,3v6C16.99819,16.65611,15.65611,17.99819,14,18z"></path><path class="uim-primary" d="M21.89465,7.55359c-0.24683-0.49432-0.8476-0.69495-1.34192-0.44812l-3.56421,1.7821C16.98999,8.92572,16.99994,8.96149,17,9v6c-0.00006,0.03851-0.01001,0.07428-0.01147,0.11243l3.56421,1.7821C20.69165,16.96381,20.84479,16.99994,21,17c0.55212-0.00037,0.99969-0.44788,1-1V8C21.99994,7.84503,21.96387,7.6922,21.89465,7.55359z"></path></svg>
+				<span style="height: 18px;" class="f-c cd-dashconferences-item-title">{{data.courseName.slice(0,22)}}</span>
+				<span style="height: 18px;" class="f-c cd-dashconferences-item-message-notinit">AÚN NO INICIA</span>
+				<b v-if="isBegin" class="acd-fadeOut" style="animation-iteration-count: infinite; animation-duration: 2s; animation-name: fadeOut2;"></b>
+			</div>
+			<v-box s=.5></v-box>
+			<section v-if="countdown" style="background: var(--panel-light);line-height: .8rem; height: 30px; width: 100%; border-radius: var(--rounded); font-size: .8rem; justify-content: center" class="f-start">
+				<span>{{isBegin ? 'Termina:': 'Inicia :'}}</span>
+				<v-box s=.5></v-box>
+				<vcd-countdown2 :date="isBegin ? data.dateEnd: data.dateBegin"></vcd-countdown2>
+			</section>
+		</a>
+	`,
+	props: {data: Object, countdown: Boolean},
+	computed: {
+		isBegin(){
+			return this.$root.now > (new Date(this.data.dateBegin)).getTime()
+		}
+	}
+})
+Vue.component('vcd-gallery-string', {
+	template: /*HTML*/`
+	<div v-if="data.length" class="cd-gallery-string">
+		<span v-for="(course, i) of data" :style="{opacity: i == position ? 1: 0}">{{$root.removeGroupsText(course.title)}}</span>
+	</div>
+	`,
+	data(){
+		return {
+			position: 0
+		}
+	},
+	props: ['data'],
+	mounted(){
+		if (this.data.length) setInterval(() => {this.position = (this.position + 1) % this.data.length}, 2000)
+	}
+})
+Vue.component('vcd-info-notify',{
+	template: /*HTML */`
+		<div class="cd-info-notify" :class="{'active-element': $root.moduleActiveId == 'md_schedule_2'}" v-if="$root.schedule.data.length && (info.current.length + info.next.length > 0)" @click="$root.openPanel = true; $root.moduleActiveId = 'md_schedule_2'">
+			<svg width="2.4rem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22,9H2V6c0-1.65685,1.34315-3,3-3h14c1.65685,0,3,1.34315,3,3V9z" class="uim-tertiary"></path><path d="M2,19c0.00183,1.65613,1.34387,2.99817,3,3h14c1.65613-0.00183,2.99817-1.34387,3-3V9H2V19z" class="uim-quaternary"></path><path d="M7,7C6.44772,7,6,6.55228,6,6V2c0-0.55228,0.44772-1,1-1s1,0.44772,1,1v4C8,6.55228,7.55228,7,7,7z M17,7c-0.55228,0-1-0.44772-1-1V2c0-0.55228,0.44772-1,1-1s1,0.44772,1,1v4C18,6.55228,17.55228,7,17,7z" class="uim-primary"></path><circle cx="7" cy="13" r="1" class="uim-primary"></circle><circle cx="17" cy="13" r="1" class="uim-primary"></circle><circle cx="12" cy="13" r="1" class="uim-primary"></circle><circle cx="12" cy="17" r="1" class="uim-primary"></circle><circle cx="7" cy="17" r="1" class="uim-primary"></circle><circle cx="17" cy="17" r="1" class="uim-primary"></circle></svg>
+			<v-box s=".5"></v-box>
+			<div class="cd-info-notify-currenteCourse cd-info-notify-course" style="flex: 1" v-show="info.current.length && (!next || info.next.length == 0)">
+				<div style="font-size: .8rem; color: var(--success);">CURSO ACTUAL</div>
+				<vcd-gallery-string :data="info.current"></vcd-gallery-string>
+			</div>
+			<div class="cd-info-notify-nextCourse cd-info-notify-course" v-if="info.next.length && (next || info.current.length == 0)">
+				
+				<div style="font-size: .8rem; color: var(--text-default);">SIGUIENTE CURSO: en <vcd-countdown2 :date="info.next[0].start"></vcd-countdown2></div>
+				<vcd-gallery-string :data="info.next"></vcd-gallery-string>
+			
+			</div>
+		
+			<a class="cd-notify-nextinfo f-c" href="#" @click="next = !next" v-show="info.current.length && info.next.length">
+				<svg style="height:24px" viewBox="0 0 24 24" v-if="next">
+					<path fill="#FFF" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
+				</svg>
+				<svg style="height:24px" viewBox="0 0 24 24" v-else>
+					<path fill="#FFF" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+				</svg>
+			</a>
+		</div>
+	`,
+	data(){
+		return {
+			next: false
+		}
+	},
+	computed: {
+		info(){
+			const now = new Date(this.$root.now)
+			const courses = {}
+			let courseNext = []
+			let courseCurrent = []
+			//OBTENEMOS LOS CURSOS QUE CORRESPONDEN AL DIA ACTUAL Y LUEGO LO ORDENAMOS POR FECHA DE INICIO
+			let list = JSON.parse(JSON.stringify(this.$root.schedule.data)).map(e=>{
+				let [startRef, endRef] = [new Date(e.start), new Date(e.end)]
+				let [start, end] = [this.addDays(this.$root.now, startRef.getDay() - now.getDay()), this.addDays(this.$root.now, endRef.getDay() - now.getDay())]
+				start.setHours(startRef.getHours(),startRef.getMinutes(),0,0)
+				end.setHours(endRef.getHours(),endRef.getMinutes(),0,0)
+				
+				e.start = start.getTime()
+				e.end = end.getTime()
+				return e
+			}).sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime())
+			
+			//AÑADIMOS ALGUNOS CURSOS DE LA SEMANA SIGUIENTE
+			let courseNextWeek = list.filter((e, i)=> i < 4).map(e=>{
+				let new_e = {...e}
+				new_e.start = this.addDays(new_e.start, 7).getTime()
+				new_e.end = this.addDays(new_e.end, 7).getTime()
+				return new_e
+			})
+			list = list.concat(courseNextWeek)
+			
+			list.forEach(i => {
+
+				//BUSQUEDA DE TODOS LOS PROXIMOS CURSOS
+				if (courses[i.start] == undefined) courses[i.start] = []
+				courses[i.start].push(i)
+
+				//BUSQUEDA DEL CURSO ACTIVO
+				const [dStart, dEnd] = [new Date(i.start), new Date(i.end)]
+				if (
+					dStart.getHours() <= now.getHours() && 
+					dEnd.getHours() > now.getHours() &&
+					dStart.getDay() == now.getDay()
+				) courseCurrent.push(i)
+				
+			});
+			//BUSQUEDA DEL PROXIMO CURSO
+			for (const i in courses) {
+				if (i > now.getTime()) {
+					courseNext = courses[i]
+					break
+				}
+			}
+
+
+
+			return {current: courseCurrent, next: courseNext}
+		}
+	},
+	methods: {
+		addDays(date, days) {
+			const result = new Date(date);
+			result.setDate(result.getDate() + days);
+			return result;
+		},
+		isTomorrow(datetime){
+			return new Date(datetime).getDay() == new Date(this.$root.now).getDay() + 1
+		},
+	}
+})
+Vue.component('vcd-dashconferences', {
+	template: /*html*/
+	`<div class="cd-dashconferences" v-if="data.length">
+		<vcd-dashconferences-item v-for="conference of data" :data="conference" :countdown="countdown"></vcd-dashconferences-item>
+	</div>`,
+	props: {data: Object, countdown: Boolean}
 })
 Vue.component('vcd-date', {
 	template: /*HTML */
@@ -208,7 +354,7 @@ Vue.component('vcd-countdown2', {
 	computed: {
 		dateCalcule(){
 			const now = this.$root.now
-			const distance = (new Date(this.date)).getTime() - now;
+			const distance = ((typeof this.date) == 'object' ? this.date: new Date(this.date)).getTime() - now;
 			
 			const days = Math.floor(distance / (1000 * 60 * 60 * 24));
 			const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));

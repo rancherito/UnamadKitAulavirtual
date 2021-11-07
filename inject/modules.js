@@ -118,136 +118,48 @@ Vue.component('vcd-conference', {
 		}
 	}
 })
-Vue.component('vcd-info-notify',{
-	template: /*HTML */`
-		<div class="cd-info-notify" v-if="$root.schedule.data.length && (info.current.length + info.next.length > 0)">
-			<div class="cd-info-notify-currenteCourse cd-info-notify-course" style="margin-bottom: 2px" v-show="info.current.length && (!next || info.next.length == 0)">
-				
-				<div style="flex: 1">
-					<div style="font-size: .8rem;font-weight: bold;color: var(--success);">CURSO ACTUAL</div>
-					<div v-for="course in info.current">{{$root.removeGroupsText(course.title)}}</div>
-				</div>
-				
-			</div>
-			<div class="cd-info-notify-nextCourse cd-info-notify-course" v-if="info.next.length && (next || info.current.length == 0)">
-				
-				<div style="display: flex; flex: 1">
-					<div style="flex: 1">
-						<div style="font-size: .8rem;font-weight: bold;color: var(--text-default);">SIGUIENTE CURSO EN: {{dateViewStart(info.next[0].start)}}</div>
-						<div v-for="course in info.next">{{$root.removeGroupsText(course.title)}}</div>
-					</div>
-				</div>
-				<a class="cd-notify-nextinfo f-c" href="#" @click="next = !next" v-show="info.current.length && info.next.length">
-					<svg style="height:24px" viewBox="0 0 24 24" v-if="next">
-						<path fill="#FFF" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
-					</svg>
-					<svg style="height:24px" viewBox="0 0 24 24" v-else>
-						<path fill="#FFF" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
-					</svg>
-				</a>
-			</div>
-			
-		</div>
-	`,
-	data(){
-		return {
-			next: false
-		}
-	},
-	computed: {
-		info(){
-			const now = new Date(this.$root.now)
-			const courses = {}
-			let courseNext = []
-			let courseCurrent = []
-			//OBTENEMOS LOS CURSOS QUE CORRESPONDEN AL DIA ACTUAL Y LUEGO LO ORDENAMOS POR FECHA DE INICIO
-			const list = [...this.$root.schedule.data.filter(e => (new Date(e.start)).getDay() == now.getDay())].sort((a, b) => a.start.localeCompare(b.start))
-			
-
-			list.forEach(i => {
-
-				//BUSQUEDA DEL PROXIMO CURSO
-				if (courses[i.start] == undefined) courses[i.start] = []
-				courses[i.start].push(i)
-
-				//BUSQUEDA DEL CURSO ACTIVO
-				const [dStart, dEnd] = [new Date(i.start), new Date(i.end)]
-				if (dStart.getHours() <= now.getHours() && dEnd.getHours() > now.getHours()) {
-					courseCurrent.push(i)
-				}
-			});
-
-			for (const i in courses) {
-				const CourseFound = new Date(i);
-				if ((CourseFound.getHours() * 60 * 60 ) + (CourseFound.getMinutes() * 60 ) + CourseFound.getSeconds()  > (now.getHours() * 60 * 60 ) + (now.getMinutes() * 60 ) + now.getSeconds()) {
-					courseNext = courses[i]
-					break
-				}
-			}
 
 
-
-			return {current: courseCurrent, next: courseNext}
-		}
-	},
-	methods: {
-		
-		dateViewStart(date){
-			
-			const now = this.$root.now
-
-			let dateNow = new Date(now)
-			let dateCourse = new Date(date)
-
-			dateNow.setHours(dateCourse.getHours(), dateCourse.getMinutes(), 0, 0)
-
-			const distance = dateNow.getTime() - now;
-			
-			const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-			const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-			const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-			const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-			return distance < 0 ? '0m 0s' : (days ? days + "d ": '') + (hours + days ? hours + "h " : '') + (days ? '' : minutes + "m ") + (days + hours ? '' :seconds + 's')
-		},
-	}
-})
 Vue.component('cd-schedule-2', {
 	template: /*html*/`
 	<div style="position: relative; height: 100%">
-		
-			
-		<div style="height: 100%; padding: 1rem; overflow-y: auto">
+		<div style="height: 100%; padding: 0 1rem; overflow-y: auto">
 			<div class="f-end">
 				<a class="cd-btn" href="#" @click="$root.schedule.default = !$root.schedule.default" style="border: 1px solid var(--primary); background: transparent; padding: 0 1rem">
 					
 					<span style="padding-right: .5rem">{{$root.schedule.default ? 'General' : 'Dias'}}</span>
-					<svg style="width:24px;height:24px" viewBox="0 0 24 24" v-if="$root.schedule.default">
-						<path d="M3,11H11V3H3M3,21H11V13H3M13,21H21V13H13M13,3V11H21V3" />
+					<svg v-if="$root.schedule.default" style="width:24px;" viewBox="0 0 24 24">
+						<path d="M9,10V12H7V10H9M13,10V12H11V10H13M17,10V12H15V10H17M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5A2,2 0 0,1 5,3H6V1H8V3H16V1H18V3H19M19,19V8H5V19H19M9,14V16H7V14H9M13,14V16H11V14H13M17,14V16H15V14H17Z" />
 					</svg>
-					<svg style="width:24px;height:24px" viewBox="0 0 24 24" v-else>
-						<path d="M3,4H7V8H3V4M9,5V7H21V5H9M3,10H7V14H3V10M9,11V13H21V11H9M3,16H7V20H3V16M9,17V19H21V17H9" />
+					<svg v-else style="width:24px;" viewBox="0 0 24 24">
+						<path d="M14,14H7V16H14M19,19H5V8H19M19,3H18V1H16V3H8V1H6V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M17,10H7V12H17V10Z" />
 					</svg>
 				</a>
 			</div>
-			<v-box s=".5"></v-box>
 			<div v-if="$root.schedule.default">
+				<div class="f-c" style="font-size: 1.5rem;font-weight: lighter;padding: 0.5rem 0 2rem 0;">{{['DOMINGO', 'LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO'][selectedDay]}}</div>
 				<div style="display: grid; grid-template-columns: repeat(5, 1fr); width: calc(100% - 60px - .5rem);gap: 0.5rem; margin-bottom: .5rem; margin-left: calc(60px + .5rem)">
 					<div class="f-c" v-for="(day, i) of days" :class="{'cd-schedule-per-day-active-day': currentDay == i + 1}" @click="selectedDay = i + 1" style="cursor: pointer;flex: 1; height: 32px; border-radius: var(--rounded2); color: white" :style="{background: selectedDay == i + 1 ? 'var(--primary)' : 'var(--panel)'}">{{day}}</div>
 				</div>
 				
 				<div style="display: flex" v-if="currentSchedule.timesSchedule.length">
 					<div style="padding-right: 0.5rem">
-						<div class="f-c" v-for="time of currentSchedule.timesSchedule" style="height: 40px; width: 60px;">
-							<div class="c" style="border: 1px solid var(--secondary); border-radius: var(--rounded2); padding: .25rem .5rem; width: 100%">{{time12(time)}}</div>
+						<div class="f-c" v-for="time of currentSchedule.timesSchedule" style="height: 36px; width: 60px;">
+							<div class="c cd-schedule-2-hour" style="border-radius: var(--rounded2); padding: .25rem .5rem; width: 100%; background: var(--panel);">{{time12(time)}}</div>
 						</div>
 					</div>
-					<section style="flex: 1; padding-top: 20px">
-						<div v-for="(group, ix) of currentSchedule.schedule" :style="{height: 40 * group.sizeStack + 'px'}" style="display: flex">
-							<div class="f-c c" style="flex: 1 1 0px; height: 100%; padding: 2px 0 0 2px" v-for="courseName of group.courses" :style="{'padding-top': ix == 0 ? 0 : '2px'}">
-								<div class="f-c" style="height: 100%; width: 100%; border-radius: var(--rounded); padding: 0.5rem; color: white" :style="{background: $root.colorCourse(courseName).linear, 'font-size': 1 + (group.courses.length > 1 ? -.3 : 0) + (group.sizeStack > 1? .2 : 0) + 'rem'}">
-									{{$root.removeGroupsText(courseName)}}
+					<section style="flex: 1; padding-top: 17px">
+						<template v-if="currentSchedule.schedule.length">
+							<div  v-for="(group, ix) of currentSchedule.schedule" :style="{height: 36 * group.sizeStack + 'px'}" style="display: flex">
+								<div class="f-c c" style="flex: 1 1 0px; height: 100%; padding: 1px 0 0 1px" v-for="courseName of group.courses" :style="{'padding-top': ix == 0 ? 0 : '1px'}">
+									<div class="f-c" style="z-index: 2;background: var(--panel);height: 100%; width: 100%; border-radius: var(--rounded); padding: 0.5rem; color: white; border: 2px solid #fff" :style="{'color': $root.colorCourse(courseName).light,'border-color': $root.colorCourse(courseName).solid, 'font-size': 1 + (group.courses.length > 1 ? -.3 : 0) + (group.sizeStack > 1? .2 : 0) + 'rem'}">
+										{{$root.removeGroupsText(courseName)}}
+									</div>
 								</div>
 							</div>
+						</template>
+						<div v-else class="f-c" style="height: 100%">
+							<span>SIN ASIGNATURAS</span>
 						</div>
 					</section>
 					
@@ -262,7 +174,6 @@ Vue.component('cd-schedule-2', {
 					<span class="c" style="font-size: 1.2rem">no tiene actvidades pendientes</span>
 				</div>
 			</div>
-			
 			<cd-schedule v-else></cd-schedule>
 		</div>
 	</div>
@@ -282,8 +193,14 @@ Vue.component('cd-schedule-2', {
 			let currentSchedule = [...this.$root.schedule.data].filter(e => e.startNormalized?.day == this.selectedDay)
 
 			let times = [], timesSchedule = [], schedule = []
+
+			this.$root.schedule.data.forEach(course => {
+				let [s, e] = [(new Date(course.start)).getHours(), (new Date(course.end)).getHours()]
+				for (let i = 0; i < e - s; i++) if (!times.find(e => e == s + i)) times.push(s + i)
+			})
+
 			currentSchedule.forEach(e => {
-				for (let i = 0; i < e.endNormalized.hour - e.startNormalized.hour; i++) if(!times.find(ee => ee == e.startNormalized.hour + i)) times.push(e.startNormalized.hour + i)
+				//for (let i = 0; i < e.endNormalized.hour - e.startNormalized.hour; i++) if(!times.find(ee => ee == e.startNormalized.hour + i)) times.push(e.startNormalized.hour + i)
 			})
 			times.sort()
 			if(times.length) for (let i = times[0]; i <= times[times.length - 1]; i++) timesSchedule.push(i)
@@ -304,6 +221,7 @@ Vue.component('cd-schedule-2', {
 					i--
 				}
 			}
+			if(schedule.length == 1 && schedule[0].courses.length == 0) schedule = []
 			if(timesSchedule.length) timesSchedule.push(timesSchedule[timesSchedule.length - 1] + 1)
 			return {schedule, timesSchedule}
 		}
@@ -321,7 +239,7 @@ Vue.component('cd-schedule-2', {
 Vue.component('cd-schedule', {
 	template: /*HTML*/
 	`
-		<div>
+		<div class="test">
 			<div v-if="$root.schedule.data.length" class="cd-schedule">
 				<div class="cd-schedule-head">
 					<div :class="{'cd-schedule-head-day-active': (new Date(now)).getDay() == i + 1}" v-for="(day, i) of $root.days" class="f-c cd-schedule-head-day">
@@ -337,9 +255,9 @@ Vue.component('cd-schedule', {
 										
 										<span 
 											class="f-c cd-schedule-course-item"
-											:style="{'background': $root.colorCourse(course.title).linear}"
+											:style="{'background': $root.colorCourse(course.title).solid}"
 										>
-											{{time12(new Date(course.start).getHours())}}-{{time12(parseInt(hour)+1)}}
+											{{time12(new Date(course.start).getHours())}} a {{time12(parseInt(hour)+1)}}
 										</span>
 									</div>
 								</div>
@@ -352,20 +270,12 @@ Vue.component('cd-schedule', {
 			</div>
 			
 			<v-box></v-box>
-			<div v-if="$root.schedule.data.length">
+			<div>
 				<div class="f-start" v-for="course of $root.courses.list">
-					<span style="height: 1rem; width: 1rem; background-color: var(--panel)" :style="{'background': $root.colorCourse(course.name).linear}"></span>
+					<span style="height: 1rem; width: 1rem; background-color: var(--panel)" :style="{'background': $root.colorCourse(course.name).solid}"></span>
 					<v-box s=".5"></v-box>
 					<span style="flex: 1">{{course.name}}</span>
 				</div>
-			</div>
-			<div v-else class="cd-schedule-info f-c">
-				<h1 style="text-align: center"> <i class="mdi mdi-school"></i> </h1>
-				<h5 style="text-align: center">Sincronización de horario académico</h5>
-				<p style="text-align: center">
-					Para sincronizar tu horario académico ve a <a target="_blank" :href="$root.protocol + '://intranet.unamad.edu.pe/'" style="color: var(--primary)">intranet.unamad.edu.pe</a> e inicia sesión. En la parte superior derecha habra un indicador que te avisara si ya se sincronizo los datos,
-					cuando hayas terminado regresa a tu aula virtual y recarga la página.
-				</p>
 			</div>
 		</div>
 		
@@ -429,6 +339,13 @@ Vue.component('vcd-info',{
 	template: /* HTML */
 	`
 	<vcd-autoScroll padding="0 1rem">
+		<div class="cd-list">
+			<div class="cd-list-content">
+				Notas Version: 2.0.0<br><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Nueva interfaz del panel princiapl.</span><br>
+				<span><i class="mdi mdi-auto-fix cd-text-primary mdi-24px"></i> Horario rediseñado.</span><br>
+			</div>
+		</div>
 		<div class="cd-list">
 			<div class="cd-list-content">
 				Notas Version: 1.0.11<br><br>
@@ -531,27 +448,20 @@ Vue.component('vcd-helper-list',{
 Vue.component('vcd-module',{
 	template:/*HTML*/ `
 		<div id="modelinject">
-			<div class="cd-dialog">
 				<div class="cd-dialog-actions-top">
-					
+					<a class="cd-btn" style="background: transparent;" @click="$root.moduleActiveId = 'md_activities'; $root.tabposition = 'dashboard'" href="#" v-show="$root.moduleActiveId != 'md_activities' || $root.tabposition != 'dashboard'">
+						<svg xmlns="http://www.w3.org/2000/svg" style="height: 2rem" viewBox="0 0 24 24"><path class="uim-primary" d="M8,14.5a.99676.99676,0,0,1-.707-.293l-3-3a.99962.99962,0,0,1,0-1.41406l3-3A.99989.99989,0,0,1,8.707,8.207L6.41406,10.5l2.293,2.293A1,1,0,0,1,8,14.5Z"></path><path class="uim-primary" d="M19,17.5a.99974.99974,0,0,1-1-1v-4a1.001,1.001,0,0,0-1-1H5a1,1,0,0,1,0-2H17a3.00328,3.00328,0,0,1,3,3v4A.99974.99974,0,0,1,19,17.5Z"></path></svg>
+					</a>
+					<v-box></v-box>
 					<div class="mdl-typography--headline" style="color: white">{{title}}</div>
 					<div class="f-fill"></div>
-					<a class="cd-btn" @click="$root.moduleActiveId = 'md_activities'; $root.tabposition = 'dashboard'" href="#" v-if="$root.moduleActiveId != 'md_activities' || $root.tabposition != 'dashboard'">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1.4em" style="fill: #fff"><rect width="9" height="9" x="2" y="2" class="uim-primary" rx="1"></rect><rect width="9" height="9" x="2" y="13" class="uim-tertiary" rx="1"></rect><rect width="9" height="9" x="13" y="2" class="uim-tertiary" rx="1"></rect><rect width="9" height="9" x="13" y="13" class="uim-tertiary" rx="1"></rect></svg>
-						<v-box s=".5"></v-box>
-						<span>Menu</span>
-					</a>
-					<v-box s=".5"></v-box>
-					<a class="cd-btn" @click="$root.openPanel = false; $root.moduleActiveId = 'md_activities'" href="#">
-						<svg viewBox="0 0 24 24" style="width: 24px;"><path fill="#fff" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path></svg>
-					</a>
+					
 				</div>
 				<div class="cd-dialog-content">
 					<div style="position: absolute; height: 100%; width: 100%">
 						<slot></slot>
 					</div>
 				</div>
-			</div>
 		</div>
 		
 	`,

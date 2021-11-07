@@ -25,47 +25,29 @@
 				</a>
 			</div>
 			
-			<vcd-info-notify></vcd-info-notify>
+			
 			<div id="cd-navmenu" :class="{'cd-navmenu-open': openPanel}">
-				<template v-if="openPanel">
-					<div style="padding-top: 60px; display: flex; flex-direction: column">
-						
-					</div>
-				</template>
-				<div style="display: flex; flex-direction: column">
-					<vue-custom-tooltip label="Horario" position="is-left">
-						<a class="cd-btn-navmenu"  href="#" @click="openPanel = true; moduleActiveId = 'md_schedule_2'" :class="{active: moduleActiveId == 'md_schedule'}" id="btn_id_schedule">
-							<svg style="width:24px;height:24px" viewBox="0 0 24 24">
-								<path fill="#FFF" d="M9,10V12H7V10H9M13,10V12H11V10H13M17,10V12H15V10H17M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5A2,2 0 0,1 5,3H6V1H8V3H16V1H18V3H19M19,19V8H5V19H19M9,14V16H7V14H9M13,14V16H11V14H13M17,14V16H15V14H17Z" />
-							</svg>
-						</a>
-					</vue-custom-tooltip>
-					<vue-custom-tooltip label="Panel principal" position="is-left">
-						<a class="cd-btn-navmenu" @click="openPanel = true; moduleActiveId = 'md_activities'" href="#" :class="{active: moduleActiveId == 'md_activities'}">
-							<span v-if="actividities > 0 && moduleActiveId != 1">{{actividities}}</span>
-							<svg style="width:24px;height:24px" viewBox="0 0 24 24">
-								<path fill="#FFF" d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
-							</svg>
-						</a>
-					</vue-custom-tooltip>
-					<vue-custom-tooltip label="Cerrar panel (ESC)" position="is-left">
-						<a v-if="openPanel" class="cd-btn-navmenu" @click="openPanel = false; moduleActiveId = 'md_activities'" href="#">
-							<svg style="width:24px;height:24px" viewBox="0 0 24 24">
-								<path fill="#fff" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-							</svg>
-						</a>
-					</vue-custom-tooltip>
+				<vcd-info-notify title="ABRIR HORARIO"></vcd-info-notify>
+				<div class="cd-navmenu-principal-action">
+					<a title="ABRIR MENÚ" class="cd-btn-navmenu" @click="openPanel = true; moduleActiveId = 'md_activities'; tabposition = 'dashboard'" href="#" :class="{active: moduleActiveId == 'md_activities' && tabposition == 'dashboard'}">
+						<svg xmlns="http://www.w3.org/2000/svg" style="width: 24px; fill: #fff" viewBox="0 0 24 24" width="1.4em"><rect width="9" height="9" x="2" y="2" rx="1" class="uim-primary"></rect><rect width="9" height="9" x="2" y="13" rx="1" class="uim-tertiary"></rect><rect width="9" height="9" x="13" y="2" rx="1" class="uim-tertiary"></rect><rect width="9" height="9" x="13" y="13" rx="1" class="uim-tertiary"></rect></svg>
+					</a>
+					<a :title="openPanel? 'CERRAR MENÚ':'ABRIR ACTIVIDADES'" class="cd-btn-navmenu" @click="openPanel = !openPanel; moduleActiveId = 'md_activities'; tabposition = 0" href="#" :class="{active: moduleActiveId == 'md_activities' && tabposition == 0}">
+						<span v-if="generalActividities.length > 0 && !openPanel">{{generalActividities.length}}</span>
+						<svg v-if="!openPanel" style="width:24px;" viewBox="0 0 24 24"><path fill="#FFF" d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" /></svg>
+						<svg v-else viewBox="0 0 24 24" style="width: 24px;"><path fill="#fff" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path></svg>
+					</a>
 				</div>
 				
 			</div>
 			
-			<div v-show="openPanel">
+			<div v-show="openPanel" id="app-content">
 				<cd-schedule v-show="moduleActiveId == 'md_schedule'"></cd-schedule>
 				<vcd-module title="Información de versiones" v-show="moduleActiveId == 'md_info'">
 					<vcd-info></vcd-info>
 				</vcd-module>
 				<vcd-module title="Compartir" v-show="moduleActiveId == 'md_share'">
-					<div class="f-c" style="height: 100%">
+					<div class="f-c" style="height: 100%; padding: 1rem">
 						<div style="flex: 1;" class="f-c">
 							<div style="color: white; font-size: 4rem; padding-bottom: 4rem"> <i class="mdi mdi-school"></i></div>
 							<p style="text-align: center">
@@ -89,13 +71,23 @@
 					</div>
 				</vcd-module>
 				<vcd-module title="Horario" v-show="moduleActiveId == 'md_schedule_2'">
-					<cd-schedule-2></cd-schedule-2>
+					<cd-schedule-2 v-if="schedule.data.length"></cd-schedule-2>
+					<div v-else class="cd-schedule-info f-c">
+						<h1 style="text-align: center"> <i class="mdi mdi-school"></i> </h1>
+						<h5 style="text-align: center">Sincronización de horario académico</h5>
+						<p style="text-align: center">
+							Para sincronizar tu horario ve a <a target="_blank" :href="$root.protocol + '://intranet.unamad.edu.pe/'" style="color: var(--primary); font-weight: bold; font-size: 1.2rem">intranet.unamad.edu.pe</a> e inicia sesión. En la parte superior derecha habra un indicador de sincronización,
+							cuando termine regresa a tu aula virtual y recarga.
+						</p>
+					</div>
 				</vcd-module>
 					
 				<vcd-module :title="modulesTitles[tabposition]" v-show="moduleActiveId == 'md_activities'">				
 					<div style="display: flex; flex-direction: column; height: 100%">
 						<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 0">
-							<div style="display: grid; gap: 1rem; grid-teamplate-column: 1fr">
+							<div v-if="generalActividities.length" style="display: grid; gap: 1rem; grid-teamplate-column: 1fr">
+							
+								<vcd-dashconferences countdown :data="generalActividities.filter(e=>e.type == 'CONFERENCE')"></vcd-dashconferences>
 								<div 
 								style="display: grid; gap: .5rem" 
 								v-for="course in coursesList" 
@@ -107,7 +99,9 @@
 									</div>
 								</div>
 							</div>
-								
+							<div v-else style="height: 100%; width: 100%" class="f-c">
+								No posees actividades pendientes
+							</div>
 														
 						</div>
 						<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 1">
@@ -117,6 +111,7 @@
 								v-for="course in coursesList" 
 								v-if="generalActividitiesArchived.filter(e=>e.type != 'CONFERENCE').filter(e=>e.courseName == course.name).length"
 								>
+									
 									<div v-for="activity of generalActividitiesArchived.filter(e=>e.type != 'CONFERENCE').filter(e=>e.courseName == course.name)">
 										<vcd-activity :data="activity"></vcd-activity>
 									</div>
@@ -124,25 +119,15 @@
 							</div>
 						</div>
 
-						<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 'dashboard'">
-							<div class="cd-dashconferences">
-								<div v-for="conference of generalActividities.filter(e=>e.type == 'CONFERENCE')" class="cd-dashconferences-item">
-									<div :style="{fill: colorCourse(conference.courseName).solid}">
-										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" ><path class="uim-tertiary" d="M12,22A10,10,0,1,1,22,12,10.01177,10.01177,0,0,1,12,22Z"></path><path class="uim-primary" d="M10,16.89062A2.00839,2.00839,0,0,1,8,14.8877V9.1123a2.00085,2.00085,0,0,1,3-1.73242l5,2.8877a2.00064,2.00064,0,0,1,0,3.46484l-5,2.8877A1.99618,1.99618,0,0,1,10,16.89062Z"></path></svg>
-										<span>{{conference.courseName.slice(0,22)}}</span>
-										<b v-if="now > (new Date(conference.dateBegin)).getTime()" class="acd-fadeOut" style="animation-iteration-count: infinite; animation-duration: 2s; animation-name: fadeOut2;"></b>
-									</div>
-									<span style="background: var(--panel); height: 30px; width: 80px; border-radius: var(--rounded); font-size: .8rem" class="f-c">
-										<vcd-countdown2 :date="now > (new Date(conference.dateBegin)).getTime() ? conference.dateEnd: conference.dateBegin"></vcd-countdown2>
-									</span>
-								</div>
-							</div>
+						<div class="mdl-dialog__content acd-fadeOut" :class="{'f-c': generalActividities.filter(e=>e.type == 'CONFERENCE').length == 0}" v-show="tabposition == 'dashboard'" style="display: flex; flex-direction: column">
+							<vcd-dashconferences :data="generalActividities.filter(e=>e.type == 'CONFERENCE')"></vcd-dashconferences>
 							<v-box></v-box>
 							<div class="cd-dashboard">
-								<a class="f-c cd-dashboard-item" @click="tabposition=0" href="#" :style="{fill: colors[0]}">
+								<a class="f-c cd-dashboard-item" @click="tabposition=0" href="#" :style="{fill: colors[0]}" style="grid-column: span 2;">
 									<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24" ><path class="uim-tertiary" d="M5.1,4h14c0.6,0,1,0.4,1,1v14c0,0.6-0.4,1-1,1h-14c-0.6,0-1-0.4-1-1V5C4.1,4.4,4.5,4,5.1,4z"></path><path class="uim-primary" d="M22.1,14V5c0-1.7-1.3-3-3-3h-14c-1.7,0-3,1.3-3,3v14c0,1.7,1.3,3,3,3h14c1.7,0,3-1.3,3-3L22.1,14C22.1,14,22.1,14,22.1,14z M5.1,4h14c0.6,0,1,0.4,1,1v8h-2.5c-0.7,0-1.3,0.3-1.7,0.9L14.5,16H9.6l-1.4-2.1c-0.4-0.6-1-0.9-1.7-0.9H4.1V5C4.1,4.4,4.5,4,5.1,4z"></path></svg>
 									<v-box></v-box>
 									<span>Actividades</span>
+									<b class="cd-dashboard-item-counter" v-if="generalActividities.length">{{generalActividities.length}}</b>
 								</a>
 								<a class="f-c cd-dashboard-item" @click="tabposition=1" href="#" v-if="generalActividitiesArchived.length" :style="{fill: colors[1]}">
 									<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24" ><circle cx="10" cy="8.5" r="5" class="uim-quaternary"></circle><path class="uim-tertiary" d="M13.30884,12.22253C12.42566,13.00806,11.27496,13.5,10,13.5s-2.42566-0.49194-3.30884-1.27747C3.92603,13.48206,2,16.26324,2,19.5c0,0.00018,0,0.00037,0,0.00055C2.00012,20.05267,2.44788,20.50012,3,20.5h14c0.00018,0,0.00037,0,0.00055,0c0.55212-0.00012,0.99957-0.44788,0.99945-1C18,16.26324,16.07397,13.48206,13.30884,12.22253z"></path><path class="uim-primary" d="M18.3335,13.5c-0.26526,0.0003-0.51971-0.10515-0.707-0.293l-1.3335-1.333c-0.38694-0.39399-0.38123-1.02706,0.01275-1.414c0.38897-0.38202,1.01228-0.38202,1.40125,0l0.62647,0.626l1.95953-1.96c0.39399-0.38694,1.02706-0.38123,1.414,0.01275c0.38202,0.38897,0.38202,1.01227,0,1.40125l-2.6665,2.667C18.85321,13.39485,18.59877,13.5003,18.3335,13.5z"></path></svg>
@@ -154,7 +139,7 @@
 									<v-box></v-box>
 									<span>Horario</span>
 								</a>
-								<a class="f-c cd-dashboard-item" @click="moduleActiveId = 'md_sync'" href="#" :style="{fill: colors[3]}">
+								<a class="f-c cd-dashboard-item" @click="moduleActiveId = 'md_sync'" href="#" :style="{fill: colors[3]}" v-if="false">
 									<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path class="uim-tertiary" d="m2,6l-2,0l0,-4a2,2 0 0 1 2,-2l4,0l0,2l-4,0m20,-2a2,2 0 0 1 2,2l0,4l-2,0l0,-4l-4,0l0,-2l4,0m-20,18l0,4l4,0l0,2l-4,0a2,2 0 0 1 -2,-2l0,-4l2,0m20,4l0,-4l2,0l0,4a2,2 0 0 1 -2,2l-4,0l0,-2l4,0z"/><path class="uim-primary" d="m4,4l6,0l0,6l-6,0l0,-6m16,0l0,6l-6,0l0,-6l6,0m-6,11l2,0l0,-2l-2,0l0,-2l2,0l0,2l2,0l0,-2l2,0l0,2l-2,0l0,2l2,0l0,3l-2,0l0,2l-2,0l0,-2l-3,0l0,2l-2,0l0,-4l3,0l0,-1m2,0l0,3l2,0l0,-3l-2,0m-12,5l0,-6l6,0l0,6l-6,0m2,-14l0,2l2,0l0,-2l-2,0m10,0l0,2l2,0l0,-2l-2,0m-10,10l0,2l2,0l0,-2l-2,0m-2,-5l2,0l0,2l-2,0l0,-2m5,0l4,0l0,4l-2,0l0,-2l-2,0l0,-2m2,-5l2,0l0,4l-2,0l0,-4"/></svg>
 									<v-box></v-box>
 									<span>Sincronización QR</span>
@@ -181,22 +166,6 @@
 								</a>
 							</div>
 						</div>
-						<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 3">
-							<div v-if="forums_list.get.length + forums_list.archived.length">
-								<vcd-helper-list></vcd-helper-list>
-								<vcd-forums v-for="forum in forums_list.get" :data="forum"></vcd-forums>
-								<vcd-forums v-for="forum in forums_list.archived" :data="forum"></vcd-forums>
-							</div>
-							<vcd-void-box v-else text="foros"></vcd-void-box>
-						</div>
-						<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 4">
-							<div v-if="exams.list.length">
-								<vcd-helper-list></vcd-helper-list>
-								<vcd-exam :data="exam" v-for="exam of exams.list"></vcd-exam>
-							</div>
-							<vcd-void-box v-else text="Exámenes"></vcd-void-box>
-						</div>
-					
 					</div>
 				</vcd-module>
 			</div>
@@ -254,7 +223,7 @@
 					'-1': 'Información adicional',
 					0: 'Actividades Pendientes',
 					1: 'Actividades Archivadas',
-					'dashboard': 'DASHBOARD',
+					'dashboard': 'Menú',
 					3: 'Lista de Foros',
 					4: 'Lista de Exámenes',
 					'qr': 'Sync',
@@ -391,17 +360,25 @@
 					return {h, s, l};
 				},
 				saturateColor(color, saturation) {
-					let hsl = this.hexToHSL(color)
-					hsl.l = .43
-					hsl.s = .90
-					return this.hlsToRgb(hsl)
+					
 				},
 				colorCourse(course) {
 					if (course.includes(' (')) course = this.removeGroupsText(course)
 					let color = this.colors[this.courses.list.findIndex(e => e.name == course) ?? 0]
-					let color2 = this.saturateColor(color)
+
+					let hsl = this.hexToHSL(color)
+					hsl.l = .43
+					hsl.s = .90
+
+					let hslDark = this.hexToHSL(color)
+					hslDark.l = .2
+
+					let color2 = this.hlsToRgb(hsl)
+
+					let hslLight = this.hexToHSL(color)
+					hslLight.l = .8
 					
-					return {linear: `linear-gradient(35deg, ${color2}, ${color})`, solid: color}
+					return {linear: `linear-gradient(35deg, ${color2}, ${color})`, solid: color, dark: this.hlsToRgb(hslDark), light: this.hlsToRgb(hslLight)}
 				},
 				randomNumber(min, max) {
 					return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -461,7 +438,7 @@
 								if (!a.test(conference.url)) conference.url = 'https://' + conference.url
 								conference.sectionId = course.sectionId
 								conference.nameCourse = course.name
-								if (conference.state != "Finalizado" || (new Date(conference.endTime)).getTime() > this.now || true) {
+								if (conference.state != "Finalizado" || (new Date(conference.endTime)).getTime() > this.now) {
 									listconferences.push(conference);
 									course.conferences++
 								}
@@ -484,7 +461,6 @@
 							sectionId: conference.sectionId
 						})
 					})
-					protoConferences = protoConferences.filter((e, i) => i < 4)
 					this.generalActividities = this.generalActividities.filter(e => e.type != 'CONFERENCE').concat(protoConferences)
 				},
 				async loadHomeworks(courses) {
@@ -559,6 +535,7 @@
 					this.exams.list = exams
 					exams.forEach(exam => {
 						protoExams.push({
+							title: exam.title,
 							id: exam.evaluationId,
 							dateBegin: exam.dateBegin,
 							intents: exam.intent,
@@ -570,6 +547,7 @@
 							urlPanel: this.protocol + '://aulavirtual.unamad.edu.pe/web/evaluations/ListAllTests?s=' + exam.sectionId
 						})
 					})
+					console.log(exams);
 					this.generalActividities = this.generalActividities.filter(e => e.type != 'EXAM').concat(protoExams)
 				},
 				async loadForums() {
@@ -679,7 +657,9 @@
 							this.loadData2()
 						})
 					}
-				}
+				},
+				// hidden div on click outside
+				
 			},
 
 			async created() {
@@ -722,7 +702,11 @@
 				});
 				chrome.runtime.sendMessage('getinfo');
 			},
+
 			mounted() {
+				document.addEventListener('click', (e) => {
+					if(this.openPanel) e.target.closest('#vueapp') == null && e.target.closest('#cd-navmenu') == null? this.minimizeApp() : null
+				})
 				document.querySelector('.quick-nav-trigger')?.addEventListener('click', ()=>{
 					this.minimizeApp()
 				})

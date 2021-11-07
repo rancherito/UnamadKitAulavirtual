@@ -217,26 +217,24 @@
     border: 1px solid var(--bg);
 }
 .cd-info-notify{
-    position: fixed;
     border-radius: var(--rounded);
-    left: 50%;
-    transform: translateX(-50%) scale(.9);
     color: white;
-    z-index: 10099;
     display: flex;
-    bottom: .5rem;
-    animation-name: lala;
-    animation-duration: 1s;
-    animation-timing-function: cubic-bezier();
+    height: 50px;
+    fill: white;
+    background-color: var(--panel);
+    padding: .5rem;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.54) 0px 5px 11px 0px;
+    transition: linear background-color 0.2s;
+}
+.cd-info-notify:hover,
+.cd-info-notify.active-element {
+    background-color: var(--primary);
 }
 .cd-info-notify-course {
-    text-align: center;
-    border-radius: 1rem;
-    background-color: var(--panel);
     color: white;
-    padding: .5rem;
-    display: flex;
-    min-width: 300px;
+    flex: 1;
 }
 @keyframes lala {
     0%{
@@ -456,47 +454,47 @@
     font-size: 1.6rem;
     font-weight: lighter;
 }
-#modelinject {
+#app-content{
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
     z-index: 10100;
     line-height: 20px;
-}
-#modelinject{
-    left: auto;
-    background: none;
     width: 500px;
     right: 10px;
-    top: auto;
     bottom: 10px;
-    height: 100%;
-    max-height: calc(700px - 1rem);
-    border-radius: var(--rounded2);
+    height: calc(100% - 20px);
+    max-height: 720px;
+    animation-name: appOpen;
+    animation-duration: .2s;
+    animation-timing-function: cubic-bezier();
+
 }
-#vueapp *{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+@keyframes appOpen {
+    from {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+    }
 }
-.cd-dialog {
+#modelinject {
+    box-shadow: #0000008a 0 5px 11px 0px;
+    position: relative;
     background-color: #1f1f1f;
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     color: var(--text-default);
-    top: .5rem;
-    bottom: .5rem;
     border-radius: var(--rounded);
     overflow: hidden;
+    padding-bottom: calc(50px + 1rem + 10px);
+}
+#vueapp *{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .cd-dialog-actions-top{
-    padding: 2rem;
-    padding-right: 1rem;
+    padding: 2rem 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -525,9 +523,9 @@
     color: white;
 }
 .cd-btn-navmenu{
-    height: 60px;
-    width: 60px;
-    background-color: var(--panel);
+    height: 50px;
+    width: 50px;
+    background: var(--panel);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -535,9 +533,11 @@
     border-radius: 50%;
     font-size: 2rem;
     position: relative;
-    margin-top: .25rem;
     transition: none;
-    transition: linear backgroud-color .2s;
+    transition: linear backgroud .2s;
+    border-radius: var(--rounded2);
+    box-shadow: rgba(0, 0, 0, 0.54) 0px 5px 11px 0px;
+    transition: linear all .2s;
 }
 .cd-btn-navmenu:hover,
 .cd-btn-navmenu.active {
@@ -545,10 +545,6 @@
 }
 .cd-btn-navmenu:focus{
     color: white;
-}
-.cd-navmenu-open .cd-btn-navmenu{
-    border-radius: 0;
-    margin: 0;
 }
 .cd-btn-navmenu span {
     position: absolute;
@@ -574,26 +570,27 @@
 
 #cd-navmenu{
     position: fixed;
-    right: 1rem;
-    bottom: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    z-index: 10100;
+    right: calc(10px + .5rem);
+    bottom: calc(10px + .5em);
+    display: grid;
+    z-index: 10101;
+    width: calc(500px - 1rem);
+    gap: .5rem;
+    grid-template-columns: 1fr auto;
 }
-#cd-navmenu > *:nth-child(2){
+.cd-navmenu-principal-action{
     display: flex;
-    flex-direction: column;
+    grid-template-columns: repeat(auto-fit, 50px);
+    grid-template-rows: 50px;
+    gap: .5rem;
+    justify-content: end;
 }
 #cd-navmenu.cd-navmenu-open {
-    background: var(--panel);
-    right: 10px;
-    bottom: 10px;
-    transition: background all .2s;
-    border-radius: var(--rounded2);
-    overflow: hidden;
-    height: calc(100% - 1rem);
-    max-height: calc(700px - 1rem);
+    height: 50px;
+    flex-direction: row;
+}
+.cd-navmenu-open .cd-navmenu-principal-action{
+    flex-direction: row;
 }
 .cd-countdown{
     display: flex;
@@ -931,6 +928,25 @@
     border-radius: var(--rounded);
     color: #fff;
     fill: #fff;
+    position: relative;
+}
+.cd-dashboard-item-counter{
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    color: white;
+    font-size: 0.8rem;
+    height: 1.4rem;
+    width: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation-name: waves;
+    animation-timing-function: linear;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    background: var(--primary);
+    border-radius: 50%;
 }
 .cd-dashboard-item svg{
     width: 2.4rem;
@@ -953,7 +969,24 @@
     display: grid;
     gap: .5rem;
     grid-template-columns: repeat(auto-fill, minmax(80px , 1fr));
-    grid-auto-rows: 112px;
+    grid-auto-rows: 1fr;
+    padding: .5rem;
+    border-radius: var(--rounded);
+    background: var(--panel);
+    position: relative;
+}
+.cd-dashconferences::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://images.unsplash.com/photo-1612831455359-970e23a1e4e9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1025&q=80');
+    background-size: cover;
+    background-position: center;
+    border-radius: var(--rounded);
+    opacity: .1;
 }
 .cd-dashconferences-item{
     display: flex;
@@ -961,6 +994,19 @@
     justify-content: space-between;
     flex-direction: column;
     fill: white;
+    color: white;
+    border-radius: var(--rounded);
+    transition: linear all .2s;
+}
+.cd-dashconferences-item-message-notinit, .cd-dashconferences-item-disable:hover .cd-dashconferences-item-title {
+    display: none;
+}
+.cd-dashconferences-item-disable:hover .cd-dashconferences-item-message-notinit {
+    display: flex;
+}
+.cd-dashconferences-item-disable{
+    background: transparent !important;
+    filter: grayscale(100%);
 }
 .cd-dashconferences-item svg{
     width: 2.6rem;
@@ -974,15 +1020,19 @@
     background: var(--success);
     right: .5rem;
 }
+a.cd-dashconferences-item:focus,
+a.cd-dashconferences-item:hover{
+    color: white;
+    background: var(--panel-light);
+}
 .cd-dashconferences-item > div{
     position: relative;
     border: 2px solid transparent;
-    background: var(--panel);
     border-radius: var(--rounded);
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 80px;
+    height: 60px;
     width: 80px;
     flex-direction: column;
     overflow: hidden;
@@ -993,6 +1043,32 @@ font-size: .6rem;
 .cd-dashconferences-item span{
     text-align: center;
     line-height: .7rem;
+    overflow: hidden;
+}
+.cd-schedule-2-hour{
+    position: relative;
+}
+.cd-schedule-2-hour::before{
+    content: '';
+    height: 1px;
+    background: rgba(255, 255, 255, 0.25);
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    width: calc(400px + 1rem);
+}
+.cd-gallery-string{
+    position: relative;
+    width: 100%
+}
+.cd-gallery-string span{
+    transition: linear all .2s;
+    opacity: 0;
+    position: absolute;
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     overflow: hidden;
 }
 /*WEB MODIFICACIONES*/
