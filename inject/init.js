@@ -30,12 +30,14 @@
 				<vcd-info-notify title="ABRIR HORARIO"></vcd-info-notify>
 				<div class="cd-navmenu-principal-action">
 					<a title="ABRIR MENÚ" class="cd-btn-navmenu" @click="openPanel = true; moduleActiveId = 'md_activities'; tabposition = 'dashboard'" href="#" :class="{active: moduleActiveId == 'md_activities' && tabposition == 'dashboard'}">
-						<svg xmlns="http://www.w3.org/2000/svg" style="width: 24px; fill: #fff" viewBox="0 0 24 24" width="1.4em"><rect width="9" height="9" x="2" y="2" rx="1" class="uim-primary"></rect><rect width="9" height="9" x="2" y="13" rx="1" class="uim-tertiary"></rect><rect width="9" height="9" x="13" y="2" rx="1" class="uim-tertiary"></rect><rect width="9" height="9" x="13" y="13" rx="1" class="uim-tertiary"></rect></svg>
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1.4em"><rect width="9" height="9" x="2" y="2" rx="1" class="uim-primary"></rect><rect width="9" height="9" x="2" y="13" rx="1" class="uim-tertiary"></rect><rect width="9" height="9" x="13" y="2" rx="1" class="uim-tertiary"></rect><rect width="9" height="9" x="13" y="13" rx="1" class="uim-tertiary"></rect></svg>
 					</a>
-					<a :title="openPanel? 'CERRAR MENÚ':'ABRIR ACTIVIDADES'" class="cd-btn-navmenu" @click="openPanel = !openPanel; moduleActiveId = 'md_activities'; tabposition = 0" href="#" :class="{active: moduleActiveId == 'md_activities' && tabposition == 0}">
+					<a title="ABRIR ACTIVIDADES" class="cd-btn-navmenu" @click="openPanel = true; moduleActiveId = 'md_activities'; tabposition = 0" href="#" :class="{active: moduleActiveId == 'md_activities' && tabposition == 0}">
 						<span v-if="generalActividities.length > 0 && !openPanel">{{generalActividities.length}}</span>
-						<svg v-if="!openPanel" style="width:24px;" viewBox="0 0 24 24"><path fill="#FFF" d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" /></svg>
-						<svg v-else viewBox="0 0 24 24" style="width: 24px;"><path fill="#fff" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path></svg>
+						<svg style="width:24px;" viewBox="0 0 24 24"><path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" /></svg>
+					</a>
+					<a style="width: 2rem" v-if="openPanel" title="CERRAR MENÚ" class="cd-btn-navmenu" @click="openPanel = false; moduleActiveId = 'md_activities'; tabposition = 0" href="#">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path class="uim-primary" d="M12,15.12109a.99672.99672,0,0,1-.707-.293L7.05029,10.58594A.99989.99989,0,0,1,8.46436,9.17188L12,12.707l3.53564-3.53515a.99989.99989,0,0,1,1.41407,1.41406L12.707,14.82812A.99672.99672,0,0,1,12,15.12109Z"></path></svg>
 					</a>
 				</div>
 				
@@ -119,18 +121,17 @@
 							</div>
 						</div>
 
-						<div class="mdl-dialog__content acd-fadeOut" :class="{'f-c': generalActividities.filter(e=>e.type == 'CONFERENCE').length == 0}" v-show="tabposition == 'dashboard'" style="display: flex; flex-direction: column">
-							<vcd-dashconferences :data="generalActividities.filter(e=>e.type == 'CONFERENCE')"></vcd-dashconferences>
-							<v-box></v-box>
+						<div class="mdl-dialog__content acd-fadeOut f-c" v-show="tabposition == 'dashboard'" style="display: flex; flex-direction: column">
+
 							<div class="cd-dashboard">
 								<a class="f-c cd-dashboard-item" @click="tabposition=0" href="#" :style="{fill: colors[0]}" style="grid-column: span 2;">
-									<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24" ><path class="uim-tertiary" d="M5.1,4h14c0.6,0,1,0.4,1,1v14c0,0.6-0.4,1-1,1h-14c-0.6,0-1-0.4-1-1V5C4.1,4.4,4.5,4,5.1,4z"></path><path class="uim-primary" d="M22.1,14V5c0-1.7-1.3-3-3-3h-14c-1.7,0-3,1.3-3,3v14c0,1.7,1.3,3,3,3h14c1.7,0,3-1.3,3-3L22.1,14C22.1,14,22.1,14,22.1,14z M5.1,4h14c0.6,0,1,0.4,1,1v8h-2.5c-0.7,0-1.3,0.3-1.7,0.9L14.5,16H9.6l-1.4-2.1c-0.4-0.6-1-0.9-1.7-0.9H4.1V5C4.1,4.4,4.5,4,5.1,4z"></path></svg>
-									<v-box></v-box>
+									<svg viewBox="0 0 24 24"><path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"></path></svg><v-box></v-box>
 									<span>Actividades</span>
+									<span style="font-size: .8rem; color: gray">(Tareas, Foros, Conf., Exám.)</span>
 									<b class="cd-dashboard-item-counter" v-if="generalActividities.length">{{generalActividities.length}}</b>
 								</a>
 								<a class="f-c cd-dashboard-item" @click="tabposition=1" href="#" v-if="generalActividitiesArchived.length" :style="{fill: colors[1]}">
-									<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24" ><circle cx="10" cy="8.5" r="5" class="uim-quaternary"></circle><path class="uim-tertiary" d="M13.30884,12.22253C12.42566,13.00806,11.27496,13.5,10,13.5s-2.42566-0.49194-3.30884-1.27747C3.92603,13.48206,2,16.26324,2,19.5c0,0.00018,0,0.00037,0,0.00055C2.00012,20.05267,2.44788,20.50012,3,20.5h14c0.00018,0,0.00037,0,0.00055,0c0.55212-0.00012,0.99957-0.44788,0.99945-1C18,16.26324,16.07397,13.48206,13.30884,12.22253z"></path><path class="uim-primary" d="M18.3335,13.5c-0.26526,0.0003-0.51971-0.10515-0.707-0.293l-1.3335-1.333c-0.38694-0.39399-0.38123-1.02706,0.01275-1.414c0.38897-0.38202,1.01228-0.38202,1.40125,0l0.62647,0.626l1.95953-1.96c0.39399-0.38694,1.02706-0.38123,1.414,0.01275c0.38202,0.38897,0.38202,1.01227,0,1.40125l-2.6665,2.667C18.85321,13.39485,18.59877,13.5003,18.3335,13.5z"></path></svg>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" ><circle cx="10" cy="8.5" r="5" class="uim-quaternary"></circle><path class="uim-tertiary" d="M13.30884,12.22253C12.42566,13.00806,11.27496,13.5,10,13.5s-2.42566-0.49194-3.30884-1.27747C3.92603,13.48206,2,16.26324,2,19.5c0,0.00018,0,0.00037,0,0.00055C2.00012,20.05267,2.44788,20.50012,3,20.5h14c0.00018,0,0.00037,0,0.00055,0c0.55212-0.00012,0.99957-0.44788,0.99945-1C18,16.26324,16.07397,13.48206,13.30884,12.22253z"></path><path class="uim-primary" d="M18.3335,13.5c-0.26526,0.0003-0.51971-0.10515-0.707-0.293l-1.3335-1.333c-0.38694-0.39399-0.38123-1.02706,0.01275-1.414c0.38897-0.38202,1.01228-0.38202,1.40125,0l0.62647,0.626l1.95953-1.96c0.39399-0.38694,1.02706-0.38123,1.414,0.01275c0.38202,0.38897,0.38202,1.01227,0,1.40125l-2.6665,2.667C18.85321,13.39485,18.59877,13.5003,18.3335,13.5z"></path></svg>
 									<v-box></v-box>
 									<span>A. Archivadas</span>
 								</a>

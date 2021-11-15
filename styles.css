@@ -228,8 +228,11 @@
     box-shadow: rgba(0, 0, 0, 0.54) 0px 5px 11px 0px;
     transition: linear background-color 0.2s;
 }
-.cd-info-notify:hover,
-.cd-info-notify.active-element {
+.cd-info-notify .cd-btn{
+    background-color: transparent;
+}
+.cd-info-notify:hover .cd-btn,
+.cd-info-notify.active-element .cd-btn {
     background-color: var(--primary);
 }
 .cd-info-notify-course {
@@ -244,7 +247,7 @@
 }
 .cd-notify-nextinfo{
     font-size: 1.5rem;
-    background-color: var(--primary);
+    background-color: var(--panel-light);
     margin-left: .5rem;
     color: white;
     border-radius: var(--rounded);
@@ -516,6 +519,7 @@
     padding: .5rem;
     background-color: var(--primary);
     border-radius: var(--rounded2);
+    transition: linear all .2s;
 }
 .cd-btn svg,
 .cd-btn *{
@@ -538,6 +542,12 @@
     border-radius: var(--rounded2);
     box-shadow: rgba(0, 0, 0, 0.54) 0px 5px 11px 0px;
     transition: linear all .2s;
+}
+.cd-btn-navmenu{
+    fill: white;
+}
+.cd-btn-navmenu svg{
+    width: 24px;
 }
 .cd-btn-navmenu:hover,
 .cd-btn-navmenu.active {

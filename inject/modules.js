@@ -342,7 +342,8 @@ Vue.component('vcd-info',{
 		<div class="cd-list">
 			<div class="cd-list-content">
 				Notas Version: 2.0.0<br><br>
-				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Nueva interfaz del panel princiapl.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Nueva interfaz del panel principal.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Tema más minimalista.</span><br>
 				<span><i class="mdi mdi-auto-fix cd-text-primary mdi-24px"></i> Horario rediseñado.</span><br>
 			</div>
 		</div>
