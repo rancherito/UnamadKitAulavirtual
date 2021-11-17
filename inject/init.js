@@ -24,7 +24,24 @@
 					<span style="padding-left: .5rem">Cerrar Sesion</span>
 				</a>
 			</div>
-			
+			<div id="cd-notifications-content">
+				<div class="cd-notification" v-for="notification of notifications.filter(e => e.state).filter((e, i) => i < 1)" @click="notification.state = false" :style="{fill: colorCourse(notification.course).solid}" style="display: grid; grid-template-columns: auto 1fr; gap: 1rem">
+					<div>
+						<svg style="width: 2rem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18,13.18463V10c0-3.31372-2.68628-6-6-6s-6,2.68628-6,6v3.18463C4.83832,13.59863,4.00146,14.69641,4,16v2c0,0.00037,0,0.00073,0,0.00116C4.00031,18.5531,4.44806,19.00031,5,19h14c0.00037,0,0.00073,0,0.00116,0C19.5531,18.99969,20.00031,18.55194,20,18v-2C19.99854,14.69641,19.16168,13.59863,18,13.18463z" class="uim-tertiary"></path><path d="M8.14233 19c.4472 1.72119 1.99689 2.99817 3.85767 3 1.86078-.00183 3.41046-1.27881 3.85767-3H8.14233zM12 4c.34149 0 .67413.03516 1 .08997V3c0-.55231-.44769-1-1-1s-1 .44769-1 1v1.08997C11.32587 4.03516 11.65851 4 12 4z" class="uim-primary"></path></svg>
+					</div>
+					<div>
+						<div>{{notification.course}}</div>
+						<div style="font-size: .7rem; margin-top: -.25rem">Publicado {{notification.dateBeginHuman}}</div>
+						
+						<v-box s=".5" flex></v-box>
+						<div>{{notification.title}}</div>
+						<div v-if="notification.title != notification.content" style="font-size: .8rem">{{notification.content}}</div>
+					</div>
+					<div class="cd-notification-close f-c">
+						<svg style="width:24px;height:24px" viewBox="0 0 24 24"><path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+					</div>
+				</div>
+			</div>
 			
 			<div id="cd-navmenu" :class="{'cd-navmenu-open': openPanel}">
 				<vcd-info-notify title="ABRIR HORARIO"></vcd-info-notify>
@@ -83,7 +100,25 @@
 						</p>
 					</div>
 				</vcd-module>
-					
+				<vcd-module title="Notificaciones" v-show="moduleActiveId == 'md_notifications'">
+					<div style="height: 100%; padding: 1rem; display: grid; gap: 1rem; overflowY: auto" class="cd-scroll-custom">
+						<div v-for="notification of notifications" :style="{fill: colorCourse(notification.course).solid}" style="padding: 1rem; background: var(--panel); border-radius: var(--rounded); display: grid; grid-template-columns: auto 1rem 1fr">
+							
+							<div>
+								<svg style="width: 2rem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18,13.18463V10c0-3.31372-2.68628-6-6-6s-6,2.68628-6,6v3.18463C4.83832,13.59863,4.00146,14.69641,4,16v2c0,0.00037,0,0.00073,0,0.00116C4.00031,18.5531,4.44806,19.00031,5,19h14c0.00037,0,0.00073,0,0.00116,0C19.5531,18.99969,20.00031,18.55194,20,18v-2C19.99854,14.69641,19.16168,13.59863,18,13.18463z" class="uim-tertiary"></path><path d="M8.14233 19c.4472 1.72119 1.99689 2.99817 3.85767 3 1.86078-.00183 3.41046-1.27881 3.85767-3H8.14233zM12 4c.34149 0 .67413.03516 1 .08997V3c0-.55231-.44769-1-1-1s-1 .44769-1 1v1.08997C11.32587 4.03516 11.65851 4 12 4z" class="uim-primary"></path></svg>
+							</div>
+							<v-box></v-box>
+							<div>
+								<div>{{notification.course}}</div>
+								<div style="font-size: .7rem; margin-top: -.25rem">Publicado {{notification.dateBeginHuman}}</div>
+								
+								<v-box s=".5" flex></v-box>
+								<div>{{notification.title}}</div>
+								<div v-if="notification.title != notification.content" style="font-size: .8rem">{{notification.content}}</div>
+							</div>
+						</div>
+					</div>
+				</vcd-module>
 				<vcd-module :title="modulesTitles[tabposition]" v-show="moduleActiveId == 'md_activities'">				
 					<div style="display: flex; flex-direction: column; height: 100%">
 						<div class="mdl-dialog__content acd-fadeOut" v-show="tabposition == 0">
@@ -140,12 +175,18 @@
 									<v-box></v-box>
 									<span>Horario</span>
 								</a>
+								<a class="f-c cd-dashboard-item" @click="moduleActiveId = 'md_notifications'" href="#" :style="{fill: '#FF8F00'}">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path class="uim-tertiary" d="M18,13.18463V10c0-3.31372-2.68628-6-6-6s-6,2.68628-6,6v3.18463C4.83832,13.59863,4.00146,14.69641,4,16v2c0,0.00037,0,0.00073,0,0.00116C4.00031,18.5531,4.44806,19.00031,5,19h14c0.00037,0,0.00073,0,0.00116,0C19.5531,18.99969,20.00031,18.55194,20,18v-2C19.99854,14.69641,19.16168,13.59863,18,13.18463z"></path><path class="uim-primary" d="M8.14233 19c.4472 1.72119 1.99689 2.99817 3.85767 3 1.86078-.00183 3.41046-1.27881 3.85767-3H8.14233zM12 4c.34149 0 .67413.03516 1 .08997V3c0-.55231-.44769-1-1-1s-1 .44769-1 1v1.08997C11.32587 4.03516 11.65851 4 12 4z"></path></svg>
+									<v-box></v-box>
+									<span>Notificaciones</span>
+									<b class="cd-dashboard-item-counter" v-if="notifications.filter(e => e.state).length">{{notifications.filter(e => e.state).length}}</b>
+								</a>
 								<a class="f-c cd-dashboard-item" @click="moduleActiveId = 'md_sync'" href="#" :style="{fill: colors[3]}" v-if="false">
 									<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path class="uim-tertiary" d="m2,6l-2,0l0,-4a2,2 0 0 1 2,-2l4,0l0,2l-4,0m20,-2a2,2 0 0 1 2,2l0,4l-2,0l0,-4l-4,0l0,-2l4,0m-20,18l0,4l4,0l0,2l-4,0a2,2 0 0 1 -2,-2l0,-4l2,0m20,4l0,-4l2,0l0,4a2,2 0 0 1 -2,2l-4,0l0,-2l4,0z"/><path class="uim-primary" d="m4,4l6,0l0,6l-6,0l0,-6m16,0l0,6l-6,0l0,-6l6,0m-6,11l2,0l0,-2l-2,0l0,-2l2,0l0,2l2,0l0,-2l2,0l0,2l-2,0l0,2l2,0l0,3l-2,0l0,2l-2,0l0,-2l-3,0l0,2l-2,0l0,-4l3,0l0,-1m2,0l0,3l2,0l0,-3l-2,0m-12,5l0,-6l6,0l0,6l-6,0m2,-14l0,2l2,0l0,-2l-2,0m10,0l0,2l2,0l0,-2l-2,0m-10,10l0,2l2,0l0,-2l-2,0m-2,-5l2,0l0,2l-2,0l0,-2m5,0l4,0l0,4l-2,0l0,-2l-2,0l0,-2m2,-5l2,0l0,4l-2,0l0,-4"/></svg>
 									<v-box></v-box>
 									<span>Sincronización QR</span>
 								</a>
-								<a class="f-c cd-dashboard-item" @click="moduleActiveId = 'md_share'" href="#" :style="{fill: colors[4]}">
+								<a class="f-c cd-dashboard-item" @click="moduleActiveId = 'md_share'" href="#" :style="{fill: '#cddc39'}">
 									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path class="uim-tertiary" d="M18,10c-2.20914,0-4-1.79086-4-4s1.79086-4,4-4s4,1.79086,4,4C21.99765,8.20816,20.20816,9.99765,18,10z M18,22c-2.20914,0-4-1.79086-4-4s1.79086-4,4-4s4,1.79086,4,4C21.99765,20.20816,20.20816,21.99765,18,22z M6,16c-2.20914,0-4-1.79086-4-4s1.79086-4,4-4s4,1.79086,4,4C9.99765,14.20816,8.20816,15.99765,6,16z"></path><path class="uim-primary" d="M9.81915 10.87286l5.10223-2.3476c-.42291-.51483-.72577-1.12769-.84937-1.8103L8.79431 9.14337C9.27545 9.61407 9.62341 10.20996 9.81915 10.87286zM14.92139 15.47473l-5.10321-2.34808c-.19623.66272-.54443 1.25848-1.0257 1.72913l5.27954 2.42926C14.19562 16.60242 14.49847 15.98956 14.92139 15.47473z"></path></svg>
 									<v-box></v-box>
 									<span>Compartir</span>
@@ -164,6 +205,10 @@
 									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" ><path class="uim-quaternary" d="M15,23h-2c-1.10405-0.00126-1.99874-0.89595-2-2v-4c0.00126-1.10405,0.89595-1.99874,2-2h2c1.10405,0.00126,1.99874,0.89595,2,2v4C16.99874,22.10405,16.10405,22.99874,15,23z"></path><path class="uim-tertiary" d="M18,9h-8C8.34389,8.99819,7.00181,7.65611,7,6V4c0.00181-1.65611,1.34389-2.99819,3-3h8c1.65611,0.00181,2.99819,1.34389,3,3v2C20.99819,7.65611,19.65611,8.99819,18,9z"></path><path class="uim-primary" d="M12,11H6c-0.55206-0.00055-0.99945-0.44794-1-1V7c0.00055-0.55206,0.44794-0.99945,1-1h1V4H6C4.34387,4.00183,3.00183,5.34387,3,7v3c0.00183,1.65613,1.34387,2.99817,3,3h6c0.55206,0.00055,0.99945,0.44794,1,1v1h2v-1C14.99817,12.34387,13.65613,11.00183,12,11z"></path></svg>
 									<v-box></v-box>
 									<span>{{applyNewStyle ? 'Quitar Tema' :'Cambiar Tema'}}</span>
+								</a>
+								<a class="f-c cd-dashboard-item" @click="loadCourses" target="_bank" href="https://api.whatsapp.com/send?phone=51924745818&text=Hola%20%F0%9F%98%80%2C%20queria%20realizar%20una%20consulta%20sobre%20la%20extensi%C3%B3n%20de%20navegador%20del aula virtual de la UNAMAD." :style="{fill: colors[4]}">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 90"><path d="M90,43.841c0,24.213-19.779,43.841-44.182,43.841c-7.747,0-15.025-1.98-21.357-5.455L0,90l7.975-23.522   c-4.023-6.606-6.34-14.354-6.34-22.637C1.635,19.628,21.416,0,45.818,0C70.223,0,90,19.628,90,43.841z M45.818,6.982   c-20.484,0-37.146,16.535-37.146,36.859c0,8.065,2.629,15.534,7.076,21.61L11.107,79.14l14.275-4.537   c5.865,3.851,12.891,6.097,20.437,6.097c20.481,0,37.146-16.533,37.146-36.857S66.301,6.982,45.818,6.982z M68.129,53.938   c-0.273-0.447-0.994-0.717-2.076-1.254c-1.084-0.537-6.41-3.138-7.4-3.495c-0.993-0.358-1.717-0.538-2.438,0.537   c-0.721,1.076-2.797,3.495-3.43,4.212c-0.632,0.719-1.263,0.809-2.347,0.271c-1.082-0.537-4.571-1.673-8.708-5.333   c-3.219-2.848-5.393-6.364-6.025-7.441c-0.631-1.075-0.066-1.656,0.475-2.191c0.488-0.482,1.084-1.255,1.625-1.882   c0.543-0.628,0.723-1.075,1.082-1.793c0.363-0.717,0.182-1.344-0.09-1.883c-0.27-0.537-2.438-5.825-3.34-7.977   c-0.902-2.15-1.803-1.792-2.436-1.792c-0.631,0-1.354-0.09-2.076-0.09c-0.722,0-1.896,0.269-2.889,1.344   c-0.992,1.076-3.789,3.676-3.789,8.963c0,5.288,3.879,10.397,4.422,11.113c0.541,0.716,7.49,11.92,18.5,16.223   C58.2,65.771,58.2,64.336,60.186,64.156c1.984-0.179,6.406-2.599,7.312-5.107C68.398,56.537,68.398,54.386,68.129,53.938z"/></svg><v-box></v-box>
+									<span>Contacto</span>
 								</a>
 							</div>
 						</div>
@@ -186,6 +231,7 @@
 			},
 			generalActividities: [],
 			generalActividitiesArchived: [],
+			notifications: [],
 			coursesList: [],
 			exams: {
 				list: []
@@ -217,6 +263,7 @@
 			data: {
 				...defdata.variables,
 				months: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+				monthsEng: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 				days: ['LU', 'MA', 'MI', 'JU', 'VI'],
 				updating: false,
 				protocol: protocol,
@@ -277,6 +324,13 @@
 				...defdata.mutations
 			},
 			methods: {
+				removeTrashDate(date) {
+					let [sFind, day, month, year] = (/[a-z]+ (.*?) (.*?),[ ]*(.*?)$/gi).exec(date.trim())
+
+					let monthNumber = this.months.findIndex(e => month.includes(e.toLowerCase())) + 1
+					return new Date(`${monthNumber}/${day}/${year}`)
+
+				},
 				applyTheme(){
 					
 					if (this.applyNewStyle) document.body.id = "bodyView"
@@ -401,6 +455,33 @@
 					const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate(), a.getHours(), a.getMinutes());
 					const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate(), b.getHours(), b.getMinutes());
 					return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+				},
+				async loadNotifications(courses) {
+					let notifications = []
+					for (let course of courses) {
+						let response = await fetch(`${this.protocol}://aulavirtual.unamad.edu.pe/web/announcement/listbysection?s=${course.sectionId}`)
+						if (response.ok) {
+							(await response.json()).forEach(e => {
+
+								notifications.push({
+									course: course.name,
+									title: e.title,
+									dateBegin: this.removeTrashDate(e.dateBegin),
+									dateEnd: this.removeTrashDate(e.dateEnd),
+									dateBeginHuman: e.dateBegin,
+									dateEndHuman: e.dateEnd,
+									id: e.id,
+									teacher: e.teacher,
+									content: e.content,
+									state: this.notifications.find(f => f.id == e.id)?.state??true
+								})
+							
+							})
+							
+							
+						}
+					}
+					this.notifications = notifications
 				},
 				async loadLibrary(courses){
 					for (const course of courses) {
@@ -548,7 +629,7 @@
 							urlPanel: this.protocol + '://aulavirtual.unamad.edu.pe/web/evaluations/ListAllTests?s=' + exam.sectionId
 						})
 					})
-					console.log(exams);
+
 					this.generalActividities = this.generalActividities.filter(e => e.type != 'EXAM').concat(protoExams)
 				},
 				async loadForums() {
@@ -624,6 +705,7 @@
 					this.loadForums()
 
 					this.loadLibrary(this.courses.list)
+					this.loadNotifications(this.courses.list)
 				},
 				async loadCourses() {
 
@@ -686,10 +768,7 @@
 				})
 				this.loadCourses()
 				setInterval(() => {
-
-					console.log('Update');
 					this.loadData2()
-
 				}, 1000 * 90)
 
 				chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {

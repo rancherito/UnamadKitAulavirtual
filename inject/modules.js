@@ -341,6 +341,14 @@ Vue.component('vcd-info',{
 	<vcd-autoScroll padding="0 1rem">
 		<div class="cd-list">
 			<div class="cd-list-content">
+				Notas Version: 2.1.0<br><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Nuevo modulo de recolección de Notificaciones.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Botones de acceso directo más amigables.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Botón de contacto en el menú principal.</span><br>
+			</div>
+		</div>
+		<div class="cd-list">
+			<div class="cd-list-content">
 				Notas Version: 2.0.0<br><br>
 				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Nueva interfaz del panel principal.</span><br>
 				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Tema más minimalista.</span><br>
