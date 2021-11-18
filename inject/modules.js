@@ -119,7 +119,6 @@ Vue.component('vcd-conference', {
 	}
 })
 
-
 Vue.component('cd-schedule-2', {
 	template: /*html*/`
 	<div style="position: relative; height: 100%">
@@ -341,10 +340,17 @@ Vue.component('vcd-info',{
 	<vcd-autoScroll padding="0 1rem">
 		<div class="cd-list">
 			<div class="cd-list-content">
+				Notas Version: 2.1.2<br><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Se corrigió el orden de las notificaciones.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Se eliminó el error de visualización de la interfaz de la extensión en archivos multimedia.</span><br>
+			</div>
+		</div>
+		<div class="cd-list">
+			<div class="cd-list-content">
 				Notas Version: 2.1.0<br><br>
-				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Nuevo modulo de recolección de Notificaciones.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Nuevo módulo de recolección de notificaciones.</span><br>
 				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Botones de acceso directo más amigables.</span><br>
-				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Botón de contacto en el menú principal.</span><br>
+				<span><i class="mdi mdi-plus cd-text-primary mdi-24px"></i> Nuevo botón de contacto en el menú principal.</span><br>
 			</div>
 		</div>
 		<div class="cd-list">

@@ -123,7 +123,7 @@ Vue.component('vcd-activity', {
 						<div style="font-size: .6rem; font-weight: bold; letter-spacing: 2px;" :style="{color: $root.colorCourse(data.courseName).solid}">{{data.courseName}}</div>
 					</div>
 					<vcd-date :date="data.dateBegin" v-if="data.type != 'EXAM' && !isBegin"></vcd-date>
-					<a v-else class="cd-btn acd-waves" style="width: 48px; background: var(--success)" :href="data.url">GO</a>
+					<a v-else class="cd-btn acd-waves" style="width: 48px; background: var(--success)" :href="data.url">Abrir</a>
 				</div>
 				<v-box s=".5" flex></v-box>
 				<div class="f-end">
@@ -132,12 +132,12 @@ Vue.component('vcd-activity', {
 						<a title="IR AL MODULO DE CURSO" :href="data.urlPanel" style="padding: 0 0.5rem; border-radius: .5rem; height: 32px;" :style="{background: $root.colorCourse(data.courseName).linear}" class="f-c">
 							<svg viewBox="0 0 24 24" style="height: 1.4rem; fill: #fff">
 								<path v-if="data.type == 'FORUM'" d="M12,23A1,1 0 0,1 11,22V19H7A2,2 0 0,1 5,17V7A2,2 0 0,1 7,5H21A2,2 0 0,1 23,7V17A2,2 0 0,1 21,19H16.9L13.2,22.71C13,22.89 12.76,23 12.5,23H12M3,15H1V3A2,2 0 0,1 3,1H19V3H3V15Z"></path>
-								<path v-else-if="data.type == 'HOMEWORK'" d="M16,5V4A2,2 0 0,0 14,2H10A2,2 0 0,0 8,4V5A4,4 0 0,0 4,9V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V9A4,4 0 0,0 16,5M10,4H14V5H10V4M12,9L14,11L12,13L10,11L12,9M18,16H9V18H8V16H6V15H18V16Z"></path>
+								<path v-else-if="data.type == 'HOMEWORK'" d="M13,10H11a1,1,0,0,0,0,2h2a1,1,0,0,0,0-2Zm5,0a4,4,0,0,0-3-3.86V5A3,3,0,0,0,9,5V6.14A4,4,0,0,0,6,10a4,4,0,0,0-4,4v3a3,3,0,0,0,3,3H6.18A3,3,0,0,0,9,22h6a3,3,0,0,0,2.82-2H19a3,3,0,0,0,3-3V14A4,4,0,0,0,18,10ZM6,18H5a1,1,0,0,1-1-1V14a2,2,0,0,1,2-2ZM11,5a1,1,0,0,1,2,0V6H11Zm5,14a1,1,0,0,1-1,1H9a1,1,0,0,1-1-1V18a2,2,0,0,1,2-2h4a2,2,0,0,1,2,2Zm0-4.44A3.91,3.91,0,0,0,14,14H10a3.91,3.91,0,0,0-2,.56V10a2,2,0,0,1,2-2h4a2,2,0,0,1,2,2ZM20,17a1,1,0,0,1-1,1H18V12a2,2,0,0,1,2,2Z"></path>
 								<path v-else-if="data.type == 'EXAM'" d="M17,21L14.25,18L15.41,16.84L17,18.43L20.59,14.84L21.75,16.25M12.8,21H5C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H19A2,2 0 0,1 21,5V12.8C20.12,12.29 19.09,12 18,12L17,12.08V11H7V13H14.69C13.07,14.07 12,15.91 12,18C12,19.09 12.29,20.12 12.8,21M12,15H7V17H12M17,7H7V9H17"></path>
 							</svg>
 						</a>
 						<div v-if="data.type != 'EXAM'"  style="padding: 0 0.5rem; border-radius: .5rem; height: 32px; border: 2px solid black; background: var(--panel-light)" :style="{'border-color': isBegin ? 'var(--primary)': 'var(--success)'}" class="f-start">
-							<span>{{isBegin ? 'Fin en:': 'Inicia en:'}}</span>
+							<span>{{isBegin ? 'Fin:': ''}}</span>
 							<v-box s=".5"></v-box>
 							<vcd-countdown2 :date="isBegin ? data.dateEnd: data.dateBegin"></vcd-countdown2>
 						</div>
@@ -177,13 +177,12 @@ Vue.component('vcd-dashconferences-item', {
 			<div :style="{fill: $root.colorCourse(data.courseName).solid}">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path class="uim-tertiary" d="M14,18H5c-1.65611-0.00181-2.99819-1.34389-3-3V9c0.00181-1.65611,1.34389-2.99819,3-3h9c1.65611,0.00181,2.99819,1.34389,3,3v6C16.99819,16.65611,15.65611,17.99819,14,18z"></path><path class="uim-primary" d="M21.89465,7.55359c-0.24683-0.49432-0.8476-0.69495-1.34192-0.44812l-3.56421,1.7821C16.98999,8.92572,16.99994,8.96149,17,9v6c-0.00006,0.03851-0.01001,0.07428-0.01147,0.11243l3.56421,1.7821C20.69165,16.96381,20.84479,16.99994,21,17c0.55212-0.00037,0.99969-0.44788,1-1V8C21.99994,7.84503,21.96387,7.6922,21.89465,7.55359z"></path></svg>
 				<span style="height: 18px;" class="f-c cd-dashconferences-item-title">{{data.courseName.slice(0,22)}}</span>
-				<span style="height: 18px;" class="f-c cd-dashconferences-item-message-notinit">AÚN NO INICIA</span>
+				<span style="height: 18px;" class="f-c cd-dashconferences-item-message-notinit">EN ESPERA...</span>
 				<b v-if="isBegin" class="acd-fadeOut" style="animation-iteration-count: infinite; animation-duration: 2s; animation-name: fadeOut2;"></b>
 			</div>
 			<v-box s=.5></v-box>
 			<section v-if="countdown" style="background: var(--panel-light);line-height: .8rem; height: 30px; width: 100%; border-radius: var(--rounded); font-size: .8rem; justify-content: center" class="f-start">
-				<span>{{isBegin ? 'Fin:': ''}}</span>
-				<v-box s=.5></v-box>
+				<span>{{isBegin ? 'Fin: ': ''}}</span>
 				<vcd-countdown2 :date="isBegin ? data.dateEnd: data.dateBegin"></vcd-countdown2>
 			</section>
 		</a>
@@ -351,7 +350,7 @@ Vue.component('vcd-date', {
 	}
 })
 Vue.component('vcd-countdown2', {
-	template: /*HTML */`<span>en {{dateCalcule}}</span>`,
+	template: /*HTML */`<span>En {{dateCalcule}}</span>`,
 	props: ['date'],
 	computed: {
 		dateCalcule(){
@@ -366,38 +365,24 @@ Vue.component('vcd-countdown2', {
 		}
 	}
 })
-Vue.component('vcd-countdown',{
-	template: /*HTML */
-	`<div class="cd-countdown f-c">
-		{{isAfter ? 'Termina en': 'Inicia en'}}
-		<span>{{isAfter? dateViewEnd: dateViewStart}}</span>
-	</div>
+Vue.component('vcd-notification',{
+	template: /*HTML */`
+		<div class="cd-notification"  :style="{fill: $root.colorCourse(notification.course).solid}" style="display: grid; grid-template-columns: auto 1fr; gap: 1rem">
+			<div>
+				<svg style="width: 2rem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18,13.18463V10c0-3.31372-2.68628-6-6-6s-6,2.68628-6,6v3.18463C4.83832,13.59863,4.00146,14.69641,4,16v2c0,0.00037,0,0.00073,0,0.00116C4.00031,18.5531,4.44806,19.00031,5,19h14c0.00037,0,0.00073,0,0.00116,0C19.5531,18.99969,20.00031,18.55194,20,18v-2C19.99854,14.69641,19.16168,13.59863,18,13.18463z" class="uim-tertiary"></path><path d="M8.14233 19c.4472 1.72119 1.99689 2.99817 3.85767 3 1.86078-.00183 3.41046-1.27881 3.85767-3H8.14233zM12 4c.34149 0 .67413.03516 1 .08997V3c0-.55231-.44769-1-1-1s-1 .44769-1 1v1.08997C11.32587 4.03516 11.65851 4 12 4z" class="uim-primary"></path></svg>
+			</div>
+			<div>
+				<div>{{notification.course}}</div>
+				<div style="font-size: .7rem; margin-top: -.25rem">Publicado {{notification.dateBeginHuman}}</div>
+				
+				<v-box s=".5" flex></v-box>
+				<div>{{notification.title}}</div>
+				<div v-if="notification.title != notification.content" style="font-size: .8rem" v-html="notification.content"></div>
+			</div>
+			<div class="cd-notification-close f-c" v-if="notification.state" @click="notification.state = false">
+				<svg style="width:24px;height:24px" viewBox="0 0 24 24"><path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+			</div>
+		</div>
 	`,
-	props: ['dateEnd', 'dateStart'],
-	computed: {
-		isAfter(){
-			return this.$root.now > (new Date(this.dateStart)).getTime()
-		},
-		dateViewEnd(){
-			const now = this.$root.now
-			const distance = (new Date(this.dateEnd)).getTime() - now;
-			
-			const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-			const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-			const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-			const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-			return distance < 0 ? '0m 0s' : (days ? days + "d ": '') + (hours + days ? hours + "h " : '') + (days ? '' : minutes + "m ") + (days + hours ? '' :seconds + 's')
-		},
-		dateViewStart(){
-			const now = this.$root.now
-			const distance = (new Date(this.dateStart)).getTime() - now;
-			
-			const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-			const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-			const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-			const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-			return distance < 0 ? '0m 0s' : (days ? days + "d ": '') + (hours + days ? hours + "h " : '') + (days ? '' : minutes + "m ") + (days + hours ? '' :seconds + 's')
-		}
-	},
-	
+	props: ['notification'],
 })

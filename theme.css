@@ -70,6 +70,15 @@ body#bodyView.theme-dark div[ng-controller=IndexController]>div:nth-child(2) {
 #bodyView .modal-dialog {
     box-shadow: 0 6px 9px 2px #00000017;
 }
+#bodyView .title-def,
+#bodyView .breadcrumb-active a {
+    color: var(--primary) !important;
+}
+#bodyView .row a p.title-def,
+#bodyView .desc-box h1,
+#bodyView .title-header {
+    color: var(--panel) !important;
+}
 #bodyView .page-content{
     position: fixed;
     top: 0;
@@ -304,6 +313,10 @@ body#bodyView.theme-dark .row-body2 span.title-header,
 #bodyView .item-annoucement span.title-header,
 #bodyView .group-card  span.title-header{
     color: rgb(108, 109, 123) !important;
+}
+#bodyView .item-annoucement .item-Announcement {
+    box-shadow: none !important;
+    border-width: 0 !important;
 }
 #bodyView .course-container {
     margin: 0;
