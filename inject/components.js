@@ -23,27 +23,6 @@ function createStorage(data) {
 	return defdata
 }
 
-Vue.component('vcd-tabbox',{
-	template: /*HTML */
-	`
-	<div class="cd-nav-btn-content f-c">
-			<a :id="'tabbox_' + tabid" href="#" class="cd-nav-btn" :class="$root.tabposition == tabid ? 'active' : ''" @click="$root.tabposition = tabid">
-				<div>
-					<b v-if="counter">{{counter}}</b>
-					<i class="mdi" :class="icon" v-if="icon"></i>
-                    <slot v-else></slot>
-				</div>
-				<span>{{text}}</span>
-			</a>
-	</div>
-	`,
-	props: {
-		tabid: String, 
-		text: {default: 'tab name'}, 
-		icon: {type: String}, 
-		counter: {default: 0}, 
-	}
-})
 Vue.component('vcd-void-box',{
 	template: /*HTML */
 	`<div v-else class="f-c" style="height: 100%">
@@ -84,28 +63,7 @@ Vue.component('vcd-btn-icon', {
 		launchEvents(){
             
 			if (this.minimizeApp) {
-				this.$root.moduleActiveId = 'md_activities'
-				this.$root.openPanel = false
-			}
-		}
-	}
-})
-Vue.component('vcd-btn', {
-	template: /*HTML */
-	`<a @click="launchEvents" class="cd-btn" :class="'cd-btn-' + type">
-		<i class="mdi mdi-24px" :class="icon"></i>
-		
-	</a>
-	`,
-	props: {
-		minimizeApp: Boolean,
-		type: {type: String, default: 'icon'},
-		icon: {type: String, default() {return this.$root.icon_link}},
-	},
-	methods: {
-		launchEvents(){
-			if (this.minimizeApp) {
-				this.$root.moduleActiveId = 'md_activities'
+				this.$root.moduleActiveId = 'md_dashboard'
 				this.$root.openPanel = false
 			}
 		}
@@ -141,8 +99,8 @@ Vue.component('vcd-activity', {
 							<v-box s=".5"></v-box>
 							<vcd-countdown2 :date="isBegin ? data.dateEnd: data.dateBegin"></vcd-countdown2>
 						</div>
-						<div v-if="data.type == 'FORUM'" style="padding: 0 0.5rem; border-radius: .5rem; height: 32px; background: var(--panel-light)" class="f-start">
-							<span>Respo.: {{data.myAnswers >= 1? 'OK' : 'FALTA'}}</span>
+						<div v-if="data.type == 'FORUM' && data.myAnswers > 0" style="padding: 0 0.5rem; border-radius: .5rem; height: 32px; background: var(--panel-light)" class="f-start">
+							<span>{{data.myAnswers}} Respuestas</span>
 						</div>
 						<div v-if="data.type == 'HOMEWORK' && data.isGroup" style="padding: 0 0.5rem; border-radius: .5rem; height: 32px; background: var(--panel-light)" class="f-start">
 							<span>Grupal</span>

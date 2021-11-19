@@ -13,7 +13,8 @@
     --rounded2: 1rem;
     --card: white;
     --card-dark: #c9c9cb;
-    --gradient-primary: linear-gradient(60deg, var(--secondary), var(--primary))
+    --gradient-primary: linear-gradient(60deg, var(--secondary), var(--primary));
+    --panel-width: 520px;
 }
 
 .acd-waves {
@@ -138,7 +139,7 @@
     position: fixed;
     top: 10px;
     right: 10px;
-    width: 500px;
+    width: var(--panel-width);
     z-index: 102;
 }
 .cd-notification {
@@ -382,7 +383,7 @@
     position: fixed;
     z-index: 10100;
     line-height: 20px;
-    width: 500px;
+    width: var(--panel-width);
     right: 10px;
     bottom: 10px;
     height: calc(100% - 20px);
@@ -448,14 +449,11 @@
     color: white;
 }
 .cd-btn-navmenu{
-    height: 50px;
-    width: 50px;
     background: var(--panel);
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    border-radius: 50%;
     font-size: 2rem;
     position: relative;
     transition: none;
@@ -463,6 +461,8 @@
     border-radius: var(--rounded2);
     box-shadow: rgba(0, 0, 0, 0.54) 0px 5px 11px 0px;
     transition: linear all .2s;
+    width: 50px;
+    height: 50px;
 }
 .cd-btn-navmenu{
     fill: white;
@@ -505,15 +505,17 @@
     bottom: calc(10px + .5em);
     display: grid;
     z-index: 10101;
-    width: calc(500px - 1rem);
+    width: calc(var(--panel-width) - 1rem);
     gap: .5rem;
-    grid-template-columns: 1fr auto;
+    grid-auto-columns: auto;
+    grid-template-rows: 50px;
 }
 .cd-navmenu-principal-action{
+    transition: linear all .2s;
     display: flex;
-    grid-template-columns: repeat(auto-fit, 50px);
     grid-template-rows: 50px;
     gap: .5rem;
+    flex-direction: row;
     justify-content: end;
 }
 #cd-navmenu.cd-navmenu-open {
@@ -850,8 +852,8 @@
     width: 100%;
     display: grid;
     gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    grid-auto-rows: 120px;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    grid-auto-rows: 110px;
 }
 .cd-dashboard-item{
     background: linear-gradient(35deg, var(--panel) 0%, black 100%);
@@ -860,6 +862,7 @@
     color: #fff;
     fill: #fff;
     position: relative;
+    font-size: .8rem;
 }
 .cd-dashboard-item-counter{
     position: absolute;
@@ -880,7 +883,7 @@
     border-radius: 50%;
 }
 .cd-dashboard-item svg{
-    width: 2.4rem;
+    width: 2rem;
 }
 .cd-dashboard-item:hover,
 .cd-dashboard-item:focus {

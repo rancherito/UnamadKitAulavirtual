@@ -270,7 +270,7 @@ Vue.component('cd-schedule', {
 			
 			<v-box></v-box>
 			<div>
-				<div class="f-start" v-for="course of $root.courses.list">
+				<div class="f-start" v-for="course of $root.coursesList">
 					<span style="height: 1rem; width: 1rem; background-color: var(--panel)" :style="{'background': $root.colorCourse(course.name).solid}"></span>
 					<v-box s=".5"></v-box>
 					<span style="flex: 1">{{course.name}}</span>
@@ -464,7 +464,7 @@ Vue.component('vcd-module',{
 	template:/*HTML*/ `
 		<div id="modelinject">
 				<div class="cd-dialog-actions-top">
-					<a class="cd-btn" style="background: transparent;" @click="$root.moduleActiveId = 'md_activities'; $root.tabposition = 'dashboard'" href="#" v-show="$root.moduleActiveId != 'md_activities' || $root.tabposition != 'dashboard'">
+					<a class="cd-btn" style="background: transparent;" @click="$root.moduleActiveId = 'md_dashboard'" href="#" v-show="$root.moduleActiveId != 'md_dashboard'">
 						<svg xmlns="http://www.w3.org/2000/svg" style="height: 2rem" viewBox="0 0 24 24"><path class="uim-primary" d="M8,14.5a.99676.99676,0,0,1-.707-.293l-3-3a.99962.99962,0,0,1,0-1.41406l3-3A.99989.99989,0,0,1,8.707,8.207L6.41406,10.5l2.293,2.293A1,1,0,0,1,8,14.5Z"></path><path class="uim-primary" d="M19,17.5a.99974.99974,0,0,1-1-1v-4a1.001,1.001,0,0,0-1-1H5a1,1,0,0,1,0-2H17a3.00328,3.00328,0,0,1,3,3v4A.99974.99974,0,0,1,19,17.5Z"></path></svg>
 					</a>
 					<v-box></v-box>

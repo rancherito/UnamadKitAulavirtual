@@ -84,29 +84,32 @@ body#bodyView.theme-dark div[ng-controller=IndexController]>div:nth-child(2) {
     top: 0;
     bottom: 0;
     right: 0;
-    left: 80px;
+    left: 0;
     z-index: 100;
     margin: 0 !important;
     padding: 6rem 4rem 4rem 4rem !important;
-    background: linear-gradient(180deg, transparent 0, transparent 220px, #f1f1f1 220px, #f1f1f1 100%);
+    background: rgba(250, 250, 250, 0.95);
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-#bodyView .page-content::before,
-#bodyView .page-content::after {
+#bodyView .top-menu{
+    height: 0;
+    width: 0;
+    overflow: hidden;
+}
+#bodyView .top-menu::before,
+#bodyView .top-menu::after {
     content: "";
-    height: 220px;
-    width: 100%;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
+    bottom: 0;
     z-index: -2;
 }
-#bodyView .page-content::after{
-background: var(--panel);
-opacity: 0.3;
-}
-#bodyView .page-content::before{
+#bodyView .top-menu::after {
 background-color: var(--panel);
 background-image: url("https://c.wallhere.com/photos/d9/9c/Firewatch_video_games_mountains_nature_landscape_artwork_minimalism_forest-79314.png!d");
 background-size: cover;
@@ -158,16 +161,6 @@ background-position-y: center;
 }
 #bodyView .logo-container{
     display: none;
-}
-#bodyView .left-menu::after {
-    content: 'UNAMAD';
-    position: absolute;
-    top: 100px;
-    font-weight: bold;
-    font-size: .8rem;
-    color: white;
-    width: 100%;
-    text-align: center;
 }
 #bodyView .left-menu .logo-inverse{
     display: none;
@@ -395,23 +388,8 @@ body#bodyView.theme-dark div[ng-controller="IndexController"] {
     max-width: 1000px;
     width: 100% !important;
 }
-#bodyView .page-content::before,
-#bodyView .page-content::after {
-    height: 100%;
-    bottom: 0;
-}
 
-#bodyView .page-content::after {
-    opacity: .95 !important;
-    background-color: #F5F5F5;
-}
 
-#bodyView .page-content {
-    left: 0 !important;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
 body#bodyView.theme-dark>nav.left-menu {
     display: none !important;
 }
