@@ -516,7 +516,7 @@
     grid-template-rows: 50px;
     gap: .5rem;
     flex-direction: row;
-    justify-content: end;
+    justify-content: flex-end;
 }
 #cd-navmenu.cd-navmenu-open {
     height: 50px;
