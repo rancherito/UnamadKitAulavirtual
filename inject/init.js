@@ -94,16 +94,22 @@
 					</div>
 				</vcd-module>
 				<vcd-module title="Actividades archivadas" v-show="moduleActiveId == 'md_archived'">
-					<div style="height: 100%; padding: 1rem; display: grid; gap: 1rem; overflowY: auto" class="cd-scroll-custom">
-						<div 
-						style="display: grid; gap: .5rem" 
-						v-for="course in coursesList" 
-						v-if="generalActividitiesArchived.filter(e=>e.type != 'CONFERENCE').filter(e=>e.courseName == course.name).length"
-						>
-							
-							<div v-for="activity of generalActividitiesArchived.filter(e=>e.type != 'CONFERENCE').filter(e=>e.courseName == course.name)">
-								<vcd-activity :data="activity"></vcd-activity>
-							</div>
+					<div style="height: 100%; padding: 1rem; overflowY: auto" class="cd-scroll-custom">
+						<div class="f-end">
+							<a class="cd-btn" href="#" @click="moduleActiveId = 'md_activities'">Ver Actv. pendientes</a>
+						</div>
+						<v-box s=".5" flex></v-box>
+						<div style="display: grid; gap: 1rem" >
+						
+							<template 
+							v-for="course in coursesList" 
+							v-if="generalActividitiesArchived.filter(e=>e.type != 'CONFERENCE' && e.courseName == course.name).length"
+							>
+								
+								<template v-for="activity of generalActividitiesArchived.filter(e=>e.type != 'CONFERENCE' && e.courseName == course.name)">
+									<vcd-activity :data="activity"></vcd-activity>
+								</template>
+							</template>
 						</div>
 					</div>
 				</vcd-module>
