@@ -93,10 +93,10 @@
 						<vcd-notification v-for="notification of notifications" :notification="notification"></vcd-notification>
 					</div>
 				</vcd-module>
-				<vcd-module title="Actividades archivadas" v-show="moduleActiveId == 'md_archived'">
+				<vcd-module title="Actividades concluidas" v-show="moduleActiveId == 'md_archived'">
 					<div style="height: 100%; padding: 1rem; overflowY: auto" class="cd-scroll-custom">
-						<div class="f-end">
-							<a class="cd-btn" href="#" @click="moduleActiveId = 'md_activities'">Ver Actv. pendientes</a>
+						<div class="f-end" v-if="generalActividities.length">
+							<a class="cd-btn" href="#" @click="moduleActiveId = 'md_activities'">Ver pendientes</a>
 						</div>
 						<v-box s=".5" flex></v-box>
 						<div style="display: grid; gap: 1rem" >
@@ -115,9 +115,12 @@
 				</vcd-module>
 				<vcd-module title="Actividades pendientes" v-show="moduleActiveId == 'md_activities'">
 					<div v-if="generalActividities.length" style="height: 100%; padding: 1rem; overflowY: auto" class="cd-scroll-custom">
-				
-						<vcd-dashconferences countdown :data="generalActividities.filter(e=>e.type == 'CONFERENCE')"></vcd-dashconferences>
-						<v-box></v-box>
+						<div class="f-end" v-if="generalActividitiesArchived.length">
+							<a class="cd-btn cd-btn-success" href="#" @click="moduleActiveId = 'md_archived'">Ver Culminados</a>
+						</div>
+						<v-box s=".5" flex></v-box>
+						<vcd-dashconferences countdown :data="generalActividities.filter(e=>e.type == 'CONFERENCE')" style="margin-bottom: 1rem"></vcd-dashconferences>
+						
 						<div style="display: grid; gap: 1rem;">
 							<template 
 							v-for="course in coursesList" 
@@ -149,7 +152,7 @@
 								<a class="f-c cd-dashboard-item" @click="moduleActiveId = 'md_archived'" href="#" v-if="generalActividitiesArchived.length" :style="{fill: 'rgb(0, 208, 106)'}">
 									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" ><circle cx="10" cy="8.5" r="5" class="uim-quaternary"></circle><path class="uim-tertiary" d="M13.30884,12.22253C12.42566,13.00806,11.27496,13.5,10,13.5s-2.42566-0.49194-3.30884-1.27747C3.92603,13.48206,2,16.26324,2,19.5c0,0.00018,0,0.00037,0,0.00055C2.00012,20.05267,2.44788,20.50012,3,20.5h14c0.00018,0,0.00037,0,0.00055,0c0.55212-0.00012,0.99957-0.44788,0.99945-1C18,16.26324,16.07397,13.48206,13.30884,12.22253z"></path><path class="uim-primary" d="M18.3335,13.5c-0.26526,0.0003-0.51971-0.10515-0.707-0.293l-1.3335-1.333c-0.38694-0.39399-0.38123-1.02706,0.01275-1.414c0.38897-0.38202,1.01228-0.38202,1.40125,0l0.62647,0.626l1.95953-1.96c0.39399-0.38694,1.02706-0.38123,1.414,0.01275c0.38202,0.38897,0.38202,1.01227,0,1.40125l-2.6665,2.667C18.85321,13.39485,18.59877,13.5003,18.3335,13.5z"></path></svg>
 									<v-box></v-box>
-									<span>A. Archivadas</span>
+									<span>A. Concluidas</span>
 									<b class="cd-dashboard-item-counter" style="background-color: var(--success)">{{generalActividitiesArchived.length}}</b>
 								</a>
 								<a class="f-c cd-dashboard-item" @click="moduleActiveId = 'md_schedule_2'" href="#" :style="{fill: colors[2]}">
@@ -163,7 +166,7 @@
 									<span>Notificaciones</span>
 									<b class="cd-dashboard-item-counter" v-if="notifications.length" style="background-color: var(--success)">{{notifications.length}}</b>
 								</a>
-								<a class="f-c cd-dashboard-item" @click="moduleActiveId = 'md_sync'" href="#" :style="{fill: colors[3]}" v-if="false">
+								<a class="f-c cd-dashboard-item" @click="moduleActiveId = 'md_sync'" href="#" :style="{fill: colors[3]}" v-if="true">
 									<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path class="uim-tertiary" d="m2,6l-2,0l0,-4a2,2 0 0 1 2,-2l4,0l0,2l-4,0m20,-2a2,2 0 0 1 2,2l0,4l-2,0l0,-4l-4,0l0,-2l4,0m-20,18l0,4l4,0l0,2l-4,0a2,2 0 0 1 -2,-2l0,-4l2,0m20,4l0,-4l2,0l0,4a2,2 0 0 1 -2,2l-4,0l0,-2l4,0z"/><path class="uim-primary" d="m4,4l6,0l0,6l-6,0l0,-6m16,0l0,6l-6,0l0,-6l6,0m-6,11l2,0l0,-2l-2,0l0,-2l2,0l0,2l2,0l0,-2l2,0l0,2l-2,0l0,2l2,0l0,3l-2,0l0,2l-2,0l0,-2l-3,0l0,2l-2,0l0,-4l3,0l0,-1m2,0l0,3l2,0l0,-3l-2,0m-12,5l0,-6l6,0l0,6l-6,0m2,-14l0,2l2,0l0,-2l-2,0m10,0l0,2l2,0l0,-2l-2,0m-10,10l0,2l2,0l0,-2l-2,0m-2,-5l2,0l0,2l-2,0l0,-2m5,0l4,0l0,4l-2,0l0,-2l-2,0l0,-2m2,-5l2,0l0,4l-2,0l0,-4"/></svg>
 									<v-box></v-box>
 									<span>Sincronización QR</span>
@@ -437,7 +440,9 @@
 
 						let response = await fetch(this.protocol + '://aulavirtual.unamad.edu.pe/web/conference/list?s=' + course.sectionId);
 						if (response.ok) {
+
 							(await response.json()).forEach(conference => {
+								//console.log(conference);
 								let a = new RegExp("^(http|https)://", "i")
 								if (!a.test(conference.url)) conference.url = 'https://' + conference.url
 								conference.sectionId = course.sectionId
@@ -472,6 +477,7 @@
 						let res = await fetch(this.protocol + '://aulavirtual.unamad.edu.pe/web/homework/list?s=' + course.sectionId);
 						if (res.ok) {
 							(await res.json()).forEach(task => {
+								//console.log('task',task);
 								let [date, hour] = task.dateEnd.split(' ');
 								let [day, mount, year] = date.split('/')
 
@@ -495,7 +501,7 @@
 										unit: task.unidad,
 										isEnded: task.state != 'ACT',
 										type: 'HOMEWORK',
-										intents: task.intents,
+										intents: task.attempts,
 										intentsUseds: task.homeworkstds,
 										description: task.description,
 										sectionId: task.sectionId,
@@ -517,6 +523,7 @@
 						const res = await fetch(this.protocol + '://aulavirtual.unamad.edu.pe/web/Evaluations/ListAllEvaluations?s=' + course.sectionId)
 						if (res.ok) {
 							(await res.json()).forEach(exam => {
+								//(exam);
 								exam.sectionId = course.sectionId
 								exam.nameCourse = course.name
 								exams.push(exam)
@@ -547,6 +554,7 @@
 						let response = await fetch(this.protocol + '://aulavirtual.unamad.edu.pe/web/forum/list?s=' + course.sectionId)
 						if (response.ok) {
 							for (const forum of (await response.json())) {
+								//console.log(forum);
 								forum.sectionId = course.sectionId
 								forum.nameCourse = course.name
 								forum.participations = 0

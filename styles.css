@@ -1,6 +1,7 @@
 :root{
     /*--primary: #00e59b;*/
     --primary: #ec2449;
+    --primary-dark:rgb(175, 19, 48);
     --secondary: #673ab7;
     --panel: #0c0c0c;
     --panel-light: #1f1f1f;
@@ -9,6 +10,7 @@
     --web-primary: #ec2449;
     --ff-secondary: 'Caveat', cursive;
     --success: #8bc34a; /*#05cc47*/
+    --success-dark: #659c25;
     --rounded: 1rem;
     --rounded2: 1rem;
     --card: white;
@@ -30,6 +32,14 @@
 }
 .cd-btn:hover{
     color: white;
+    background: var(--primary-dark);
+    transition: linear all .2s;
+}
+.cd-btn.cd-btn-success{
+    background-color: var(--success);
+}
+.cd-btn.cd-btn-success:hover {
+    background-color: var(--success-dark);
 }
 @keyframes waves {
     0% {
